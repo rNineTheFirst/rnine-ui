@@ -46,27 +46,16 @@ out under the npm tag `next`.
 
 When that commit reaches `main`, the [Publish](.github/workflows/publish.yml) workflow
 builds, tests and runs `yarn smoke`, which installs the packed tarballs in a new app and
-type-checks and builds it. Then it **stages** core first and the libraries after it
-(`scripts/publish.mjs`). Publishing uses npm Trusted Publishing: there's no npm token
-anywhere, every version carries provenance (the commit and workflow that built it), and
-the workflow is only allowed to stage, never to publish.
-
-**A staged version goes live only when a maintainer approves it** (2FA). The Publish
-run's summary lists what's waiting. Approve core first, then the libraries, either on
-npmjs.com (Staged packages) or from a terminal:
-
-```bash
-npm stage list @rnine/core
-npm stage approve <stage-id>      # then the same for @rnine/nineos
-```
-
-Once a version is live, [Tag releases](.github/workflows/tag.yml) tags it (`core@0.2.0`,
-`nineos@0.2.0`) with a GitHub Release at the commit that set the version. It runs every
-hour; run it by hand (Actions → Tag releases → Run workflow) to tag right away. If Publish
-runs again while a version is still waiting, it says so and leaves it staged.
+type-checks and builds it. Then it publishes core first and the libraries after it
+(`scripts/publish.mjs`), and tags each version (`core@0.2.0`, `nineos@0.2.0`) with a
+GitHub Release. Publishing uses npm Trusted Publishing: there's no npm token anywhere,
+and every version carries provenance (the commit and workflow that built it). If a run
+stops halfway, run Publish again (Actions → Publish → Run workflow): it skips what's on
+npm already and tags whatever isn't tagged yet.
 
 **A new package's first version is published by hand**, because npm can only trust a
-workflow for a package that already exists:
+workflow for a package that already exists. Any terminal works, including a GitHub
+Codespace on this repository:
 
 ```bash
 git clone https://github.com/rNineTheFirst/rnine-ui.git && cd rnine-ui
@@ -76,12 +65,18 @@ npm publish -w @rnine/core --provenance=false      # provenance only comes from 
 npm publish -w @rnine/nineos --provenance=false
 ```
 
-npm may stage this too (it did for 0.1.0): until it's approved, npm shows a
-`0.0.0-stage` placeholder for the new package. Approve it as above, then on npmjs.com, for each package:
-**Settings → Trusted Publisher → GitHub Actions** (user `rNineTheFirst`, repository
-`rnine-ui`, workflow `publish.yml`, *Allow npm publish* unchecked so it can only stage),
-and under **Publishing access** pick *Require two-factor authentication and disallow
-tokens*. Then run Tag releases to tag the version.
+If npm stages it instead (it shows a `0.0.0-stage` placeholder), approve it on npmjs.com
+(account settings → Staged Packages). Then, on npmjs.com, for each package: **Settings →
+Trusted Publisher → GitHub Actions** (user `rNineTheFirst`, repository `rnine-ui`,
+workflow `publish.yml`, *Allow npm publish* checked), and under **Publishing access** pick
+*Require two-factor authentication and disallow tokens*. Run Publish once by hand to tag
+the version.
+
+**Approving each release instead (optional).** With *Allow npm publish* unchecked, the
+workflow may only stage. Run the script with `--stage` in `publish.yml`: each version then
+waits on npm until a maintainer approves it with 2FA, core first, on npmjs.com or with
+`npm stage approve <stage-id>` (the Publish run's summary lists the ids). Run Publish
+again afterwards to tag them.
 
 ## License
 

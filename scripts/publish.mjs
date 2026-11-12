@@ -1,54 +1,56 @@
 #!/usr/bin/env node
-// Stages the libraries whose version on main isn't on npm yet, core first, and
-// tags each version that's live on npm (core@0.2.0, nineos@0.2.0) with a
-// GitHub Release. Run by .github/workflows/publish.yml after build, test and
-// smoke, and by .github/workflows/tag.yml (--tag-only) to tag approved versions.
+// Publishes the libraries whose version on main isn't on npm yet, core first,
+// and tags each version that's on npm (core@0.2.0, nineos@0.2.0) with a GitHub
+// Release. Run by .github/workflows/publish.yml after build, test and smoke.
 //
-//   node scripts/publish.mjs              stage + tag (CI: npm Trusted Publishing)
-//   node scripts/publish.mjs --tag-only   only tag versions that are live on npm
+//   node scripts/publish.mjs              publish + tag (CI: npm Trusted Publishing)
+//   node scripts/publish.mjs --stage      stage instead, for approval on npm
 //   node scripts/publish.mjs --dry-run    say what it would do, change nothing
 //
-// Staged publishing: CI can only stage a version (npm stage publish). It goes
-// live when a maintainer approves it on npmjs.com or with npm stage approve
-// (2FA), core first. The tag follows on the next run of either workflow.
+// --stage is for a Trusted Publisher that may only stage ("Allow npm publish"
+// unchecked on npmjs.com): a maintainer approves each staged version with 2FA,
+// core first, on npmjs.com or with npm stage approve, and the next run of this
+// script tags it.
 //
 // A release is a version bump: both packages share one version (nineos pins
-// core to it exactly), changed together in one commit. A version with a
-// hyphen (0.3.0-beta.1) goes out under the npm tag "next", not "latest".
+// core to it exactly), changed together in one commit (yarn release:version).
+// A version with a hyphen (0.3.0-beta.1) goes out under the npm tag "next".
 //
 // A package that has never been on npm is skipped: npm Trusted Publishing can
 // only be set up for a package that exists, so its first version is published
 // by hand (see CONTRIBUTING.md).
-import { execFileSync, execSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { appendFileSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dryRun = process.argv.includes('--dry-run');
-const tagOnly = process.argv.includes('--tag-only');
+const stageMode = process.argv.includes('--stage');
 const inCI = process.env.GITHUB_ACTIONS === 'true';
 const ORDER = ['core', 'nineos']; // dependencies first
 
-// On Windows npm and gh need a shell (npm is npm.cmd): one quoted command line
+// Runs a command and returns its exit status and both output streams. On
+// Windows npm and gh need a shell (npm is npm.cmd): one quoted command line.
 const quote = (a) => (/^[\w@./:=-]+$/.test(a) ? a : `"${a.replace(/"/g, '\\"')}"`);
-const run = (cmd, args, opts = {}) => {
-  const options = { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts };
-  const out = process.platform === 'win32'
-    ? execSync([cmd, ...args].map(quote).join(' '), options)
-    : execFileSync(cmd, args, options);
-  return (out ?? '').trim();
+const exec = (cmd, args, opts = {}) => {
+  const options = { cwd: root, encoding: 'utf8', ...opts };
+  const result = process.platform === 'win32'
+    ? spawnSync([cmd, ...args].map(quote).join(' '), { ...options, shell: true })
+    : spawnSync(cmd, args, options);
+  if (result.error) throw result.error;
+  const out = (result.stdout ?? '').trim();
+  const err = (result.stderr ?? '').trim();
+  return { ok: result.status === 0, out, err, all: [out, err].filter(Boolean).join('\n') };
 };
-const tryRun = (cmd, args, opts) => {
-  try {
-    return { ok: true, out: run(cmd, args, opts) };
-  } catch (error) {
-    return { ok: false, out: `${error.stdout ?? ''}${error.stderr ?? ''}`.trim() };
-  }
+const run = (cmd, args, opts) => {
+  const result = exec(cmd, args, opts);
+  if (!result.ok) throw new Error(`${cmd} ${args.join(' ')} failed:\n${result.all}`);
+  return result.out;
 };
 const say = (msg) => console.log(dryRun ? `[dry run] ${msg}` : msg);
 
-// The GitHub job summary: what's waiting for approval and how to approve it
+// The GitHub job summary: what was released, or what's waiting for approval
 const summary = [];
 const writeSummary = () => {
   if (!summary.length) return;
@@ -79,40 +81,51 @@ if (problems.length) {
 const prerelease = core.version.includes('-');
 const distTag = prerelease ? 'next' : 'latest';
 
-// Is the package on npm at all, and is this version live (approved)?
+// Is the package on npm at all, and is this version on it?
 const npmState = (pkg) => {
-  const exists = tryRun('npm', ['view', pkg.name, 'name']);
-  if (!exists.ok && /E404|404 Not Found/.test(exists.out)) return 'missing';
-  if (!exists.ok) throw new Error(`npm view ${pkg.name} failed:\n${exists.out}`);
-  return tryRun('npm', ['view', `${pkg.name}@${pkg.version}`, 'version']).out === pkg.version ? 'live' : 'absent';
+  const exists = exec('npm', ['view', pkg.name, 'name']);
+  if (!exists.ok && /E404|404 Not Found/.test(exists.all)) return 'missing';
+  if (!exists.ok) throw new Error(`npm view ${pkg.name} failed:\n${exists.all}`);
+  return exec('npm', ['view', `${pkg.name}@${pkg.version}`, 'version']).out === pkg.version ? 'live' : 'absent';
 };
 
-// A version that's already staged can't be staged again (staged and published
+// A staged version can't be published or staged again (staged and published
 // versions share one index), and CI's token can't list the stage queue, so a
-// conflict here means it's waiting for approval.
+// conflict here means it's staged and waiting for approval.
 const CONFLICT = /cannot publish over|previously published|already (been )?staged|already exists|E409|EPUBLISHCONFLICT/i;
 
-const stage = (pkg) => {
-  say(`staging ${pkg.name}@${pkg.version} (npm tag ${distTag})`);
-  const args = ['stage', 'publish', '--tag', distTag, ...(inCI ? ['--provenance'] : []), ...(dryRun ? ['--dry-run'] : [])];
-  const result = tryRun('npm', args, { cwd: join(root, 'packages', pkg.dir) });
-  if (result.out) console.log(result.out);
+const waiting = []; // staged versions: { pkg, id }
+const released = [];
+
+const publish = (pkg) => {
+  say(`${stageMode ? 'staging' : 'publishing'} ${pkg.name}@${pkg.version} (npm tag ${distTag})`);
+  const args = [
+    ...(stageMode ? ['stage', 'publish'] : ['publish']),
+    '--tag', distTag,
+    ...(inCI ? ['--provenance'] : []),
+    ...(dryRun ? ['--dry-run'] : []),
+  ];
+  const result = exec('npm', args, { cwd: join(root, 'packages', pkg.dir) });
+  if (result.all) console.log(result.all);
   if (result.ok) {
-    if (!dryRun) summary.push(`- **${pkg.name}@${pkg.version}** staged, waiting for approval`);
-    return true;
+    if (stageMode && !dryRun) waiting.push({ pkg, id: /staged with id ([\w-]+)/i.exec(result.all)?.[1] });
+    return stageMode ? 'staged' : 'published';
   }
-  if (CONFLICT.test(result.out)) {
-    console.log(`::notice::${pkg.name}@${pkg.version} is already staged, waiting for approval`);
-    summary.push(`- **${pkg.name}@${pkg.version}** was already staged, still waiting for approval`);
-    return true;
+  if (CONFLICT.test(result.all)) {
+    console.log(`::notice::${pkg.name}@${pkg.version} is already staged, waiting for approval on npm`);
+    waiting.push({ pkg });
+    return 'staged';
   }
-  throw new Error(`npm stage publish failed for ${pkg.name}@${pkg.version}`);
+  if (!stageMode && /E403|E401|forbidden|stag/i.test(result.all)) {
+    console.log("::error::npm refused the publish. If this package's Trusted Publisher only allows staging (\"Allow npm publish\" unchecked on npmjs.com), check that box, or run scripts/publish.mjs with --stage.");
+  }
+  throw new Error(`npm ${args.join(' ')} failed for ${pkg.name}@${pkg.version}`);
 };
 
-// The commit that set this version, so a tag made hours later still points at
-// the release (needs full history: checkout with fetch-depth 0)
+// The commit that set this version, so a tag made later still points at the
+// release (needs full history: checkout with fetch-depth 0)
 const releaseCommit = (pkg) => {
-  const found = tryRun('git', [
+  const found = exec('git', [
     'log', '--reverse', '--format=%H', '-S', `"version": "${pkg.version}"`, '--', `packages/${pkg.dir}/package.json`,
   ]);
   const first = found.ok ? found.out.split('\n')[0] : '';
@@ -134,7 +147,6 @@ const tag = (pkg) => {
 };
 
 let blocked = false;
-let staged = false;
 for (const pkg of packages) {
   const state = npmState(pkg);
   if (state === 'missing') {
@@ -147,34 +159,36 @@ for (const pkg of packages) {
     tag(pkg);
     continue;
   }
-  if (tagOnly) {
-    say(`${pkg.name}@${pkg.version} isn't live yet (staged and waiting for approval, or not staged): nothing to tag`);
-    continue;
-  }
   if (blocked) {
     // A dependency isn't on npm at all: this one would install broken
-    console.log(`::warning::${pkg.name}@${pkg.version} not staged: a package it depends on isn't on npm yet`);
+    console.log(`::warning::${pkg.name}@${pkg.version} not published: a package it depends on isn't on npm yet`);
     continue;
   }
-  staged = stage(pkg) || staged;
+  if (publish(pkg) === 'published') {
+    released.push(pkg);
+    tag(pkg);
+  }
 }
 
-if (staged && !dryRun) {
-  summary.unshift(
+if (released.length && !dryRun) {
+  summary.push(`## Released ${core.version}`, '');
+  for (const pkg of released) {
+    summary.push(`- [${pkg.name}@${pkg.version}](https://www.npmjs.com/package/${pkg.name}/v/${pkg.version}), tagged \`${pkg.tag}\``);
+  }
+}
+if (waiting.length) {
+  summary.push(
     `## Approve ${core.version} on npm`,
     '',
-    'Staged versions go live only when a maintainer approves them (2FA). Approve **core first**, then the libraries:',
-    '',
-  );
-  summary.push(
-    '',
-    'On npmjs.com (your avatar → Staged packages), or from a terminal:',
+    'Staged versions go live only when a maintainer approves them (2FA). Approve **core first**, then the libraries, on npmjs.com (account settings → Staged Packages) or from a terminal:',
     '',
     '```bash',
-    ...packages.flatMap((p) => [`npm stage list ${p.name}`, `npm stage approve <stage-id>   # ${p.name}@${p.version}`]),
+    ...waiting.map(({ pkg, id }) => (id
+      ? `npm stage approve ${id}   # ${pkg.name}@${pkg.version}`
+      : `npm stage list ${pkg.name}   # then: npm stage approve <stage-id>`)),
     '```',
     '',
-    'The Tag releases workflow tags each version once it\'s live (hourly, or run it by hand).',
+    'Then run Publish again (Actions → Publish → Run workflow) to tag them.',
   );
 }
 writeSummary();

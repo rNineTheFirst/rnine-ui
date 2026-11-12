@@ -1,11 +1,12 @@
-# Stages the libraries on npm when main has a version that isn't there yet
+# Publishes the libraries to npm when main has a version that isn't there yet
 # (scripts/publish.mjs): build, test and the install smoke test first, then
-# core, then nineos. A maintainer approves each staged version on npm (2FA);
-# Tag releases (tag.yml) then tags it with a GitHub Release.
+# core, then nineos, each tagged with a GitHub Release. Run it by hand to tag
+# anything on npm that isn't tagged yet.
 #
 # npm Trusted Publishing: no npm token is stored anywhere. Each package on
-# npmjs.com trusts this repository and this workflow file for staging only,
-# and npm adds provenance (which commit and workflow built it) to every version.
+# npmjs.com trusts this repository and this workflow file, and npm adds
+# provenance (which commit and workflow built it) to every version. For a
+# Trusted Publisher that may only stage, run the script with --stage.
 name: Publish
 
 on:
@@ -44,8 +45,8 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn@1.22.22 --no-fund --no-audit
 
-      # Staged publishing (npm stage) needs npm 11.15.0 or later
-      - name: npm for staged publishing
+      # Trusted Publishing needs npm 11.5.1+, staging (--stage) 11.15.0+
+      - name: npm for Trusted Publishing
         run: |
           node -e "const [a, b] = process.argv[1].split('.').map(Number); process.exit(a > 11 || (a === 11 && b >= 15) ? 0 : 1)" "$(npm --version)" \
             || npm install -g npm@11 --no-fund --no-audit
@@ -66,7 +67,7 @@ jobs:
       - name: Installs and builds from the packed tarballs
         run: yarn smoke
 
-      - name: Stage what isn't on npm yet, tag what's live
+      - name: Publish what isn't on npm yet, tag what's there
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/publish.mjs
