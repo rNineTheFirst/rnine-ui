@@ -12,6 +12,7 @@
     "lint": "yarn workspace @rnine/core lint && yarn workspace @rnine/nineos lint",
     "test": "yarn workspace @rnine/core test && yarn workspace @rnine/nineos test",
     "boundary": "node scripts/boundary.mjs",
+    "smoke": "node scripts/smoke.mjs",
     "storybook": "yarn workspace @rnine/nineos storybook",
     "build-storybook": "yarn workspace @rnine/nineos build-storybook"
   }

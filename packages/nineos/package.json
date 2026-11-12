@@ -1,9 +1,27 @@
 {
   "name": "@rnine/nineos",
   "version": "0.1.0",
-  "private": true,
   "license": "MIT",
   "description": "NineOS: a design system library with two moods (Clear and Cipher), cut corners, a command-line-plus-panels shell and its motion layer. Built on @rnine/core",
+  "keywords": [
+    "react",
+    "design-system",
+    "component-library",
+    "ui",
+    "scss",
+    "nineos",
+    "cli",
+    "terminal"
+  ],
+  "homepage": "https://github.com/rNineTheFirst/rnine-ui/tree/main/packages/nineos#readme",
+  "bugs": {
+    "url": "https://github.com/rNineTheFirst/rnine-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rNineTheFirst/rnine-ui.git",
+    "directory": "packages/nineos"
+  },
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -37,6 +55,10 @@
     "fonts.css",
     "theme.json"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "node scripts/build.mjs && vite build && tsc -p tsconfig.build.json && node scripts/build.mjs --bundle",
     "dev": "storybook dev -p 6006 --no-open",
@@ -48,7 +70,13 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sass": "^1.80.0"
+  },
+  "peerDependenciesMeta": {
+    "sass": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@rnine/core": "0.1.0",

@@ -22,9 +22,9 @@ What's in it:
 
 ## Use it in an app
 
-```jsonc
-// your app's package.json
-"dependencies": { "@rnine/core": "0.1.0" }    // or a library built on it, e.g. @rnine/nineos
+```bash
+npm install @rnine/core react react-dom    # or a library built on it, e.g. @rnine/nineos
+                                           # sass too, to use the SCSS API
 ```
 
 ```tsx

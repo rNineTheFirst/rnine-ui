@@ -28,11 +28,14 @@ import {
   siWhatsapp,
   siX,
   siYoutube,
-  type SimpleIcon,
 } from 'simple-icons';
 
+/** A site's mark from Simple Icons (CC0): the parts this library draws. simple-icons is
+ *  bundled into the build, so the published types don't depend on it. */
+export type BrandIcon = { title: string; hex: string; path: string };
+
 /** A known site: its name, and its mark (Simple Icons, CC0; LinkedIn is drawn here). */
-export type Brand = { name: string; icon: SimpleIcon | 'linkedin' };
+export type Brand = { name: string; icon: BrandIcon | 'linkedin' };
 
 export type ContactKind = { type: 'email' } | { type: 'phone' } | { type: 'link'; brand: Brand | null };
 

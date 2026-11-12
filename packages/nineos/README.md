@@ -26,9 +26,8 @@ component and mixin edits reload instantly.
 
 ## Use it in an app
 
-```jsonc
-// your app's package.json
-"dependencies": { "@rnine/nineos": "0.1.0" }
+```bash
+npm install @rnine/nineos react react-dom    # sass too, to use the SCSS API
 ```
 
 ```tsx

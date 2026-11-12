@@ -5,7 +5,7 @@
 // base.css (element styles and the shared keyframes, no token values) and
 // components.css (every core component) are also what brand libraries bundle
 // into their own styles.css, after their own tokens.
-import { readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as sass from 'sass';
@@ -15,8 +15,24 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const read = (file) => readFileSync(join(dist, file), 'utf8');
 
+// Third-party code bundled into dist/node_modules (simple-icons' marks) ships
+// without source maps: they map the whole package (megabytes) and debugging
+// it isn't this library's business
+function dropVendorMaps(dir) {
+  if (!existsSync(dir)) return;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) dropVendorMaps(path);
+    else if (entry.name.endsWith('.map')) rmSync(path);
+    else if (entry.name.endsWith('.js')) {
+      writeFileSync(path, readFileSync(path, 'utf8').replace(/\n?\/\/# sourceMappingURL=\S+\s*$/, '\n'));
+    }
+  }
+}
+
 if (process.argv.includes('--bundle')) {
   writeFileSync(join(dist, 'styles.css'), [read('tokens.css'), read('base.css'), read('components.css')].join('\n'));
+  dropVendorMaps(join(dist, 'node_modules'));
   console.log('Core: dist/styles.css (Plain tokens + base + components)');
 } else {
   rmSync(dist, { recursive: true, force: true });

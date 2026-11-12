@@ -1,0 +1,67 @@
+# Publishes the libraries to npm when main has a version that isn't there yet
+# (scripts/publish.mjs): build, test and the install smoke test first, then
+# core, then nineos, each tagged with a GitHub Release.
+#
+# npm Trusted Publishing: no npm token is stored anywhere. Each package on
+# npmjs.com trusts this repository and this workflow file, and npm adds
+# provenance (which commit and workflow built it) to every version.
+name: Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - packages/*/package.json
+  workflow_dispatch:
+
+permissions:
+  contents: write # tags and GitHub Releases
+  id-token: write # npm Trusted Publishing and provenance
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+
+      # Node 25+ no longer bundles Yarn
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22 --no-fund --no-audit
+
+      # Trusted Publishing needs npm 11.5.1 or later
+      - name: npm for Trusted Publishing
+        run: |
+          node -e "const [a, b, c] = process.argv[1].split('.').map(Number); process.exit(a > 11 || (a === 11 && (b > 5 || (b === 5 && c >= 1))) ? 0 : 1)" "$(npm --version)" \
+            || npm install -g npm@11 --no-fund --no-audit
+          npm --version
+
+      - name: Install
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Stands alone (license, imports, naming)
+        run: yarn boundary
+
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test
+
+      - name: Installs and builds from the packed tarballs
+        run: yarn smoke
+
+      - name: Publish what isn't on npm yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/publish.mjs
