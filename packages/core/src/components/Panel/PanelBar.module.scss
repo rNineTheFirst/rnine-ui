@@ -1,0 +1,39 @@
+@use "@rnine/core/scss" as r9;
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: r9.$space-1 r9.$space-3;
+  min-height: 24px;
+  @include r9.type(code);
+  font-size: r9.$font-size-sm;
+  color: r9.$fg-muted;
+}
+
+.prompt { color: r9.$accent-text; }
+.command { color: r9.$fg; }
+
+.controls {
+  margin-left: auto;
+  display: inline-flex;
+  gap: r9.$space-5;
+}
+
+.control {
+  border: 0;
+  background: none;
+  padding: 2px 0;
+  cursor: pointer;
+  font: inherit;
+  color: r9.$fg-muted;
+
+  &:hover { color: r9.$accent-text; }
+  &:focus-visible { @include r9.focus-ring(2px); }
+  &[aria-pressed="true"] { color: r9.$accent-text; }
+}
+
+// A phone has no room to grow into
+.maximize {
+  @include r9.down(md) { display: none; }
+}

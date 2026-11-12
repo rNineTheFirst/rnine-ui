@@ -1,0 +1,17 @@
+@use "@rnine/core/scss" as r9;
+
+.sys {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+  font-variant-numeric: tabular-nums;
+}
+
+.pulse {
+  width: 6px;
+  height: 6px;
+  background: r9.$signal;
+  @include r9.motion-safe { animation: r9.keyframes(pulse) 2.4s ease-in-out infinite; }
+}

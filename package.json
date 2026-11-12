@@ -1,0 +1,18 @@
+{
+  "name": "rnine-ui",
+  "private": true,
+  "description": "Open-source design system libraries: @rnine/core (the shared core and the Plain look) and @rnine/nineos (NineOS), each a full component library with the same exports",
+  "license": "MIT",
+  "packageManager": "yarn@1.22.22",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspace @rnine/core build && yarn workspace @rnine/nineos build",
+    "lint": "yarn workspace @rnine/core lint && yarn workspace @rnine/nineos lint",
+    "test": "yarn workspace @rnine/core test && yarn workspace @rnine/nineos test",
+    "boundary": "node scripts/boundary.mjs",
+    "storybook": "yarn workspace @rnine/nineos storybook",
+    "build-storybook": "yarn workspace @rnine/nineos build-storybook"
+  }
+}

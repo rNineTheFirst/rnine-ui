@@ -1,0 +1,96 @@
+{
+  "$description": "Plain primitive colors: neutral grays and one blue accent. Components use the mood roles in themes/*.json, never these.",
+  "color": {
+    "$type": "color",
+    "gray": {
+      "0": {
+        "$value": "#FFFFFF"
+      },
+      "10": {
+        "$value": "#F4F4F6"
+      },
+      "25": {
+        "$value": "#F5F5F7"
+      },
+      "50": {
+        "$value": "#EDEDF1"
+      },
+      "100": {
+        "$value": "#DBDBE1"
+      },
+      "300": {
+        "$value": "#A2A2AD"
+      },
+      "500": {
+        "$value": "#6E6F7A"
+      },
+      "600": {
+        "$value": "#4E4F57"
+      },
+      "800": {
+        "$value": "#26262C"
+      },
+      "850": {
+        "$value": "#18181C"
+      },
+      "900": {
+        "$value": "#111114"
+      },
+      "950": {
+        "$value": "#0A0A0C"
+      },
+      "975": {
+        "$value": "#050506"
+      }
+    },
+    "blue": {
+      "300": {
+        "$value": "#7CB4FF"
+      },
+      "400": {
+        "$value": "#4D94FF"
+      },
+      "600": {
+        "$value": "#2563EB"
+      },
+      "700": {
+        "$value": "#1D4ED8"
+      }
+    },
+    "cyan": {
+      "300": {
+        "$value": "#1FE0FF"
+      },
+      "500": {
+        "$value": "#0098C7"
+      },
+      "700": {
+        "$value": "#00779C"
+      }
+    },
+    "green": {
+      "400": {
+        "$value": "#3DDC84"
+      },
+      "700": {
+        "$value": "#14804A"
+      }
+    },
+    "amber": {
+      "400": {
+        "$value": "#FFB020"
+      },
+      "700": {
+        "$value": "#9A5B00"
+      }
+    },
+    "red": {
+      "400": {
+        "$value": "#FF6B4A"
+      },
+      "700": {
+        "$value": "#C2361A"
+      }
+    }
+  }
+}

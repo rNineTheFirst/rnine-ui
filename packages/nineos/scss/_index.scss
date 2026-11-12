@@ -1,0 +1,6 @@
+// NineOS for SCSS: the shared API (tokens, corner, ornament, texture, ...)
+// plus NineOS's own mixins. Outputs no CSS:
+//
+//   @use "@rnine/nineos/scss" as r9;
+@forward "@rnine/core/scss";
+@forward "glitch";

@@ -1,0 +1,89 @@
+@use "@rnine/core/scss" as r9;
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-3 r9.$space-6;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+}
+
+.total {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.perPage {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+
+  select {
+    @include r9.type(caption);
+    color: r9.$fg;
+    background: r9.$surface;
+    border: 0;
+    @include r9.hairline(r9.$line-strong);
+    padding: r9.$space-1 r9.$space-2;
+    cursor: pointer;
+
+    &:focus-visible { @include r9.focus-ring(2px); }
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-1;
+  margin-left: auto;
+}
+
+.pages {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-1;
+}
+
+%btn {
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 r9.$space-2;
+  border: 0;
+  background: transparent;
+  color: r9.$fg;
+  cursor: pointer;
+  @include r9.type(code);
+  font-variant-numeric: tabular-nums;
+
+  &:hover:not(:disabled) { color: r9.$accent-text; }
+  &:focus-visible { @include r9.focus-ring(0); }
+}
+
+.page { @extend %btn; }
+
+.step {
+  @extend %btn;
+
+  svg { width: 18px; height: 18px; }
+  &:disabled { color: r9.$fg-subtle; cursor: not-allowed; }
+}
+
+// The current page: accent block
+.current {
+  background: r9.$accent;
+  color: r9.$on-accent;
+  @include r9.corner(4px);
+
+  &:hover:not(:disabled) { color: r9.$on-accent; }
+}
+
+.gap {
+  min-width: 24px;
+  text-align: center;
+}

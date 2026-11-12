@@ -1,0 +1,19 @@
+@use "@rnine/core/scss" as r9;
+
+@each $role in display, h1, h2, h3, h4, body-lg, body, body-sm, label, code, caption {
+  .#{$role} {
+    margin: 0;
+    @include r9.type($role);
+  }
+}
+
+.display,
+.h1,
+.h2,
+.h3,
+.h4 { text-wrap: balance; }
+
+.muted { color: r9.$fg-muted; }
+.accent { color: r9.$accent-text; }
+.signal { color: r9.$signal-text; }
+.measure { max-width: r9.$container-text; }

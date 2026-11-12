@@ -1,0 +1,24 @@
+// NineOS's own global CSS, after core's base.css in styles.css: the keyframes
+// only NineOS uses (the slice glitch, scanline drift, the light band).
+@keyframes r9-slice-a {
+  0% { opacity: 1; clip-path: inset(12% 0 68% 0); transform: translateX(-4%); }
+  25% { clip-path: inset(52% 0 26% 0); transform: translateX(3%); }
+  50% { clip-path: inset(30% 0 52% 0); transform: translateX(-2%); }
+  75% { clip-path: inset(78% 0 6% 0); transform: translateX(2%); }
+  100% { opacity: 0; }
+}
+
+@keyframes r9-slice-b {
+  0% { opacity: 1; clip-path: inset(62% 0 14% 0); transform: translateX(4%); }
+  33% { clip-path: inset(18% 0 62% 0); transform: translateX(-3%); }
+  66% { clip-path: inset(40% 0 42% 0); transform: translateX(2%); }
+  100% { opacity: 0; }
+}
+
+@keyframes r9-drift { to { transform: translateY(3px); } }
+
+// Moved with transform, not top: no layout work, no layout shift
+@keyframes r9-band {
+  0% { transform: translateY(-140px); }
+  60%, 100% { transform: translateY(110vh); }
+}

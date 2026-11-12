@@ -1,0 +1,39 @@
+@use "@rnine/core/scss" as r9;
+
+.avatar {
+  --size: 40px;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--size);
+  height: var(--size);
+  border-radius: r9.$radius-full;
+  overflow: hidden;
+  font-family: r9.$font-display;
+  font-weight: r9.$font-weight-semibold;
+  font-size: calc(var(--size) * 0.38);
+  line-height: 1;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+}
+
+.sm { --size: 28px; }
+.md { --size: 40px; }
+.lg { --size: 64px; }
+
+.initials {
+  background: r9.$accent;
+  color: r9.$on-accent;
+}
+
+// A thin accent ring, separated from the photo by the page color
+.photo {
+  overflow: visible;
+  box-shadow: 0 0 0 2px r9.$bg, 0 0 0 3px r9.$accent;
+}

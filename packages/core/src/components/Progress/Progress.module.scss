@@ -1,0 +1,52 @@
+@use "@rnine/core/scss" as r9;
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: r9.$space-4;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+}
+
+.value { font-variant-numeric: tabular-nums; color: r9.$fg; }
+
+.bar {
+  position: relative;
+  height: 10px;
+  overflow: hidden;
+  background: r9.$line;
+  @include r9.corner(4px, br);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background: r9.$accent;
+  transition: width r9.$duration-slow r9.$easing-out;
+}
+
+.indeterminate .fill {
+  width: 35%;
+  @include r9.motion-safe { animation: slide 1.4s r9.$easing-in-out infinite; }
+}
+
+@keyframes slide {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill { transition: none; }
+  // Still clearly "working" without movement
+  .indeterminate .fill {
+    width: 100%;
+    background: repeating-linear-gradient(-45deg, #{r9.$accent} 0 6px, transparent 6px 12px);
+  }
+}

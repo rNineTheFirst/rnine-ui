@@ -1,0 +1,98 @@
+@use "@rnine/core/scss" as r9;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+  min-width: 0;
+}
+
+// The field's accent mark sits before its label
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+  @include r9.type(label);
+  color: r9.$fg;
+
+  &::before { @include r9.ornament(6px); }
+}
+
+.hidden { @include r9.visually-hidden; }
+
+.required {
+  margin-left: auto;
+  @include r9.type(caption);
+  text-transform: none;
+  color: r9.$fg-muted;
+}
+
+.control {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  @include r9.type(body);
+  color: r9.$fg;
+  background: r9.$surface;
+  padding: r9.$space-3 r9.$space-4;
+  min-height: 44px;
+  @include r9.hairline(r9.$line-strong);
+  @include r9.corner(sm);
+  caret-color: r9.$accent;
+  transition: box-shadow r9.$duration-fast;
+
+  &::placeholder { color: r9.$fg-subtle; }
+  &:hover:not(:disabled) { @include r9.hairline(r9.$fg-muted); }
+
+  // Clip-path would cut an outline: focus is drawn inside, in accent
+  &:focus-visible {
+    outline: 0;
+    box-shadow: inset 0 0 0 2px r9.$accent;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: r9.$fg-muted;
+    background: color-mix(in srgb, #{r9.$surface} 50%, #{r9.$bg});
+  }
+}
+
+.area {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.selectWrap {
+  position: relative;
+  display: block;
+
+  // Chevron
+  &::after {
+    content: "";
+    position: absolute;
+    right: r9.$space-4;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid r9.$fg-muted;
+    border-bottom: 1.5px solid r9.$fg-muted;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+}
+
+.select {
+  appearance: none;
+  padding-right: r9.$space-10;
+  cursor: pointer;
+}
+
+.hint,
+.error { @include r9.type(caption); }
+
+.hint { color: r9.$fg-muted; }
+.error { color: r9.$danger; }
+
+.invalid .control { @include r9.hairline(r9.$danger); }
+.invalid .control:focus-visible { box-shadow: inset 0 0 0 2px r9.$danger; }

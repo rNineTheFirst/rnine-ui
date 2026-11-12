@@ -1,0 +1,40 @@
+@use "@rnine/core/scss" as r9;
+
+.frame {
+  perspective: 900px;
+  min-width: 0;
+  display: flex;
+}
+
+.card {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  padding: r9.$space-10 r9.$space-5 r9.$space-5;
+  background:
+    radial-gradient(260px circle at var(--mx, 50%) var(--my, -40%), color-mix(in srgb, #{r9.$signal} 13%, transparent), transparent 70%),
+    r9.$surface;
+  @include r9.corner(lg, tr);
+  @include r9.hairline;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform r9.$duration-slow r9.$easing-out, box-shadow r9.$duration-base;
+
+  // The accent mark: the cut corner, lit
+  &::after { @include r9.corner-ornament; }
+
+  &[data-live] { transition: transform 90ms linear, box-shadow r9.$duration-base; }
+  &:hover { @include r9.hairline(color-mix(in srgb, #{r9.$accent} 45%, #{r9.$line})); }
+}
+
+.index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include r9.type(caption);
+  padding: r9.$space-1 r9.$space-3;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+}

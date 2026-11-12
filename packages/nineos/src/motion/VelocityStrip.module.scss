@@ -1,0 +1,35 @@
+@use "@rnine/nineos/scss" as r9;
+
+.strip {
+  // Positioned, so the screen-reader text stays inside instead of at the track's far end
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-block: r9.$space-4;
+  border-block: r9.$border-hair solid r9.$line;
+}
+
+.track {
+  display: inline-flex;
+  will-change: transform;
+
+  span {
+    font: r9.$font-weight-medium 0.9375rem / 1 r9.$font-display;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: r9.$fg-muted;
+  }
+
+  // Separators: the strip's magenta mark
+  i {
+    font-style: normal;
+    color: r9.$accent-text;
+    padding-inline: 1.1em;
+  }
+}
+
+.sr {
+  @include r9.visually-hidden;
+  top: 0;
+  left: 0;
+}

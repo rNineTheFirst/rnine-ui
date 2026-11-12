@@ -1,0 +1,78 @@
+// Base element styles and the shared keyframes every library has. Compiled
+// into dist/base.css (no token values); a library's styles.css puts it after its tokens.
+@use "index" as r9;
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: r9.$bg;
+  color: r9.$fg;
+  @include r9.type(body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: r9.$font-display;
+  text-wrap: balance;
+}
+
+p { margin: 0; }
+img, svg, video, canvas { max-width: 100%; }
+code, kbd, samp, pre { font-family: r9.$font-mono; }
+
+a { color: inherit; }
+
+::selection { background: r9.$selection; }
+
+:focus-visible { @include r9.focus-ring; }
+
+// ---- Shared keyframes (prefixed r9-) ---------------------------------------
+
+@keyframes r9-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes r9-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes r9-blink { 50% { opacity: 0; } }
+
+@keyframes r9-sheen {
+  0% { background-position: 120% 0; }
+  45%, 100% { background-position: -30% 0; }
+}
+
+// The viewer's own Still (MotionToggle) stops it the same way
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+// Everything stops when the system asks for less motion
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

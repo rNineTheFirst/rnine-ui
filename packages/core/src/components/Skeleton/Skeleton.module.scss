@@ -1,0 +1,35 @@
+@use "@rnine/core/scss" as r9;
+
+%shimmer {
+  display: block;
+  background: linear-gradient(100deg, #{r9.$line} 30%, color-mix(in srgb, #{r9.$accent} 18%, #{r9.$line}) 50%, #{r9.$line} 70%);
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  @include r9.motion-safe { animation: r9.keyframes(sheen) 1.8s linear infinite; }
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+  width: 100%;
+}
+
+.line {
+  @extend %shimmer;
+  height: 0.8em;
+}
+
+.bone { @extend %shimmer; }
+
+.block {
+  width: 100%;
+  height: 10rem;
+  @include r9.corner(lg, tr);
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: r9.$radius-full;
+}

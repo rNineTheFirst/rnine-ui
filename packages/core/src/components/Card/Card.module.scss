@@ -1,0 +1,42 @@
+@use "@rnine/core/scss" as r9;
+
+// Static card: same shape as the interactive one, without pointer effects
+.card {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  padding: r9.$space-10 r9.$space-5 r9.$space-5;
+  background: r9.$surface;
+  @include r9.corner(lg, tr);
+  @include r9.hairline;
+
+  &::after { @include r9.corner-ornament; }
+}
+
+.index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include r9.type(caption);
+  padding: r9.$space-1 r9.$space-3;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+}
+
+// Whole-card link: an invisible link covers the card; inner links stay clickable above it
+.cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  &:focus-visible { outline: 2px solid r9.$accent; outline-offset: -2px; }
+}
+
+.linked {
+  cursor: pointer;
+
+  a:not(.cover),
+  button { position: relative; z-index: 2; }
+}

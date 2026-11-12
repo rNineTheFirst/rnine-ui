@@ -1,0 +1,53 @@
+{
+  "corner": {
+    "$type": "dimension",
+    "$description": "Corner sizes. Plain rounds its corners (shape.round) and cuts none.",
+    "sm": {
+      "$value": "6px",
+      "$description": "Chips, small buttons, inputs"
+    },
+    "md": {
+      "$value": "10px",
+      "$description": "Buttons, terminals, panels"
+    },
+    "lg": {
+      "$value": "18px",
+      "$description": "Cards"
+    }
+  },
+  "shape": {
+    "$type": "number",
+    "$description": "How corner() draws a corner: the cut (a 45° chamfer) and the rounding, each a multiple of the corner size.",
+    "cut": {
+      "$value": 0,
+      "$description": "Plain: no cut corners"
+    },
+    "round": {
+      "$value": 0.6,
+      "$description": "Plain: corners round to 0.6x their size"
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "none": {
+      "$value": "0px"
+    },
+    "xs": {
+      "$value": "2px",
+      "$description": "Only for tiny things a corner cut can't fit: checkboxes, dots"
+    },
+    "full": {
+      "$value": "999px",
+      "$description": "Status dots and avatars only"
+    }
+  },
+  "border": {
+    "$type": "dimension",
+    "hair": {
+      "$value": "1px"
+    },
+    "strong": {
+      "$value": "2px"
+    }
+  }
+}

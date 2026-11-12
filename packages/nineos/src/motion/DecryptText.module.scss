@@ -1,0 +1,40 @@
+@use "@rnine/nineos/scss" as r9;
+
+// The real text always does the layout. While the effect runs it turns
+// transparent, and each character is drawn on the overlay at the measured
+// position of its letter. Nothing in the overlay flows or wraps, so it can't
+// differ from the text (balanced headings included) or spill out of it.
+.text {
+  position: relative;
+}
+
+.running {
+  color: transparent;
+}
+
+.sr {
+  @include r9.visually-hidden;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.char,
+.glyph {
+  position: absolute;
+  display: block;
+  text-align: center;
+  white-space: pre;
+}
+
+// Resolved letters use the element's own color (muted text stays muted)
+.char {
+  color: inherit;
+}
+
+.glyph {
+  color: r9.$accent-text;
+}

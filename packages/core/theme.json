@@ -1,0 +1,8 @@
+{
+  "name": "Plain",
+  "moods": {
+    "light": { "id": "light", "label": "Light", "description": "Neutral grays on white, one blue accent." },
+    "dark": { "id": "dark", "label": "Dark", "description": "The same roles on near-black." }
+  },
+  "auto": "system"
+}

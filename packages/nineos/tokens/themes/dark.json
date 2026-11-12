@@ -1,0 +1,81 @@
+{
+  "$description": "Cipher: the dark mood. Near-black, neon magenta, scanlines; the same layout and type as Clear.",
+  "theme": {
+    "$type": "color",
+    "bg": {
+      "$value": "{color.gray.975}"
+    },
+    "surface": {
+      "$value": "{color.gray.900}"
+    },
+    "surface-raised": {
+      "$value": "{color.gray.850}"
+    },
+    "glass": {
+      "$value": "#050506C7"
+    },
+    "fg": {
+      "$value": "{color.gray.10}"
+    },
+    "fg-muted": {
+      "$value": "{color.gray.300}"
+    },
+    "fg-subtle": {
+      "$value": "{color.gray.500}"
+    },
+    "line": {
+      "$value": "{color.gray.800}"
+    },
+    "line-strong": {
+      "$value": "{color.gray.600}"
+    },
+    "accent": {
+      "$value": "{color.accent.400}"
+    },
+    "accent-hover": {
+      "$value": "{color.accent.300}"
+    },
+    "accent-text": {
+      "$value": "{color.accent.300}"
+    },
+    "on-accent": {
+      "$value": "{color.gray.975}"
+    },
+    "accent-soft": {
+      "$value": "#FF1F9A29"
+    },
+    "signal": {
+      "$value": "{color.signal.300}"
+    },
+    "signal-text": {
+      "$value": "{color.signal.300}"
+    },
+    "inverse-bg": {
+      "$value": "{color.gray.10}"
+    },
+    "inverse-fg": {
+      "$value": "{color.gray.975}"
+    },
+    "success": {
+      "$value": "{color.green.400}"
+    },
+    "warning": {
+      "$value": "{color.amber.400}"
+    },
+    "danger": {
+      "$value": "{color.red.400}"
+    },
+    "dot": {
+      "$value": "#F4F4F621"
+    },
+    "scan": {
+      "$value": "#FFFFFF08"
+    },
+    "sheen": {
+      "$value": "#1FE0FF0D"
+    },
+    "selection": {
+      "$value": "#FF1F9A4D"
+    }
+  }
+}

@@ -1,0 +1,89 @@
+@use "@rnine/core/scss" as r9;
+
+.viewport {
+  position: fixed;
+  z-index: r9.$z-toast;
+  right: max(#{r9.$container-gutter}, env(safe-area-inset-right, 0px));
+  bottom: calc(#{r9.$space-4} + env(safe-area-inset-bottom, 0px));
+  left: max(#{r9.$container-gutter}, env(safe-area-inset-left, 0px));
+  pointer-events: none;
+
+  @include r9.up(sm) { left: auto; width: 24rem; }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+}
+
+.toast {
+  --tone: #{r9.$signal-text};
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: r9.$space-3;
+  padding: r9.$space-4;
+  overflow: hidden;
+  background: r9.$surface-raised;
+  @include r9.hairline(r9.$line-strong);
+  @include r9.corner(md);
+  @include r9.motion-safe { animation: r9.keyframes(reveal) r9.$duration-base r9.$easing-out; }
+}
+
+.success { --tone: #{r9.$success}; }
+.warning { --tone: #{r9.$warning}; }
+.error { --tone: #{r9.$danger}; }
+
+.icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--tone);
+}
+
+.message {
+  flex: 1;
+  margin: 0;
+  @include r9.type(body-sm);
+  color: r9.$fg;
+}
+
+.close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: -4px -6px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg-muted;
+  cursor: pointer;
+
+  svg { width: 16px; height: 16px; }
+  &:hover { color: r9.$accent-text; }
+  &:focus-visible { @include r9.focus-ring(0); }
+}
+
+// Time left: a accent line that runs out (the toast's accent element).
+// Without motion it stays full; the toast still closes on time.
+.timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: r9.$accent;
+  transform-origin: left;
+  @include r9.motion-safe { animation: run-out linear forwards; }
+}
+
+.paused .timer { animation-play-state: paused; }
+
+@keyframes run-out { to { transform: scaleX(0); } }

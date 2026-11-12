@@ -1,0 +1,108 @@
+@use "@rnine/core/scss" as r9;
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: r9.$space-4;
+  align-items: baseline;
+  padding: r9.$space-4 r9.$space-2;
+  border-top: r9.$border-hair solid r9.$line;
+  transition: background r9.$duration-fast r9.$easing-out;
+
+  &:first-child { border-top: 0; }
+  &:hover { background: color-mix(in srgb, #{r9.$fg} 3%, transparent); }
+  // The title is the focusable element; the ring goes around the whole row
+  &:has(.link:focus-visible) { @include r9.focus-ring(2px); }
+
+  @include r9.down(sm) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: r9.$space-2;
+  }
+}
+
+.noLead { grid-template-columns: minmax(0, 1fr); }
+
+.index {
+  justify-self: start;
+  @include r9.type(caption);
+  padding: 3px r9.$space-2;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+}
+
+.meta {
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+  font-variant-numeric: tabular-nums;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+  min-width: 0;
+}
+
+.title { @include r9.type(h4); margin: 0; }
+
+.link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: r9.$space-2;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+
+  // Stretch the hit area over the whole row
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  &:focus-visible { outline: none; }
+
+  .row:hover &,
+  &:focus-visible { color: r9.$accent-text; }
+}
+
+.arrow {
+  @include r9.type(code);
+  color: r9.$accent-text;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity r9.$duration-fast, transform r9.$duration-base r9.$easing-out;
+
+  .row:hover &,
+  .link:focus-visible & { opacity: 1; transform: none; }
+
+  // Touch screens have no hover: always show where the row leads
+  @media (hover: none) { opacity: 1; transform: none; }
+}
+
+.description {
+  margin: 0;
+  @include r9.type(body-sm);
+  color: r9.$fg-muted;
+}
+
+.extra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: r9.$space-2;
+}

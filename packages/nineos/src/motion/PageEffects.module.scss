@@ -1,0 +1,39 @@
+@use "@rnine/nineos/scss" as r9;
+
+.scan {
+  position: fixed;
+  inset: 0;
+  z-index: r9.$z-fx;
+  pointer-events: none;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -4px 0 0;
+    @include r9.texture(lines);
+    @include r9.motion-safe { animation: r9.keyframes(drift) 9s linear infinite; }
+  }
+
+  // A soft signal band passes down the screen
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 120px;
+    transform: translateY(-140px);
+    background: linear-gradient(180deg, transparent, #{r9.$scan}, transparent);
+    @include r9.motion-safe { animation: r9.keyframes(band) 7s r9.$easing-out infinite; }
+  }
+}
+
+.sparks {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: r9.$z-fx;
+  pointer-events: none;
+}

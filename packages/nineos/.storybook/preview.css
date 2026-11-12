@@ -1,0 +1,3 @@
+/* Stories sit on the NineOS page background in both moods */
+html, body { background: var(--r9-bg); color: var(--r9-fg); }
+.docs-story { background: var(--r9-bg) !important; }

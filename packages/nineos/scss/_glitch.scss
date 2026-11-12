@@ -1,0 +1,23 @@
+// NineOS-only mixins. Output nothing until included.
+@use "@rnine/core/scss" as r9;
+
+/// Slice glitch on text: give the element data-text="<its text>" and add the
+/// class you pass in $trigger (default .is-glitching) to play it once.
+/// For use inside a CSS module (see keyframes()).
+@mixin glitch-text($trigger: ".is-glitching", $duration: r9.$duration-slow) {
+  position: relative;
+  &::before,
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+  &::before { color: r9.$signal; }
+  &::after { color: r9.$accent; }
+  @include r9.motion-safe {
+    &#{$trigger}::before { animation: r9.keyframes(slice-a) $duration steps(1) 1; }
+    &#{$trigger}::after { animation: r9.keyframes(slice-b) $duration steps(1) 1; }
+  }
+}

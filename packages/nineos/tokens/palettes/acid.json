@@ -1,0 +1,65 @@
+{
+  "$description": "NineOS Acid palette: overrides the accent and signal primitives and the tints made from them. Picked with data-palette=\"acid\".",
+  "label": "Acid",
+  "description": "Lime accent, violet signal.",
+  "color": {
+    "$type": "color",
+    "accent": {
+      "300": {
+        "$value": "#C4FB56"
+      },
+      "400": {
+        "$value": "#ABF910"
+      },
+      "500": {
+        "$value": "#649404"
+      },
+      "600": {
+        "$value": "#567F03"
+      },
+      "700": {
+        "$value": "#4D7103"
+      },
+      "800": {
+        "$value": "#3C5902"
+      }
+    },
+    "signal": {
+      "300": {
+        "$value": "#BC8CFC"
+      },
+      "500": {
+        "$value": "#AB6EFB"
+      },
+      "700": {
+        "$value": "#8831FA"
+      }
+    }
+  },
+  "themes": {
+    "light": {
+      "$type": "color",
+      "accent-soft": {
+        "$value": "#567F031F"
+      },
+      "selection": {
+        "$value": "#567F0333"
+      },
+      "sheen": {
+        "$value": "#AB6EFB12"
+      }
+    },
+    "dark": {
+      "$type": "color",
+      "accent-soft": {
+        "$value": "#ABF91029"
+      },
+      "selection": {
+        "$value": "#ABF9104D"
+      },
+      "sheen": {
+        "$value": "#BC8CFC0D"
+      }
+    }
+  }
+}

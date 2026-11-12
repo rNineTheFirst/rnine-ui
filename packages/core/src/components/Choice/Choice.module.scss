@@ -1,0 +1,137 @@
+@use "@rnine/core/scss" as r9;
+
+.choice {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: r9.$space-3;
+  cursor: pointer;
+  min-height: 24px;
+  @include r9.type(body-sm);
+
+  &:has(.input:disabled) { cursor: not-allowed; color: r9.$fg-muted; }
+}
+
+// The real input stays in the page for keyboard and screen readers
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+
+.text { display: flex; flex-direction: column; gap: 2px; padding-top: 1px; }
+.label { color: inherit; }
+.description { @include r9.type(caption); color: r9.$fg-muted; }
+
+// ---- Checkbox -------------------------------------------------------------
+
+.box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  color: transparent;
+  border-radius: r9.$radius-xs;
+  @include r9.hairline(r9.$line-strong);
+  transition: background r9.$duration-fast, color r9.$duration-fast, box-shadow r9.$duration-fast;
+
+  svg { width: 14px; height: 14px; }
+}
+
+.choice:hover .input:not(:disabled) + .box { @include r9.hairline(r9.$fg-muted); }
+.input:checked + .box { background: r9.$accent; color: r9.$on-accent; box-shadow: none; }
+.input:focus-visible + .box { @include r9.focus-ring(2px); }
+
+// ---- Switch ---------------------------------------------------------------
+
+.track {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 24px;
+  background: r9.$line;
+  @include r9.corner(4px);
+  transition: background r9.$duration-fast;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 16px;
+    height: 16px;
+    background: r9.$fg;
+    transition: transform r9.$duration-base r9.$easing-out, background r9.$duration-fast;
+  }
+}
+
+.input:checked + .track { background: r9.$accent; }
+.input:checked + .track::after { transform: translateX(20px); background: r9.$on-accent; }
+// Clip-path cuts outlines on the track: ring the label text instead
+.input:focus-visible + .track + .text .label { outline: 2px solid r9.$accent; outline-offset: 3px; }
+.input:disabled + .track { opacity: 0.5; }
+
+// ---- Radio ----------------------------------------------------------------
+
+.radio {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: r9.$radius-full;
+  @include r9.hairline(r9.$line-strong);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border-radius: r9.$radius-full;
+    background: r9.$accent;
+    transform: scale(0);
+    transition: transform r9.$duration-fast r9.$easing-out;
+  }
+}
+
+.input:checked + .radio { @include r9.hairline(r9.$accent); }
+.input:checked + .radio::after { transform: scale(1); }
+.input:focus-visible + .radio { @include r9.focus-ring(2px); }
+
+// ---- Group ----------------------------------------------------------------
+
+.group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.legend {
+  padding: 0;
+  margin-bottom: r9.$space-3;
+  @include r9.type(label);
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+
+  &::before { @include r9.ornament(6px); }
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+}
+
+.inline .options { flex-direction: row; flex-wrap: wrap; gap: r9.$space-3 r9.$space-6; }
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .track::after,
+  .box,
+  .radio::after { transition: none; }
+}

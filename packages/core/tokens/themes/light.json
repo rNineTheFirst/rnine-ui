@@ -1,0 +1,106 @@
+{
+  "$description": "Light: Plain’s light mood. Neutral grays, one blue accent.",
+  "theme": {
+    "$type": "color",
+    "bg": {
+      "$value": "{color.gray.0}",
+      "$description": "Page background"
+    },
+    "surface": {
+      "$value": "{color.gray.25}",
+      "$description": "Cards, panels, inputs"
+    },
+    "surface-raised": {
+      "$value": "{color.gray.0}",
+      "$description": "Menus, popovers, toasts"
+    },
+    "glass": {
+      "$value": "#FFFFFFD1",
+      "$description": "Translucent surface for UI floating over the backdrop (panels, dock, HUD), with a backdrop blur"
+    },
+    "fg": {
+      "$value": "{color.gray.950}",
+      "$description": "Main text and icons"
+    },
+    "fg-muted": {
+      "$value": "{color.gray.600}",
+      "$description": "Secondary text"
+    },
+    "fg-subtle": {
+      "$value": "{color.gray.500}",
+      "$description": "Placeholders, disabled text (large text only)"
+    },
+    "line": {
+      "$value": "{color.gray.100}",
+      "$description": "Hairline borders and dividers"
+    },
+    "line-strong": {
+      "$value": "{color.gray.300}",
+      "$description": "Input borders, hovered hairlines"
+    },
+    "accent": {
+      "$value": "{color.blue.600}",
+      "$description": "primary actions, selected states"
+    },
+    "accent-hover": {
+      "$value": "{color.blue.700}",
+      "$description": "Hovered and pressed accent fills"
+    },
+    "accent-text": {
+      "$value": "{color.blue.700}",
+      "$description": "Accent text and icons on bg or surface"
+    },
+    "on-accent": {
+      "$value": "{color.gray.0}",
+      "$description": "Text on accent fills"
+    },
+    "accent-soft": {
+      "$value": "#2563EB1F",
+      "$description": "Tinted backgrounds, focus glow"
+    },
+    "signal": {
+      "$value": "{color.cyan.500}",
+      "$description": "Live states, data. live states, cursor light, data. Never a second brand color"
+    },
+    "signal-text": {
+      "$value": "{color.cyan.700}",
+      "$description": "Signal text on bg or surface"
+    },
+    "inverse-bg": {
+      "$value": "{color.gray.950}",
+      "$description": "Index chips, inverted tags"
+    },
+    "inverse-fg": {
+      "$value": "{color.gray.0}",
+      "$description": "Text on inverse-bg"
+    },
+    "success": {
+      "$value": "{color.green.700}",
+      "$description": "Success status text and icons. Always with an icon or a word, never color alone"
+    },
+    "warning": {
+      "$value": "{color.amber.700}",
+      "$description": "Warning status text and icons. Always with an icon or a word"
+    },
+    "danger": {
+      "$value": "{color.red.700}",
+      "$description": "Errors and destructive actions. Always with an icon or a word"
+    },
+    "dot": {
+      "$value": "#0A0A0C29",
+      "$description": "Dot field and dotted grid"
+    },
+    "scan": {
+      "$value": "#00000000",
+      "$description": "Scanlines"
+    },
+    "sheen": {
+      "$value": "#0A0A0C0A",
+      "$description": "Light band that crosses heroes"
+    },
+    "selection": {
+      "$value": "#2563EB33",
+      "$description": "Text selection"
+    }
+  }
+}

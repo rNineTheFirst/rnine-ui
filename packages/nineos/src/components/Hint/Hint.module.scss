@@ -1,0 +1,54 @@
+@use "@rnine/nineos/scss" as r9;
+
+.hint {
+  position: fixed;
+  z-index: r9.$z-toast;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 32px));
+  display: flex;
+  align-items: flex-start;
+  gap: r9.$space-4;
+  padding: r9.$space-3 r9.$space-4;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+  @include r9.type(body-sm);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.28);
+  @include r9.motion-safe { animation: r9.keyframes(reveal) r9.$duration-base r9.$easing-out; }
+
+  // The pointer tick: the hint's magenta element
+  &::after {
+    content: "";
+    position: absolute;
+    left: var(--tick-x, 24px);
+    width: 10px;
+    height: 10px;
+    background: r9.$accent;
+  }
+}
+
+.top::after { top: 100%; }
+.bottom::after { bottom: 100%; }
+
+.body {
+  min-width: 0;
+
+  p { margin: 0; }
+  strong { font-weight: r9.$font-weight-semibold; }
+  code { font-family: r9.$font-mono; }
+}
+
+.dismiss {
+  flex: none;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  @include r9.type(caption);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0.8;
+
+  &:hover { opacity: 1; }
+  &:focus-visible { outline: 2px solid r9.$accent; outline-offset: 2px; }
+}

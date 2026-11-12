@@ -1,0 +1,9 @@
+@use "@rnine/core/scss" as r9;
+
+.magnet {
+  display: inline-flex;
+  transition: transform r9.$duration-slow r9.$easing-out;
+  will-change: transform;
+
+  &[data-live] { transition: transform 120ms linear; }
+}

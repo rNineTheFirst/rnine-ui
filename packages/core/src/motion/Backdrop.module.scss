@@ -1,0 +1,15 @@
+@use "@rnine/core/scss" as r9;
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  @include r9.texture(field);
+}
+
+// Page background: behind everything, never blocks scrolling
+.fixed {
+  position: fixed;
+  z-index: 0;
+}

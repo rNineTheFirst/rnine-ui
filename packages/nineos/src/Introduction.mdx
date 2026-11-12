@@ -1,0 +1,63 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# @rnine/nineos
+
+NineOS: React components, SCSS modules and the NineOS motion layer, built on `@rnine/core`.
+Every story here is a NineOS component, or a core component in the NineOS look.
+
+Use the **mood** button in the toolbar (paintbrush) to switch every story between **Clear** and **Cipher**.
+The **Accessibility** tab checks each story against WCAG.
+
+## Add it to an app
+
+```json
+// package.json
+"dependencies": { "@rnine/nineos": "0.1.0" }
+```
+
+```tsx
+// main.tsx, once
+import '@rnine/nineos/fonts.css';
+import '@rnine/nineos/styles.css';
+import { ThemeProvider } from '@rnine/nineos';
+import markSvg from './mark.svg?raw';
+
+createRoot(root).render(
+  // mark: your logo for Mark (default: a placeholder frame)
+  <ThemeProvider mark={{ full: markSvg }}>
+    <App />
+  </ThemeProvider>,
+);
+```
+
+## Use components
+
+```tsx
+import { Button, Card, Section, TextField } from '@rnine/nineos';
+import { Backdrop, Magnet, TextReveal } from '@rnine/nineos/motion';
+
+<Magnet>
+  <Button iconEnd={<ArrowRight />}>View work</Button>
+</Magnet>
+```
+
+Every library built on `@rnine/core` exports the same names with the same props, so an
+app can switch libraries by changing the import. NineOS adds its shell (`CommandLine`,
+`PanelStage`, `Dock`, ...) on top.
+
+Custom pieces in an app use the same tokens:
+
+```scss
+@use "@rnine/nineos/scss" as r9;
+
+.hero { @include r9.type(display); @include r9.corner(md); color: r9.$fg; }
+```
+
+## Rules every component follows
+
+- **Magenta rule:** every component has at least one magenta element (its accent element). Each component's docs name it.
+- **Two moods:** everything works in Clear and Cipher with no changes.
+- **Motion is optional:** effects stop with the system's reduced-motion setting, and content never waits on them.
+- **Accessible by default:** visible labels, keyboard support, 2px magenta focus rings, AA contrast.

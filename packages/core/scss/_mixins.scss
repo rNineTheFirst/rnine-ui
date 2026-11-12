@@ -1,0 +1,198 @@
+// The shared mixins: every library in the family has these names, each drawn
+// from its own tokens. Output nothing until included.
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+@use "sass:string";
+@use "../dist/variables" as t;
+
+// ---- Layout ----------------------------------------------------------------
+
+/// Mobile first: styles inside apply from this width up.
+/// @include up(md) { ... }
+@mixin up($bp) {
+  @media (min-width: map.get(t.$breakpoints, $bp)) { @content; }
+}
+
+/// Styles inside apply below this width.
+@mixin down($bp) {
+  @media (max-width: calc(#{map.get(t.$breakpoints, $bp)} - 0.02px)) { @content; }
+}
+
+/// Side padding that also clears a phone's system bars. Put it on the one
+/// element whose content should stay inside the gutter.
+@mixin gutter {
+  padding-left: max(t.$container-gutter, env(safe-area-inset-left, 0px));
+  padding-right: max(t.$container-gutter, env(safe-area-inset-right, 0px));
+}
+
+/// Centered content column.
+@mixin container($max: t.$container-max) {
+  width: 100%;
+  max-width: $max;
+  margin-inline: auto;
+}
+
+// ---- Type ------------------------------------------------------------------
+
+/// Applies a type role: display, h1-h4, body-lg, body, body-sm, label, code, caption, wordmark.
+@mixin type($role) {
+  $r: map.get(t.$type-roles, "#{$role}");
+  @if not $r { @error "No type role '#{$role}'."; }
+  font-family: map.get($r, "font-family");
+  font-weight: map.get($r, "font-weight");
+  font-size: map.get($r, "font-size");
+  line-height: map.get($r, "line-height");
+  letter-spacing: map.get($r, "letter-spacing");
+  @if $role == label { text-transform: uppercase; }
+  @if $role == wordmark { text-transform: uppercase; }
+}
+
+// ---- Shape -----------------------------------------------------------------
+
+/// A corner size: a step of the corner scale (sm, md, lg) or any length.
+@function corner-size($size) {
+  @if meta.type-of($size) == string and map.has-key(t.$corner, $size) { @return map.get(t.$corner, $size); }
+  @return $size;
+}
+
+@function _corner($corners, $which, $size) {
+  @if list.index($corners, $which) { @return $size; }
+  @return 0px;
+}
+
+/// The library's corner: cut, rounded or both, by its shape tokens (shape.cut
+/// and shape.round, multiples of the size). $size: sm, md, lg or a length.
+/// $corners: which corners get cut (any of tl, tr, br, bl); rounding, when the
+/// library rounds, applies to all four.
+@mixin corner($size: md, $corners: tl br) {
+  $s: corner-size($size);
+  $cut: calc(#{$s} * #{t.$shape-cut});
+  $tl: _corner($corners, tl, $cut);
+  $tr: _corner($corners, tr, $cut);
+  $br: _corner($corners, br, $cut);
+  $bl: _corner($corners, bl, $cut);
+  clip-path: polygon(
+    #{$tl} 0, calc(100% - #{$tr}) 0, 100% #{$tr},
+    100% calc(100% - #{$br}), calc(100% - #{$br}) 100%,
+    #{$bl} 100%, 0 calc(100% - #{$bl}), 0 #{$tl}
+  );
+  border-radius: calc(#{$s} * #{t.$shape-round});
+}
+
+/// Glass: a translucent surface with a backdrop blur, for UI that floats over
+/// the backdrop (panels, docks, overlays). Always pair it with a hairline.
+@mixin glass($blur: 10px) {
+  background: t.$glass;
+  -webkit-backdrop-filter: blur($blur);
+  backdrop-filter: blur($blur);
+}
+
+/// Hairline border that survives clip-path (a real border would be cut off).
+@mixin hairline($color: t.$line) {
+  box-shadow: inset 0 0 0 t.$border-hair $color;
+}
+
+// ---- Ornaments --------------------------------------------------------------
+
+/// The accent mark: a small accent-colored shape a component places when
+/// nothing in it is naturally accented (a primary action, a selected state, a
+/// cursor). Square where the library cuts corners, round where it rounds them.
+/// Use on a pseudo-element.
+@mixin ornament($size: 6px) {
+  content: "";
+  display: block;
+  width: $size;
+  height: $size;
+  background: t.$accent;
+  border-radius: calc(#{t.$shape-round} * 100%);
+}
+
+/// The corner ornament of a card: an accent edge along the inside of a cut
+/// corner. Shown only where the library cuts corners. Use on ::after of a card
+/// with position: relative and a top-right corner() of the same $size.
+@mixin corner-ornament($size: lg, $thickness: 4px) {
+  $s: corner-size($size);
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: $s;
+  height: $s;
+  background: t.$accent;
+  opacity: t.$shape-cut;
+  pointer-events: none;
+  // A strip just inside the diagonal (the cut itself is clipped away by the card)
+  clip-path: polygon(0 0, 100% 100%, calc(100% - #{$thickness}) 100%, 0 #{$thickness});
+}
+
+// ---- Focus and access ------------------------------------------------------
+
+/// The 2px accent keyboard focus ring. Use on :focus-visible; never remove focus without this.
+@mixin focus-ring($offset: 3px) {
+  outline: 2px solid t.$accent;
+  outline-offset: $offset;
+}
+
+/// Hidden on screen, still read by screen readers.
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/// Motion that only runs when the system allows it.
+@mixin motion-safe {
+  @media (prefers-reduced-motion: no-preference) { @content; }
+}
+
+// ---- Textures --------------------------------------------------------------
+
+/// A background texture, in the library's colors:
+///   field  a dotted field (the still form of the backdrop), $gap 18px
+///   grid   a blueprint grid of hairlines, for diagrams and empty areas, $gap 32px
+///   lines  scanlines (where the mood has them; else transparent)
+@mixin texture($kind: field, $gap: null, $color: null) {
+  @if $kind == field {
+    $c: t.$dot;
+    $g: 18px;
+    @if $color { $c: $color; }
+    @if $gap { $g: $gap; }
+    background-image: radial-gradient($c 1px, transparent 1.5px);
+    background-size: $g $g;
+  } @else if $kind == grid {
+    $c: t.$line;
+    $g: 32px;
+    @if $color { $c: $color; }
+    @if $gap { $g: $gap; }
+    background-image:
+      linear-gradient($c 1px, transparent 1px),
+      linear-gradient(90deg, $c 1px, transparent 1px);
+    background-size: $g $g;
+  } @else if $kind == lines {
+    $c: t.$scan;
+    @if $color { $c: $color; }
+    background-image: repeating-linear-gradient(0deg, $c 0 1px, transparent 1px 3px);
+  } @else {
+    @error "texture(): '#{$kind}' is not field, grid or lines.";
+  }
+}
+
+// ---- Motion recipes --------------------------------------------------------
+
+/// A shared keyframe (defined once in the library's styles.css), by name, for
+/// use INSIDE a CSS module. Every library has reveal, pulse, blink and sheen;
+/// a library can add its own. CSS modules rename every animation name to a
+/// module-scoped one, so a bare `r9-pulse` would point at keyframes that
+/// don't exist and silently never play; global() keeps the shared name.
+///   animation: r9.keyframes(pulse) 2.4s ease-in-out infinite;
+/// (Plain global CSS, outside a module, uses the bare name: r9-pulse.)
+@function keyframes($name) {
+  @return string.unquote("global(r9-#{$name})");
+}

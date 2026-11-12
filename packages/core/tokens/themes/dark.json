@@ -1,0 +1,81 @@
+{
+  "$description": "Dark: Plain’s dark mood. The same roles on near-black.",
+  "theme": {
+    "$type": "color",
+    "bg": {
+      "$value": "{color.gray.975}"
+    },
+    "surface": {
+      "$value": "{color.gray.900}"
+    },
+    "surface-raised": {
+      "$value": "{color.gray.850}"
+    },
+    "glass": {
+      "$value": "#050506C7"
+    },
+    "fg": {
+      "$value": "{color.gray.10}"
+    },
+    "fg-muted": {
+      "$value": "{color.gray.300}"
+    },
+    "fg-subtle": {
+      "$value": "{color.gray.500}"
+    },
+    "line": {
+      "$value": "{color.gray.800}"
+    },
+    "line-strong": {
+      "$value": "{color.gray.600}"
+    },
+    "accent": {
+      "$value": "{color.blue.400}"
+    },
+    "accent-hover": {
+      "$value": "{color.blue.300}"
+    },
+    "accent-text": {
+      "$value": "{color.blue.300}"
+    },
+    "on-accent": {
+      "$value": "{color.gray.975}"
+    },
+    "accent-soft": {
+      "$value": "#4D94FF29"
+    },
+    "signal": {
+      "$value": "{color.cyan.300}"
+    },
+    "signal-text": {
+      "$value": "{color.cyan.300}"
+    },
+    "inverse-bg": {
+      "$value": "{color.gray.10}"
+    },
+    "inverse-fg": {
+      "$value": "{color.gray.975}"
+    },
+    "success": {
+      "$value": "{color.green.400}"
+    },
+    "warning": {
+      "$value": "{color.amber.400}"
+    },
+    "danger": {
+      "$value": "{color.red.400}"
+    },
+    "dot": {
+      "$value": "#F4F4F621"
+    },
+    "scan": {
+      "$value": "#00000000"
+    },
+    "sheen": {
+      "$value": "#FFFFFF0A"
+    },
+    "selection": {
+      "$value": "#4D94FF4D"
+    }
+  }
+}

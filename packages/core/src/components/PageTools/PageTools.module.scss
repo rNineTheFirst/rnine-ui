@@ -1,0 +1,58 @@
+@use "@rnine/core/scss" as r9;
+
+.skip {
+  position: fixed;
+  left: max(#{r9.$space-4}, env(safe-area-inset-left, 0px));
+  top: calc(-1 * #{r9.$space-16});
+  z-index: r9.$z-modal;
+  padding: r9.$space-3 r9.$space-5;
+  background: r9.$accent;
+  color: r9.$on-accent;
+  @include r9.type(label);
+  text-decoration: none;
+  @include r9.corner(sm);
+
+  &:focus,
+  &:focus-visible {
+    top: calc(#{r9.$space-3} + env(safe-area-inset-top, 0px));
+    outline: 0;
+  }
+}
+
+.top {
+  position: fixed;
+  right: max(#{r9.$space-5}, env(safe-area-inset-right, 0px));
+  bottom: calc(#{r9.$space-5} + env(safe-area-inset-bottom, 0px));
+  z-index: r9.$z-raised;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: r9.$accent;
+  color: r9.$on-accent;
+  @include r9.corner(md);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity r9.$duration-base, transform r9.$duration-base r9.$easing-out, background r9.$duration-fast;
+
+  svg { width: 20px; height: 20px; transition: transform r9.$duration-base r9.$easing-out; }
+
+  &:hover { background: r9.$accent-hover; }
+  &:hover svg { transform: translateY(-2px); }
+  &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px r9.$on-accent, inset 0 0 0 4px r9.$accent; }
+}
+
+.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top,
+  .top svg { transition: none; }
+}

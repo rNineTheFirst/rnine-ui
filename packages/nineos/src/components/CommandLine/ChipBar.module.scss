@@ -1,0 +1,30 @@
+@use "@rnine/nineos/scss" as r9;
+
+.bar {
+  display: flex;
+  gap: r9.$space-2;
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-width: 0;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.chip {
+  flex: none;
+  min-height: 36px;
+  padding: r9.$space-2 r9.$space-3;
+  border: 0;
+  cursor: pointer;
+  @include r9.type(code);
+  font-size: r9.$font-size-sm;
+  color: r9.$fg;
+  background: r9.$surface;
+  @include r9.hairline;
+  transition: box-shadow r9.$duration-fast, color r9.$duration-fast;
+
+  &:hover { @include r9.hairline(r9.$accent); color: r9.$accent-text; }
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.prefix { color: r9.$accent-text; }

@@ -1,0 +1,36 @@
+@use "@rnine/core/scss" as r9;
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-5;
+  min-width: 0;
+  padding: r9.$space-5;
+  @include r9.glass;
+  @include r9.hairline;
+  @include r9.corner(lg, tr);
+
+  &::after { @include r9.corner-ornament; }
+
+  @include r9.up(sm) { padding: r9.$space-6 r9.$space-8 r9.$space-8; }
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-3;
+}
+
+.index {
+  @include r9.type(caption);
+  padding: r9.$space-1 r9.$space-2;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+}
+
+.title {
+  margin: 0;
+  @include r9.type(h2);
+}

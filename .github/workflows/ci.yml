@@ -1,0 +1,50 @@
+# The libraries' own CI: boundary check, lint, build, test and the Storybook build.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint, build, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      # Node 25+ no longer bundles Yarn
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22 --no-fund --no-audit
+
+      - name: Install
+        run: |
+          if [ -f yarn.lock ]; then yarn install --frozen-lockfile --non-interactive
+          else yarn install --non-interactive; fi
+
+      - name: Stands alone (license, imports, naming)
+        run: yarn boundary
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test
+
+      - name: Storybook builds
+        run: yarn build-storybook

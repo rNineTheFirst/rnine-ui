@@ -1,0 +1,9 @@
+{
+  "name": "NineOS",
+  "moods": {
+    "light": { "id": "clear", "label": "Clear", "description": "The light mood: white, ink, magenta." },
+    "dark": { "id": "cipher", "label": "Cipher", "description": "The dark mood: near-black, neon magenta, scanlines." }
+  },
+  "auto": "night",
+  "palette": { "id": "magenta", "label": "Magenta", "description": "Magenta accent, cyan signal: the default." }
+}

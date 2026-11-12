@@ -1,0 +1,232 @@
+@use "@rnine/core/scss" as r9;
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  min-width: 0;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.slide {
+  margin: 0;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+  min-width: 0;
+
+  figcaption {
+    @include r9.type(caption);
+    color: r9.$fg-muted;
+  }
+}
+
+.zoom {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--ratio);
+  padding: 0;
+  border: 0;
+  background: r9.$surface;
+  @include r9.hairline;
+  cursor: zoom-in;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  // A small "zoom" label: on hover with a mouse, always on touch
+  &::after {
+    content: "⤢ zoom";
+    position: absolute;
+    right: r9.$space-2;
+    bottom: r9.$space-2;
+    @include r9.type(caption);
+    padding: 2px r9.$space-2;
+    background: r9.$inverse-bg;
+    color: r9.$inverse-fg;
+    opacity: 0;
+    transition: opacity r9.$duration-fast;
+  }
+
+  &:hover::after,
+  &:focus-visible::after { opacity: 1; }
+  &:focus-visible { @include r9.focus-ring(2px); }
+
+  @media (hover: none) { &::after { opacity: 1; } }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+}
+
+.step {
+  width: 34px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  @include r9.hairline(r9.$line-strong);
+  @include r9.type(code);
+  color: r9.$fg;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { @include r9.hairline(r9.$accent); color: r9.$accent-text; }
+  &:disabled { opacity: 0.35; cursor: default; }
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.dots { display: flex; gap: r9.$space-1; }
+
+.dot {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+
+  &::before {
+    content: "";
+    width: 8px;
+    height: 3px;
+    background: r9.$line-strong;
+    transition: width r9.$duration-base r9.$easing-out, background r9.$duration-fast;
+  }
+
+  &[aria-current="true"]::before { width: 16px; background: r9.$accent; }
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.count {
+  margin-left: auto;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+  font-variant-numeric: tabular-nums;
+}
+
+// ---- Lightbox ------------------------------------------------------------
+
+.lightbox {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: r9.$bg;
+  color: r9.$fg;
+
+  &[open] { display: flex; flex-direction: column; }
+  &::backdrop { background: r9.$bg; }
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+  padding: max(r9.$space-3, env(safe-area-inset-top)) max(r9.$space-4, env(safe-area-inset-right)) r9.$space-3 max(r9.$space-4, env(safe-area-inset-left));
+  border-bottom: r9.$border-hair solid r9.$line;
+  @include r9.type(code);
+  font-size: r9.$font-size-sm;
+}
+
+.caption {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: r9.$fg-muted;
+
+  b { color: r9.$fg; font-weight: inherit; }
+}
+
+.barActions {
+  margin-left: auto;
+  flex: none;
+  display: inline-flex;
+  gap: r9.$space-2;
+
+  button {
+    padding: r9.$space-1 r9.$space-3;
+    border: 0;
+    background: transparent;
+    @include r9.hairline(r9.$line-strong);
+    font: inherit;
+    color: r9.$fg;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover { @include r9.hairline(r9.$accent); color: r9.$accent-text; }
+    &:focus-visible { @include r9.focus-ring(2px); }
+  }
+
+  .close {
+    background: r9.$accent;
+    color: r9.$on-accent;
+    box-shadow: none;
+
+    &:hover { background: r9.$accent-hover; color: r9.$on-accent; box-shadow: none; }
+  }
+}
+
+.stage {
+  flex: 1;
+  overflow: auto;
+  display: grid;
+  place-items: center;
+  padding: r9.$space-5 max(r9.$space-4, env(safe-area-inset-right)) max(r9.$space-5, env(safe-area-inset-bottom)) max(r9.$space-4, env(safe-area-inset-left));
+  // Touch: pan and pinch natively
+  touch-action: pan-x pan-y pinch-zoom;
+  cursor: zoom-in;
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    user-select: none;
+  }
+}
+
+// A video plays fitted; its own controls handle the pointer
+.playing {
+  cursor: auto;
+  touch-action: auto;
+
+  video {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    background: r9.$inverse-bg;
+  }
+}
+
+.zoomed {
+  place-items: start;
+  cursor: grab;
+
+  img { max-width: none; max-height: none; }
+  &:active { cursor: grabbing; }
+}

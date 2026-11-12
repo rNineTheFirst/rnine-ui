@@ -1,0 +1,65 @@
+{
+  "$description": "NineOS Volt palette: overrides the accent and signal primitives and the tints made from them. Picked with data-palette=\"volt\".",
+  "label": "Volt",
+  "description": "Cobalt accent, yellow signal.",
+  "color": {
+    "$type": "color",
+    "accent": {
+      "300": {
+        "$value": "#88A4FF"
+      },
+      "400": {
+        "$value": "#6287FF"
+      },
+      "500": {
+        "$value": "#567DFF"
+      },
+      "600": {
+        "$value": "#3665FF"
+      },
+      "700": {
+        "$value": "#1D51FF"
+      },
+      "800": {
+        "$value": "#0035E3"
+      }
+    },
+    "signal": {
+      "300": {
+        "$value": "#FFF71A"
+      },
+      "500": {
+        "$value": "#969100"
+      },
+      "700": {
+        "$value": "#706C00"
+      }
+    }
+  },
+  "themes": {
+    "light": {
+      "$type": "color",
+      "accent-soft": {
+        "$value": "#3665FF1F"
+      },
+      "selection": {
+        "$value": "#3665FF33"
+      },
+      "sheen": {
+        "$value": "#96910012"
+      }
+    },
+    "dark": {
+      "$type": "color",
+      "accent-soft": {
+        "$value": "#6287FF29"
+      },
+      "selection": {
+        "$value": "#6287FF4D"
+      },
+      "sheen": {
+        "$value": "#FFF71A0D"
+      }
+    }
+  }
+}

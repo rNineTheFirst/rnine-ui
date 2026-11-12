@@ -1,0 +1,13 @@
+@use "@rnine/core/scss" as r9;
+
+.wordmark {
+  @include r9.type(wordmark);
+  color: currentColor;
+  white-space: nowrap;
+  // Tracking adds space after the last letter: take it back
+  margin-right: -0.34em;
+}
+
+.sm { font-size: 0.8125rem; }
+.md { font-size: 1.0625rem; }
+.lg { font-size: 1.5rem; }

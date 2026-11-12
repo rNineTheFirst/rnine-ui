@@ -1,0 +1,127 @@
+@use "@rnine/core/scss" as r9;
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: r9.$space-2;
+  border: 0;
+  margin: 0;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: r9.$font-body;
+  font-weight: r9.$font-weight-semibold;
+  transition:
+    background r9.$duration-fast,
+    color r9.$duration-fast,
+    box-shadow r9.$duration-fast,
+    transform r9.$duration-instant;
+
+  &:focus-visible { @include r9.focus-ring; }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+
+  svg { width: 1.125em; height: 1.125em; }
+}
+
+.end { transition: transform r9.$duration-base r9.$easing-out; }
+.button:hover .end { transform: translateX(3px); }
+
+// ---- Sizes (44px minimum on phones for md and lg) --------------------------
+
+.sm { height: 34px; padding-inline: r9.$space-3; font-size: r9.$font-size-sm; }
+.md { height: 44px; padding-inline: r9.$space-5; font-size: 0.9375rem; }
+.lg { height: 52px; padding-inline: r9.$space-6; font-size: r9.$font-size-md; }
+
+.full { width: 100%; }
+
+// ---- Variants -------------------------------------------------------------
+
+// Accent fill: the one main action on a screen
+.primary {
+  background: r9.$accent;
+  color: r9.$on-accent;
+  @include r9.corner(md);
+
+  &.sm { @include r9.corner(sm); }
+
+  &:hover { background: r9.$accent-hover; }
+  &:active { transform: translate(1px, 1px); }
+  // A focus outline would be clipped by a cut corner: draw it inside instead
+  &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px r9.$on-accent, inset 0 0 0 4px r9.$accent; }
+
+  &:disabled,
+  &[aria-disabled="true"] { background: r9.$line; color: r9.$fg-muted; }
+}
+
+// Terminal prompt: mono text after a accent ">"
+.secondary {
+  background: transparent;
+  color: r9.$fg;
+  padding-inline: r9.$space-1;
+  font-family: r9.$font-mono;
+  font-weight: r9.$font-weight-regular;
+
+  &::before {
+    content: ">";
+    color: r9.$accent-text;
+    transition: transform r9.$duration-base r9.$easing-out;
+  }
+
+  &:hover::before { transform: translateX(3px); }
+  &:disabled,
+  &[aria-disabled="true"] { color: r9.$fg-subtle; &::before { color: r9.$fg-subtle; } }
+}
+
+// Hairline that turns accent on hover
+.outline {
+  background: transparent;
+  color: r9.$fg;
+  @include r9.hairline(r9.$line-strong);
+  @include r9.corner(md);
+
+  &.sm { @include r9.corner(sm); }
+
+  &:hover { @include r9.hairline(r9.$accent); color: r9.$accent-text; }
+  &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px r9.$accent; }
+  &:disabled,
+  &[aria-disabled="true"] { color: r9.$fg-subtle; @include r9.hairline(r9.$line); }
+}
+
+// Plain text; a accent underline draws in on hover
+.ghost {
+  background: transparent;
+  color: r9.$fg;
+  padding-inline: r9.$space-1;
+
+  .label {
+    background: linear-gradient(r9.$accent, r9.$accent) left bottom / 0 1px no-repeat;
+    padding-bottom: 2px;
+    transition: background-size r9.$duration-base r9.$easing-out;
+  }
+
+  &:hover .label { background-size: 100% 1px; }
+  &:disabled,
+  &[aria-disabled="true"] { color: r9.$fg-subtle; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button::before,
+  .end,
+  .label { transition: none; }
+}
+
+// "(opens in a new tab)" for screen readers on external links
+.sr { @include r9.visually-hidden; }

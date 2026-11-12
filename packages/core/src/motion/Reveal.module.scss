@@ -1,0 +1,3 @@
+@use "@rnine/core/scss" as r9;
+
+.in { animation: r9.keyframes(reveal) r9.$duration-slower r9.$easing-out both; }

@@ -1,0 +1,69 @@
+@use "@rnine/core/scss" as r9;
+
+.rail { min-width: 0; }
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-1;
+}
+
+.item {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: r9.$space-3;
+  padding: r9.$space-3;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: transform r9.$duration-base r9.$easing-out, background r9.$duration-fast;
+
+  // The active bar: the rail's accent element
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: r9.$space-2;
+    bottom: r9.$space-2;
+    width: 3px;
+    background: r9.$accent;
+    transform: scaleY(0);
+    transition: transform r9.$duration-base r9.$easing-out;
+  }
+
+  &:hover { transform: translateX(4px); }
+  &:hover .label { color: r9.$fg; }
+  &:focus-visible { @include r9.focus-ring(0); }
+
+  &[aria-current="page"] {
+    @include r9.glass(6px);
+    &::before { transform: scaleY(1); }
+    .label { color: r9.$fg; }
+    .num { color: r9.$accent-text; }
+  }
+}
+
+.num {
+  @include r9.type(caption);
+  color: r9.$fg-subtle;
+}
+
+.label {
+  font: r9.$font-weight-semibold 1.125rem / 1.2 r9.$font-display;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: r9.$fg-muted;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .item::before { transition: none; }
+  .item:hover { transform: none; }
+}

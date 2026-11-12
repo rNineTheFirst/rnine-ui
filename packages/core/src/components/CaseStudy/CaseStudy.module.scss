@@ -1,0 +1,111 @@
+@use "@rnine/core/scss" as r9;
+
+.case {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-5;
+  min-width: 0;
+}
+
+.summary {
+  margin: 0;
+  max-width: 62ch;
+  @include r9.type(body-lg);
+  color: r9.$fg-muted;
+}
+
+// At a glance: result, role, stack. Hairline-framed, before the long form
+.glance {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  padding: r9.$space-4 0;
+  border-block: r9.$border-hair solid r9.$line;
+}
+
+.glanceRow {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: r9.$space-4;
+  align-items: baseline;
+
+  dt {
+    @include r9.type(caption);
+    text-transform: uppercase;
+    color: r9.$fg-muted;
+  }
+
+  dd { margin: 0; min-width: 0; @include r9.type(body); }
+
+  @include r9.down(sm) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: r9.$space-1;
+  }
+}
+
+// The number that matters: display type, with the accent mark
+.result dd {
+  position: relative;
+  padding-left: r9.$space-4;
+  @include r9.type(h4);
+
+  &::before {
+    @include r9.ornament;
+    position: absolute;
+    left: 0;
+    top: .45em;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: r9.$space-5;
+  align-items: start;
+
+  &.single { grid-template-columns: minmax(0, 1fr); }
+
+  @include r9.down(md) { grid-template-columns: minmax(0, 1fr); }
+}
+
+.facts {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: r9.$space-4;
+
+  dt {
+    padding-top: 3px;
+    @include r9.type(caption);
+    text-transform: uppercase;
+    color: r9.$fg-muted;
+  }
+
+  dd {
+    margin: 0;
+    min-width: 0;
+    @include r9.type(body);
+    white-space: pre-line;
+  }
+
+  @include r9.down(sm) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: r9.$space-1;
+  }
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: r9.$space-2; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-3;
+}

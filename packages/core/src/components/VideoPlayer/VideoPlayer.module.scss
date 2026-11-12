@@ -1,0 +1,26 @@
+@use "@rnine/core/scss" as r9;
+
+.player {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  background: r9.$inverse-bg;
+  @include r9.corner(lg, tr);
+  @include r9.hairline;
+
+  &::after {
+    @include r9.corner-ornament;
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+.video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: r9.$inverse-bg;
+
+  &:focus-visible { @include r9.focus-ring(-2px); }
+}

@@ -1,0 +1,75 @@
+@use "@rnine/core/scss" as r9;
+
+.container {
+  @include r9.gutter;
+  width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+// Max widths include the gutters
+.page { max-width: calc(#{r9.$container-max} + 2 * #{r9.$container-gutter}); }
+.wide { max-width: 1312px; }
+.text { max-width: calc(#{r9.$container-text} + 2 * #{r9.$container-gutter}); }
+
+.stack {
+  display: flex;
+  min-width: 0;
+}
+
+// ---- Eyebrow --------------------------------------------------------------
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-3;
+  @include r9.type(label);
+  color: r9.$fg-muted;
+}
+
+.num {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.25em;
+  padding: 0.3em 0.45em;
+  background: r9.$accent;
+  color: r9.$on-accent;
+  letter-spacing: 0.04em;
+  @include r9.corner(4px);
+}
+
+.mark { @include r9.ornament(6px); }
+
+// ---- Section --------------------------------------------------------------
+
+.section {
+  @include r9.gutter;
+  padding-block: r9.$space-16;
+  border-bottom: r9.$border-hair solid r9.$line;
+  scroll-margin-top: r9.$header-height;
+
+  @include r9.up(md) { padding-block: r9.$space-24; }
+}
+
+.inner {
+  @include r9.container;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-10;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  max-width: 46rem;
+}
+
+.title2 { @include r9.type(h1); }
+.title3 { @include r9.type(h2); }
+
+.lede {
+  @include r9.type(body-lg);
+  color: r9.$fg-muted;
+  max-width: r9.$container-text;
+}

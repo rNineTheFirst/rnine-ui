@@ -1,0 +1,60 @@
+@use "@rnine/core/scss" as r9;
+
+.wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.tip {
+  position: absolute;
+  left: 50%;
+  z-index: r9.$z-overlay;
+  width: max-content;
+  max-width: 16rem;
+  padding: r9.$space-2 r9.$space-3;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+  @include r9.type(caption);
+  text-transform: none;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity r9.$duration-fast, transform r9.$duration-fast r9.$easing-out, visibility 0s r9.$duration-fast;
+
+  // Pointer tick: the tooltip's accent element
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    background: r9.$accent;
+  }
+}
+
+.top {
+  bottom: calc(100% + 10px);
+  transform: translate(-50%, 4px);
+
+  &::after { top: 100%; }
+}
+
+.bottom {
+  top: calc(100% + 10px);
+  transform: translate(-50%, -4px);
+
+  &::after { bottom: 100%; }
+}
+
+.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition: opacity r9.$duration-fast, transform r9.$duration-fast r9.$easing-out, visibility 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip,
+  .open { transition: none; }
+}

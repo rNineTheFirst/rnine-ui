@@ -1,0 +1,91 @@
+@use "@rnine/core/scss" as r9;
+
+.dialog {
+  // The dialog element is a transparent frame; the panel is the visible box
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg;
+  width: min(100% - 2 * #{r9.$container-gutter}, var(--modal-width));
+  max-height: calc(100dvh - 2 * #{r9.$space-6});
+  overflow: visible;
+
+  &::backdrop {
+    background: color-mix(in srgb, #{r9.$color-gray-975} 64%, transparent);
+    backdrop-filter: blur(3px);
+  }
+
+  &[open] {
+    @include r9.motion-safe { animation: r9.keyframes(reveal) r9.$duration-base r9.$easing-out; }
+  }
+}
+
+.sm { --modal-width: 24rem; }
+.md { --modal-width: 32rem; }
+.lg { --modal-width: 44rem; }
+.xl { --modal-width: 60rem; }
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+  background: r9.$surface-raised;
+  @include r9.hairline(r9.$line-strong);
+  @include r9.corner(lg, tr);
+
+  &::after { @include r9.corner-ornament; }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: r9.$space-4;
+  padding: r9.$space-5 r9.$space-6 0;
+}
+
+.title {
+  flex: 1;
+  margin: 0;
+  @include r9.type(h3);
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-3;
+
+  &::after { @include r9.ornament(6px); }
+}
+
+.close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: -4px -8px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg-muted;
+  cursor: pointer;
+
+  svg { width: 20px; height: 20px; }
+  &:hover { color: r9.$accent-text; }
+  &:focus-visible { @include r9.focus-ring(0); }
+}
+
+.body {
+  padding: r9.$space-5 r9.$space-6;
+  overflow-y: auto;
+  @include r9.type(body);
+  color: r9.$fg-muted;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: r9.$space-4;
+  padding: r9.$space-4 r9.$space-6 r9.$space-5;
+  border-top: r9.$border-hair solid r9.$line;
+}

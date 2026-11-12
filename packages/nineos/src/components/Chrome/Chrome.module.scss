@@ -1,0 +1,43 @@
+@use "@rnine/nineos/scss" as r9;
+
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: r9.$z-sticky;
+  @include r9.gutter;
+  padding-top: r9.$space-3;
+  padding-bottom: calc(#{r9.$space-3} + env(safe-area-inset-bottom, 0px));
+  @include r9.glass(12px);
+  border-top: r9.$border-hair solid r9.$line;
+}
+
+.dockInner {
+  @include r9.container(940px);
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+}
+
+.hud {
+  position: fixed;
+  z-index: r9.$z-overlay;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+}
+
+.topleft { top: calc(14px + env(safe-area-inset-top, 0px)); left: max(16px, env(safe-area-inset-left, 0px)); }
+.topright { top: calc(14px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); }
+.bottomleft { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); left: max(16px, env(safe-area-inset-left, 0px)); }
+.bottomright { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+  white-space: nowrap;
+  @include r9.hairline(r9.$line-strong);
+}

@@ -1,0 +1,15 @@
+// The shared SCSS API. Outputs no CSS, so every component module can use it:
+//
+//   @use "@rnine/core/scss" as r9;     (in a brand library: "@rnine/<library>/scss")
+//
+//   .button {
+//     @include r9.type(label);
+//     @include r9.corner(md);
+//     background: r9.$accent;
+//     transition: background r9.$duration-fast r9.$easing-out;
+//   }
+//
+// Global CSS (tokens, base styles, keyframes, components) comes from the
+// library's styles.css, imported once by the app.
+@forward "../dist/variables";
+@forward "mixins";

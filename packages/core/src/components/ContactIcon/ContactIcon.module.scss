@@ -1,0 +1,8 @@
+@use "@rnine/core/scss" as r9;
+
+.icon {
+  flex: none;
+  display: inline-block;
+  vertical-align: middle;
+  color: currentColor;
+}

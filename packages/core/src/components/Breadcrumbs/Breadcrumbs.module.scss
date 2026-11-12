@@ -1,0 +1,34 @@
+@use "@rnine/core/scss" as r9;
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  @include r9.type(caption);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  color: r9.$fg-muted;
+
+  // Separator: the breadcrumbs' accent element
+  & + &::before {
+    content: "/";
+    color: r9.$accent-text;
+    padding-inline: r9.$space-3;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover { color: r9.$fg; text-decoration: underline; text-decoration-color: r9.$accent; text-underline-offset: 3px; }
+    &:focus-visible { @include r9.focus-ring(2px); }
+  }
+}
+
+.current { color: r9.$fg; }

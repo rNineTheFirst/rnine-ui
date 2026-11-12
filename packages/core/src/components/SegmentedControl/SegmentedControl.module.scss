@@ -1,0 +1,41 @@
+@use "@rnine/core/scss" as r9;
+
+.group {
+  display: inline-flex;
+  @include r9.glass(8px);
+  @include r9.hairline;
+}
+
+.option {
+  position: relative;
+  padding: r9.$space-2 r9.$space-3;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+
+  & + & { border-left: r9.$border-hair solid r9.$line; }
+
+  // The selected option's underline: the control's accent element
+  &::after {
+    content: "";
+    position: absolute;
+    left: r9.$space-2;
+    right: r9.$space-2;
+    bottom: 3px;
+    height: 2px;
+    background: r9.$accent;
+    transform: scaleX(0);
+    transition: transform r9.$duration-base r9.$easing-out;
+  }
+
+  &:hover { color: r9.$fg; }
+  &[aria-pressed="true"] { color: r9.$fg; background: color-mix(in srgb, #{r9.$fg} 7%, transparent); }
+  &[aria-pressed="true"]::after { transform: scaleX(1); }
+  &:focus-visible { @include r9.focus-ring(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option::after { transition: none; }
+}

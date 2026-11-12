@@ -1,0 +1,12 @@
+node_modules/
+dist/
+storybook-static/
+coverage/
+.turbo/
+.cloudflare/
+*.log
+*.local
+.env
+.env.*
+.DS_Store
+*.timestamp-*

@@ -1,0 +1,46 @@
+@use "@rnine/core/scss" as r9;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+  @include r9.type(caption);
+  padding: r9.$space-1 r9.$space-3;
+  background: color-mix(in srgb, #{r9.$fg} 7%, transparent);
+  color: r9.$fg;
+  white-space: nowrap;
+
+  &::before { @include r9.ornament(5px); }
+}
+
+.inverse {
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+  @include r9.type(caption);
+  white-space: nowrap;
+
+  &::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: r9.$radius-full;
+    background: currentColor;
+  }
+}
+
+.live {
+  color: r9.$signal-text;
+  &::before { background: r9.$signal; @include r9.motion-safe { animation: r9.keyframes(pulse) 2.4s ease-in-out infinite; } }
+}
+
+.success { color: r9.$success; }
+.warning { color: r9.$warning; }
+.danger { color: r9.$danger; }
+.idle { color: r9.$fg-muted; }

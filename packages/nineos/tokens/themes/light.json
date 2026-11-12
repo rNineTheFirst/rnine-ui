@@ -1,0 +1,106 @@
+{
+  "$description": "Clear: the light mood. Calm and clinical, lots of white, hairlines, magenta for the one thing that matters.",
+  "theme": {
+    "$type": "color",
+    "bg": {
+      "$value": "{color.gray.0}",
+      "$description": "Page background"
+    },
+    "surface": {
+      "$value": "{color.gray.25}",
+      "$description": "Cards, panels, inputs"
+    },
+    "surface-raised": {
+      "$value": "{color.gray.0}",
+      "$description": "Menus, popovers, toasts"
+    },
+    "glass": {
+      "$value": "#FFFFFFD1",
+      "$description": "Translucent surface for UI floating over the dot field (panels, dock, HUD), with a backdrop blur"
+    },
+    "fg": {
+      "$value": "{color.gray.950}",
+      "$description": "Main text and icons"
+    },
+    "fg-muted": {
+      "$value": "{color.gray.600}",
+      "$description": "Secondary text"
+    },
+    "fg-subtle": {
+      "$value": "{color.gray.500}",
+      "$description": "Placeholders, disabled text (large text only)"
+    },
+    "line": {
+      "$value": "{color.gray.100}",
+      "$description": "Hairline borders and dividers"
+    },
+    "line-strong": {
+      "$value": "{color.gray.300}",
+      "$description": "Input borders, hovered hairlines"
+    },
+    "accent": {
+      "$value": "{color.accent.600}",
+      "$description": "Magenta: primary actions, the one mark on every component"
+    },
+    "accent-hover": {
+      "$value": "{color.accent.700}",
+      "$description": "Hovered and pressed accent fills"
+    },
+    "accent-text": {
+      "$value": "{color.accent.700}",
+      "$description": "Magenta text and icons on bg or surface"
+    },
+    "on-accent": {
+      "$value": "{color.gray.0}",
+      "$description": "Text on accent fills"
+    },
+    "accent-soft": {
+      "$value": "#D4006F1F",
+      "$description": "Tinted backgrounds, focus glow"
+    },
+    "signal": {
+      "$value": "{color.signal.500}",
+      "$description": "Cyan: live states, cursor light, data. Never a second brand color"
+    },
+    "signal-text": {
+      "$value": "{color.signal.700}",
+      "$description": "Cyan text on bg or surface"
+    },
+    "inverse-bg": {
+      "$value": "{color.gray.950}",
+      "$description": "Index chips, inverted tags"
+    },
+    "inverse-fg": {
+      "$value": "{color.gray.0}",
+      "$description": "Text on inverse-bg"
+    },
+    "success": {
+      "$value": "{color.green.700}",
+      "$description": "Success status text and icons. Always with an icon or a word, never color alone"
+    },
+    "warning": {
+      "$value": "{color.amber.700}",
+      "$description": "Warning status text and icons. Always with an icon or a word"
+    },
+    "danger": {
+      "$value": "{color.red.700}",
+      "$description": "Errors and destructive actions. Always with an icon or a word"
+    },
+    "dot": {
+      "$value": "#0A0A0C29",
+      "$description": "Dot field and dotted grid"
+    },
+    "scan": {
+      "$value": "#00000000",
+      "$description": "Scanlines (off in Clear)"
+    },
+    "sheen": {
+      "$value": "#0098C712",
+      "$description": "Light band that crosses heroes"
+    },
+    "selection": {
+      "$value": "#D4006F33",
+      "$description": "Text selection"
+    }
+  }
+}

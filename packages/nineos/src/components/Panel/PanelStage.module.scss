@@ -1,0 +1,32 @@
+@use "@rnine/nineos/scss" as r9;
+
+.stage {
+  position: relative;
+  min-width: 0;
+}
+
+// The leaving panel plays its exit here, over the stage, outside React's tree
+.ghost {
+  position: absolute;
+  inset: 0 0 auto;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.slot {
+  min-width: 0;
+}
+
+// Runs down the new panel as it is revealed (swapIn)
+.scanbar {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: 0;
+  height: 2px;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background: r9.$accent;
+  box-shadow: 0 0 14px r9.$accent, 0 0 2px r9.$accent;
+}

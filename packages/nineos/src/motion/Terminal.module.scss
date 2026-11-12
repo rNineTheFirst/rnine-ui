@@ -1,0 +1,27 @@
+@use "@rnine/nineos/scss" as r9;
+
+.term {
+  @include r9.type(code);
+  @include r9.corner(md);
+  @include r9.hairline;
+  background: r9.$surface;
+  padding: r9.$space-5;
+  min-height: 12.5rem;
+  overflow-x: auto;
+}
+
+.line { white-space: pre; }
+
+// The command is the terminal's magenta mark
+.cmd::before { content: "$ "; color: r9.$accent-text; }
+.dim { color: r9.$fg-muted; }
+.ok { color: r9.$signal-text; }
+
+.caret {
+  display: inline-block;
+  width: 8px;
+  height: 1.05em;
+  vertical-align: -0.15em;
+  background: r9.$accent;
+  @include r9.motion-safe { animation: r9.keyframes(blink) 1s steps(1) infinite; }
+}
