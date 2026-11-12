@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "release:version": "node scripts/version.mjs",
     "build": "yarn workspace @rnine/core build && yarn workspace @rnine/nineos build",
     "lint": "yarn workspace @rnine/core lint && yarn workspace @rnine/nineos lint",
     "test": "yarn workspace @rnine/core test && yarn workspace @rnine/nineos test",

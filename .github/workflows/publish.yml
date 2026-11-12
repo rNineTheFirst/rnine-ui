@@ -1,10 +1,11 @@
-# Publishes the libraries to npm when main has a version that isn't there yet
+# Stages the libraries on npm when main has a version that isn't there yet
 # (scripts/publish.mjs): build, test and the install smoke test first, then
-# core, then nineos, each tagged with a GitHub Release.
+# core, then nineos. A maintainer approves each staged version on npm (2FA);
+# Tag releases (tag.yml) then tags it with a GitHub Release.
 #
 # npm Trusted Publishing: no npm token is stored anywhere. Each package on
-# npmjs.com trusts this repository and this workflow file, and npm adds
-# provenance (which commit and workflow built it) to every version.
+# npmjs.com trusts this repository and this workflow file for staging only,
+# and npm adds provenance (which commit and workflow built it) to every version.
 name: Publish
 
 on:
@@ -29,6 +30,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # tags point at the commit that set the version
 
       # No registry-url: it writes an .npmrc with ${NODE_AUTH_TOKEN}, which Yarn 1
       # refuses to install with when the variable isn't set, and Trusted
@@ -41,10 +44,10 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn@1.22.22 --no-fund --no-audit
 
-      # Trusted Publishing needs npm 11.5.1 or later
-      - name: npm for Trusted Publishing
+      # Staged publishing (npm stage) needs npm 11.15.0 or later
+      - name: npm for staged publishing
         run: |
-          node -e "const [a, b, c] = process.argv[1].split('.').map(Number); process.exit(a > 11 || (a === 11 && (b > 5 || (b === 5 && c >= 1))) ? 0 : 1)" "$(npm --version)" \
+          node -e "const [a, b] = process.argv[1].split('.').map(Number); process.exit(a > 11 || (a === 11 && b >= 15) ? 0 : 1)" "$(npm --version)" \
             || npm install -g npm@11 --no-fund --no-audit
           npm --version
 
@@ -63,7 +66,7 @@ jobs:
       - name: Installs and builds from the packed tarballs
         run: yarn smoke
 
-      - name: Publish what isn't on npm yet
+      - name: Stage what isn't on npm yet, tag what's live
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/publish.mjs
