@@ -47,8 +47,9 @@ function* files(dir) {
 }
 
 // A site's own name or domain: the libraries' npm scope (@rnine/...) and the
-// public repo's name (rnine-ui) are the only allowed uses of the word
-const HOST = [/(?<![@\w])rnine(?!-ui\b)(?![\w/])/i, /\bnine-app\b/i, /\br9-mk-\d/i];
+// public repo's name (rnine-ui) and the libraries' own docs site (ui.rnine.dev,
+// the Storybook) are the only allowed uses of the word
+const HOST = [/(?<![@\w])(?<!\bui\.)rnine(?!-ui\b)(?![\w/])/i, /\bnine-app\b/i, /\br9-mk-\d/i];
 
 const SPECIFIER = /(?:\bfrom\s*|\bimport\s*\(\s*|\brequire\s*\(\s*|^\s*import\s+|@use\s+|@import\s+|@forward\s+)['"]([^'"]+)['"]/gm;
 

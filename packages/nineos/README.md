@@ -1,5 +1,7 @@
 # @rnine/nineos
 
+**Docs and every component, live: [ui.rnine.dev](https://ui.rnine.dev)** (Storybook)
+
 NineOS: a design system library for React, built on [`@rnine/core`](../core). Two moods,
 **Clear** (light) and **Cipher** (dark); cut corners; magenta for the one thing that
 matters; a command line that answers with panels; and the NineOS motion layer.
