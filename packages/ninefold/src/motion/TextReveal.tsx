@@ -30,11 +30,21 @@ function fontReady(box: HTMLElement, text: string, cap = 1500): Promise<void> {
   return Promise.race([loaded, new Promise<void>((resolve) => window.setTimeout(resolve, cap))]);
 }
 
-/** Where each character of the text node sits, relative to `box`. */
+/**
+ * How much the element is scaled on screen (a transform on it or an ancestor):
+ * on-screen size over layout size. Measurements are divided by it, so they're
+ * in the element's own layout pixels.
+ */
+function scaleOf(box: HTMLElement, r: DOMRect): [number, number] {
+  return [box.offsetWidth ? r.width / box.offsetWidth : 1, box.offsetHeight ? r.height / box.offsetHeight : 1];
+}
+
+/** Where each character of the text node sits, relative to `box`, in its layout pixels. */
 function measure(node: Text, box: HTMLElement, chars: string[]): Cell[] | null {
   const range = document.createRange();
   if (typeof range.getClientRects !== 'function') return null;
   const origin = box.getBoundingClientRect();
+  const [sx, sy] = scaleOf(box, origin);
   let offset = 0;
   return chars.map((c) => {
     range.setStart(node, offset);
@@ -42,16 +52,15 @@ function measure(node: Text, box: HTMLElement, chars: string[]): Cell[] | null {
     offset += c.length;
     const rects = range.getClientRects();
     const r = rects[rects.length - 1] ?? range.getBoundingClientRect();
-    return { left: r.left - origin.left, top: r.top - origin.top, width: r.width, height: r.height };
+    return { left: (r.left - origin.left) / sx, top: (r.top - origin.top) / sy, width: r.width / sx, height: r.height / sy };
   });
 }
 
-/** Points inside the glyphs (page coordinates), from the measured cells drawn in the element's font. */
+/** Points inside the glyphs, relative to `box` in its layout pixels, from the measured cells drawn in the element's font. */
 function glyphPoints(box: HTMLElement, chars: string[], cells: Cell[]): [number, number][] {
-  const r = box.getBoundingClientRect();
   const canvas = document.createElement('canvas');
-  canvas.width = Math.ceil(r.width);
-  canvas.height = Math.ceil(r.height);
+  canvas.width = Math.ceil(box.offsetWidth);
+  canvas.height = Math.ceil(box.offsetHeight);
   const g = canvas.getContext('2d');
   if (!g || !canvas.width || !canvas.height) return [];
   g.font = fontOf(box);
@@ -68,10 +77,9 @@ function glyphPoints(box: HTMLElement, chars: string[], cells: Cell[]): [number,
   });
   const data = g.getImageData(0, 0, canvas.width, canvas.height).data;
   const points: [number, number][] = [];
-  const ox = r.left + window.scrollX;
-  const oy = r.top + window.scrollY;
-  for (let y = 0; y < canvas.height; y += 4) {
-    for (let x = 0; x < canvas.width; x += 4) if (data[(y * canvas.width + x) * 4 + 3] > 120) points.push([ox + x, oy + y]);
+  // Every 4th pixel, sampled (and placed) at the middle of its 4px cell
+  for (let y = 2; y < canvas.height; y += 4) {
+    for (let x = 2; x < canvas.width; x += 4) if (data[(y * canvas.width + x) * 4 + 3] > 120) points.push([x + 0.5, y + 0.5]);
   }
   for (let i = points.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -80,8 +88,13 @@ function glyphPoints(box: HTMLElement, chars: string[], cells: Cell[]): [number,
   return points.slice(0, GATHER_COUNT);
 }
 
-/** Fireflies fly in from around the title and settle on its glyphs, then fade as the text appears. */
-function gather(points: [number, number][], duration: number, color: string) {
+/**
+ * Fireflies fly in from around the title and settle on its glyphs, then fade
+ * as the text appears. The points are the title's own: each frame they're
+ * placed from where the title is on screen right then, so they land on it
+ * while it scrolls, slides in (a Reveal around it) or is moved by the layout.
+ */
+function gather(box: HTMLElement, points: [number, number][], duration: number, color: string) {
   const sprite = glowSprite(color, true);
   const t0 = performance.now();
   const list = points.map(([x, y]) => {
@@ -89,9 +102,11 @@ function gather(points: [number, number][], duration: number, color: string) {
     const d = 80 + Math.random() * 240;
     return { sx: x + Math.cos(a) * d, sy: y + Math.sin(a) * d * 0.6, tx: x, ty: y, delay: Math.random() * 380, dur: duration * (0.82 + Math.random() * 0.4), ph: Math.random() * 600 };
   });
-  paint((g, now, scroll) => {
+  paint((g, now) => {
     const age = now - t0;
-    if (age > duration * 2.3 + 200) return false;
+    if (age > duration * 2.3 + 200 || !box.isConnected) return false;
+    const r = box.getBoundingClientRect();
+    const [kx, ky] = scaleOf(box, r);
     const fade = age > duration * 1.4 ? clamp(1 - (age - duration * 1.4) / 900, 0, 1) : 1;
     g.globalCompositeOperation = 'lighter';
     for (const p of list) {
@@ -100,7 +115,7 @@ function gather(points: [number, number][], duration: number, color: string) {
       if (a <= 0.01) continue;
       const e = easeOut(q);
       g.globalAlpha = a;
-      g.drawImage(sprite, lerp(p.sx, p.tx, e) - scroll.x - 6, lerp(p.sy, p.ty, e) - scroll.y - 6, 12, 12);
+      g.drawImage(sprite, r.left + lerp(p.sx, p.tx, e) * kx - 6, r.top + lerp(p.sy, p.ty, e) * ky - 6, 12, 12);
     }
     g.globalCompositeOperation = 'source-over';
     return true;
@@ -112,8 +127,10 @@ function gather(points: [number, number][], duration: number, color: string) {
  * one after another; at night (Gloam) fireflies gather out of the dark into
  * the shape of the words, and the words appear where they settle. The real
  * text never moves (it stays in place, hidden while the effect runs), so
- * nothing reflows. Screen readers always get the final text. `duration` is
- * the night gather's time (default 1100 ms).
+ * nothing reflows. A mount or view reveal hides it from its first paint until
+ * the effect starts, so it never shows and then vanishes. Screen readers
+ * always get the final text. `duration` is the night gather's time (default
+ * 1100 ms).
  */
 export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'view', duration = 1100, delay = 0 }: TextRevealProps) {
   const reduced = useReducedMotion();
@@ -121,6 +138,8 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
   const baseRef = useRef<HTMLSpanElement>(null);
   const overlayRef = useRef<HTMLSpanElement>(null);
   const [cells, setCells] = useState<Cell[] | null>(null);
+  // A mount or view reveal hides the title from its first paint until it plays, so it never shows and then vanishes
+  const [waiting, setWaiting] = useState(trigger !== 'hover');
   const chars = Array.from(text);
 
   const alive = useRef(true);
@@ -133,22 +152,24 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
 
   const play = useCallback(async () => {
     const first = ref.current;
-    if (reduced || !first) return;
+    if (reduced || !first) return setWaiting(false);
     await fontReady(first, text);
     const box = ref.current;
     const node = baseRef.current?.firstChild;
-    if (!alive.current || !box || !(node instanceof Text)) return;
-    const measured = measure(node, box, Array.from(text));
-    if (!measured) return;
+    if (!alive.current) return;
+    const measured = box && node instanceof Text ? measure(node, box, Array.from(text)) : null;
+    if (!box || !measured) return setWaiting(false);
     if (isNight(box) && typeof baseRef.current?.animate === 'function') {
       const points = glyphPoints(box, Array.from(text), measured);
       if (points.length) {
         baseRef.current.animate([{ opacity: 0 }, { opacity: 0, offset: 0.7 }, { opacity: 1 }], { duration: duration * 1.75, easing: 'ease-out' });
-        gather(points, duration, readRoles(box).mote);
+        gather(box, points, duration, readRoles(box).mote);
+        setWaiting(false);
         return;
       }
     }
     setCells(measured);
+    setWaiting(false);
   }, [reduced, text, duration]);
 
   // By day: once the letters are on screen, grow each one; the base text returns when the last has grown
@@ -188,6 +209,10 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
     }
     if (trigger === 'view' && ref.current) {
       let t = 0;
+      if (typeof IntersectionObserver !== 'function') {
+        t = window.setTimeout(() => void play(), delay);
+        return () => window.clearTimeout(t);
+      }
       const io = new IntersectionObserver(
         ([e]) => {
           if (!e.isIntersecting) return;
@@ -206,12 +231,13 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
 
   // Reduced motion turning on mid-run shows the text at once
   if (reduced && cells) setCells(null);
+  const hidden = cells ? styles.hidden : waiting && !reduced ? styles.waiting : undefined;
 
   return (
     <Tag ref={ref} id={id} className={cx(styles.text, className)} onMouseEnter={trigger === 'hover' ? () => void play() : undefined}>
       {/* What assistive tech reads: always the final text (inside buttons and links too) */}
       <span className={styles.sr}>{text}</span>
-      <span ref={baseRef} aria-hidden="true" className={cells ? styles.hidden : undefined}>
+      <span ref={baseRef} aria-hidden="true" className={hidden}>
         {text}
       </span>
       {cells && (

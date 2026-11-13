@@ -37,11 +37,14 @@
   pointer-events: none;
 }
 
-// A warm light follows the pointer across interactive cards
+// A warm light follows the pointer across interactive cards. The card's
+// clip-path cuts the folded corner off it; the rounding has to be its own
+// (border-radius doesn't clip children), or the light shows square corners.
 .lit::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, #{r9.$light} 34%, transparent), transparent 70%);
   opacity: 0;
   transition: opacity r9.$duration-slow ease;

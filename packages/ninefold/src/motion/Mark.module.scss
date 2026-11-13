@@ -21,9 +21,14 @@
 // the seal's own SVG, so it scales with the wax as one picture.
 .seal {
   display: block;
-  transform-origin: 50% 50%;
 
   > svg { width: 100%; height: 100%; }
+}
+
+// The impression: the only part that moves when the seal is pressed (the wax stays put)
+.stamp {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
 }
 
 .waxLight { stop-color: r9.$wax-light; }

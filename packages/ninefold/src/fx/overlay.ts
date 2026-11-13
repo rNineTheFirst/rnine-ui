@@ -50,16 +50,26 @@ function ensure(): CanvasRenderingContext2D | null {
   document.body.appendChild(canvas);
   ctx = canvas.getContext('2d');
   if (!ctx) return null;
-  resize();
-  window.addEventListener('resize', resize);
+  fit();
   return ctx;
 }
 
-function resize() {
-  if (!canvas || !ctx) return;
+/**
+ * Sizes the bitmap to the canvas's own box (the viewport less any scrollbar:
+ * innerWidth counts a classic scrollbar, which would squeeze every drawing
+ * sideways) at the device's pixel ratio. Checked each frame, since a
+ * scrollbar can come and go without a resize.
+ */
+function fit(): { w: number; h: number } {
+  if (!canvas) return { w: 0, h: 0 };
+  const w = canvas.clientWidth || window.innerWidth;
+  const h = canvas.clientHeight || window.innerHeight;
   dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.round(window.innerWidth * dpr);
-  canvas.height = Math.round(window.innerHeight * dpr);
+  const bw = Math.round(w * dpr);
+  const bh = Math.round(h * dpr);
+  if (canvas.width !== bw) canvas.width = bw;
+  if (canvas.height !== bh) canvas.height = bh;
+  return { w, h };
 }
 
 function frame(now: number) {
@@ -70,8 +80,9 @@ function frame(now: number) {
   last = now;
   const k = dt / 16.7;
   const scroll = { x: window.scrollX, y: window.scrollY };
+  const view = fit();
   g.setTransform(dpr, 0, 0, dpr, 0, 0);
-  g.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  g.clearRect(0, 0, view.w, view.h);
 
   particles = particles.filter((p) => (p.life += dt) <= p.max);
   for (const p of particles) {

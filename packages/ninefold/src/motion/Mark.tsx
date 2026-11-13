@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from 'react';
+import { useId, useLayoutEffect, useRef } from 'react';
 import { cx } from '@rnine/core/kit';
 import { useReducedMotion } from '@rnine/core/motion';
 import { useMark, type MarkProps } from '@rnine/core';
@@ -6,19 +6,27 @@ import { useNight } from '../fx/useNight';
 import { ART, GRAIN_PX, RING, SHEEN, SMALL_PX, WAX, artAt, parseMark } from './seal';
 import styles from './Mark.module.scss';
 
+/** The stamp pressing into the wax: in deep, a little spring back, at rest. */
+const PRESS: Keyframe[] = [{ transform: 'scale(1)' }, { transform: 'scale(0.92)', offset: 0.35 }, { transform: 'scale(1.015)', offset: 0.7 }, { transform: 'scale(1)' }];
+/** The first press: the impression isn't there until the stamp meets the wax. */
+const FIRST_PRESS: Keyframe[] = [{ opacity: 0, transform: 'scale(0.9)' }, { opacity: 1, transform: 'scale(0.92)', offset: 0.3 }, { transform: 'scale(1.015)', offset: 0.7 }, { opacity: 1, transform: 'scale(1)' }];
+
 /**
  * The app's mark (ThemeProvider mark, or MarkProvider) pressed into a seal of
  * poured wax: a raised lip with a sheen, a pressed well, the mark pressed in
- * with a lit edge; at night two fireflies circle it. The seal presses again
- * (a squash and a foil glint) on hover, drops and presses on mount, or never
- * (animate). At 40px and below (or variant="simplified") it's the small seal:
- * no gloss, and the mark's simplified version, smaller and lighter, so it
- * stays readable.
+ * with a lit edge; at night two fireflies circle it. The wax never moves: only
+ * the stamp does. On hover the mark is pressed in again (deeper, then back,
+ * then a foil glint); on mount the wax is already poured and the mark is
+ * stamped into it; or never (animate). At 40px and below (or
+ * variant="simplified") it's the small seal: no gloss, and the mark's
+ * simplified version, smaller and lighter, so it stays readable.
  */
 export function Mark({ size = 32, variant = 'full', animate = 'hover', label, className }: MarkProps) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
-  const sealRef = useRef<HTMLSpanElement>(null);
+  // The impression (the well, then the mark with its lit edge): what the stamp moves
+  const wellRef = useRef<SVGGElement>(null);
+  const stampRef = useRef<SVGGElement>(null);
   const foilRef = useRef<SVGRectElement>(null);
   const night = useNight(ref);
   const id = useId().replace(/:/g, '');
@@ -34,28 +42,30 @@ export function Mark({ size = 32, variant = 'full', animate = 'hover', label, cl
     </svg>
   );
 
+  const impression = () => [wellRef.current, stampRef.current].filter((el): el is SVGGElement => typeof el?.animate === 'function');
+
+  const glint = (delay: number) =>
+    foilRef.current?.animate?.([{ opacity: 0, translate: '0px 0px' }, { opacity: 1, offset: 0.2 }, { opacity: 0, translate: '150px 0px' }], { duration: 900, delay, easing: 'ease-in-out' });
+
   const press = () => {
-    const seal = sealRef.current;
-    if (reduced || !seal || typeof seal.animate !== 'function') return;
-    seal.animate([{ scale: 1 }, { scale: 0.9, offset: 0.3 }, { scale: 1.04, offset: 0.65 }, { scale: 1 }], { duration: 520, easing: 'ease-out' });
-    foilRef.current?.animate?.([{ opacity: 0, translate: '0px 0px' }, { opacity: 1, offset: 0.2 }, { opacity: 0, translate: '150px 0px' }], { duration: 900, delay: 260, easing: 'ease-in-out' });
+    const parts = impression();
+    if (reduced || !parts.length) return;
+    parts.forEach((el) => el.animate(PRESS, { duration: 520, easing: 'ease-out' }));
+    glint(260);
   };
 
-  useEffect(() => {
-    const seal = sealRef.current;
-    if (animate !== 'mount' || reduced || !seal || typeof seal.animate !== 'function') return;
-    // The wax drops onto the page, then the seal is pressed
-    const drop = seal.animate(
-      [{ scale: 0.2, opacity: 0, translate: '0 -18%' }, { scale: 1.1, opacity: 1, translate: '0 0', offset: 0.55 }, { scale: 0.94, offset: 0.78 }, { scale: 1 }],
-      { duration: 900, delay: 300, easing: 'cubic-bezier(.3,.7,.3,1)', fill: 'backwards' },
-    );
-    const t = window.setTimeout(press, 1250);
+  // On mount the wax is already there; the mark is stamped into it. Started
+  // before the first paint, so the mark never shows before it's pressed.
+  useLayoutEffect(() => {
+    const parts = impression();
+    if (animate !== 'mount' || reduced || !parts.length) return;
+    const stamped = parts.map((el) => el.animate(FIRST_PRESS, { duration: 620, delay: 300, easing: 'cubic-bezier(.3,.7,.3,1)', fill: 'backwards' }));
+    const shine = glint(820);
     return () => {
-      drop.cancel();
-      window.clearTimeout(t);
+      stamped.forEach((a) => a.cancel());
+      shine?.cancel();
     };
-    // press reads refs only; run once per mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // impression and glint read refs only: once per mount
   }, [animate, reduced]);
 
   return (
@@ -68,7 +78,7 @@ export function Mark({ size = 32, variant = 'full', animate = 'hover', label, cl
       aria-label={label}
       aria-hidden={label ? undefined : true}
     >
-      <span ref={sealRef} className={styles.seal}>
+      <span className={styles.seal}>
         <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
           <defs>
             <radialGradient id={`${id}w`} cx="38%" cy="32%" r="75%">
@@ -98,24 +108,28 @@ export function Mark({ size = 32, variant = 'full', animate = 'hover', label, cl
           </defs>
           <path d={WAX} fill={`url(#${id}w)`} />
           {small ? (
-            <>
+            <g ref={stampRef} className={styles.stamp}>
               <circle cx="50" cy="50" r={RING} className={styles.well} />
               <circle cx="50" cy="50" r={RING} className={styles.ring} />
               {pressed(styles.light, 0)}
-            </>
+            </g>
           ) : (
             <>
               <path d={WAX} fill="none" stroke={`url(#${id}l)`} strokeWidth="5" clipPath={`url(#${id}e)`} />
-              <circle cx="50" cy="50" r={RING} className={styles.wellPoured} />
-              <circle cx="50" cy="50" r={RING} fill="none" stroke={`url(#${id}b)`} strokeWidth="2.6" />
+              <g ref={wellRef} className={styles.stamp}>
+                <circle cx="50" cy="50" r={RING} className={styles.wellPoured} />
+                <circle cx="50" cy="50" r={RING} fill="none" stroke={`url(#${id}b)`} strokeWidth="2.6" />
+              </g>
               <ellipse
                 cx={SHEEN.cx} cy={SHEEN.cy} rx={SHEEN.rx} ry={SHEEN.ry}
                 transform={`rotate(${SHEEN.rotate} ${SHEEN.cx} ${SHEEN.cy})`}
                 filter={`url(#${id}s)`} className={styles.sheen}
               />
               {(px === null || px >= GRAIN_PX) && <rect width="100" height="100" filter={`url(#${id}g)`} clipPath={`url(#${id}e)`} className={styles.grain} />}
-              {pressed(styles.lit, box.lit)}
-              {pressed(styles.art, 0)}
+              <g ref={stampRef} className={styles.stamp}>
+                {pressed(styles.lit, box.lit)}
+                {pressed(styles.art, 0)}
+              </g>
             </>
           )}
         </svg>

@@ -35,6 +35,18 @@ describe('TextReveal (grow and gather)', () => {
     expect(screen.getByRole('button', { name: 'New on the shelf' })).toBeInTheDocument();
   });
 
+  it('hides a mount or view title from its first paint until it plays (not a hover one, not with reduced motion)', () => {
+    const base = (c: HTMLElement) => c.querySelector('h2 > span[aria-hidden="true"]');
+    const view = render(<TextReveal as="h2" text="Special editions" trigger="view" />);
+    expect(base(view.container)).toHaveClass('waiting');
+    view.unmount();
+    const hover = render(<TextReveal as="h2" text="Special editions" trigger="hover" />);
+    expect(base(hover.container)).not.toHaveClass('waiting');
+    hover.unmount();
+    const still = render(<ThemeProvider reducedMotion effects={false}><TextReveal as="h2" text="Special editions" trigger="mount" /></ThemeProvider>);
+    expect(base(still.container)).not.toHaveClass('waiting');
+  });
+
   it("is the title effect of core's components", () => {
     const { container } = render(<ThemeProvider effects={false}><Panel title="Special editions">x</Panel></ThemeProvider>);
     expect(container.querySelector('h2 [aria-hidden="true"]')).toHaveTextContent('Special editions');
@@ -58,6 +70,18 @@ describe('Mark (the seal)', () => {
     expect(gloss(container)).toBe(0);
     rerender(<Mark size={64} variant="simplified" />);
     expect(gloss(container)).toBe(0);
+  });
+
+  it('presses only the impression: the mark and its well move, the wax stays put', () => {
+    const full = '<svg viewBox="0 0 10 10"><path d="M3 3H7V7H3Z"/></svg>';
+    for (const size of [64, 24]) {
+      const { container, unmount } = render(<MarkProvider mark={{ full }}><Mark size={size} /></MarkProvider>);
+      expect(container.querySelectorAll('.stamp path[d="M3 3H7V7H3Z"]').length).toBe(size > 40 ? 2 : 1);
+      expect(container.querySelectorAll('.stamp circle').length).toBeGreaterThan(0);
+      // The wax body and its lip are never inside a moving group
+      expect(container.querySelectorAll('.stamp path[fill]').length).toBe(0);
+      unmount();
+    }
   });
 
   it('draws the simplified artwork on a small seal', () => {

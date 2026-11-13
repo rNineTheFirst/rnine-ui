@@ -58,7 +58,7 @@ export const Seal: Story = {
       <Mark size={24} />
     </div>
   ),
-  parameters: { docs: { description: { story: 'The app’s mark pressed into poured wax (two fireflies circle it at night). Hover to press it again: a squash and a foil glint. `animate="mount"` drops the wax first. At 40 px and below it’s the small seal: no gloss, the mark’s simplified version, smaller and lighter.' } } },
+  parameters: { docs: { description: { story: 'The app’s mark pressed into poured wax (two fireflies circle it at night). The wax stays put; only the mark is stamped into it. Hover to press it in again (deeper, then back, then a foil glint). `animate="mount"` stamps the mark into the poured wax. At 40 px and below it’s the small seal: no gloss, the mark’s simplified version, smaller and lighter.' } } },
 };
 
 function Swap() {
