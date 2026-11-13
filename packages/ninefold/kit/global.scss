@@ -1,0 +1,8 @@
+@use "@rnine/ninefold/scss" as r9;
+
+// No band painted above the header here: the paper is body::before/::after
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(#{r9.$header-height} + env(safe-area-inset-top, 0px));
+  @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
+}

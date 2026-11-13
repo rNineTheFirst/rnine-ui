@@ -9,6 +9,9 @@
 //   theme.json                  { name, moods: { light: { id, label }, dark: { id, label } }, auto }
 //                               optional "fonts": [{ id, family, weight, style?, src }], the woff2
 //                               files static pages and emails serve themselves (src: a package path)
+//                               optional "tagline" (one line on what it's for) and "monogram" (a
+//                               package path to an SVG with filled paths): core's sites show them
+//                               on the theme's card (core/site/themes.mjs)
 //   tokens/*.json               primitives and scales
 //   tokens/themes/light.json    the light mood's roles (one "theme" group)
 //   tokens/themes/dark.json     the dark mood's roles, the same names

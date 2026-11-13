@@ -1,6 +1,6 @@
 # @rnine/core
 
-**Docs and every component, live: [ui.rnine.dev](https://ui.rnine.dev)** (Storybook)
+**Docs and every component, live: [ui.rnine.dev](https://ui.rnine.dev)** (Storybook: the core components in Plain, and every theme one click away)
 
 The shared core of the design system libraries. Every library (like
 [`@rnine/nineos`](../nineos)) is built on it and exports everything it exports, with
@@ -134,7 +134,24 @@ yarn workspace @rnine/core test     # component tests, Plain's contrast and keyf
 yarn workspace @rnine/core build    # tokens, then vite build, types, styles.css
 ```
 
-Its stories show in the NineOS Storybook (`yarn workspace @rnine/nineos storybook`).
+Its stories show in its own Storybook, in Plain (`yarn workspace @rnine/core storybook`, port 6008),
+and in every library's Storybook in that library's look.
+
+## Its own sites (`site/`, not in the npm package)
+
+- **Storybook** (`.storybook/`, `site/docs/`): opens with a card per theme (each package next to
+  core with a `theme.json`), then core's components in Plain.
+- **Brand kit** (`site/kit/`, `yarn workspace @rnine/core build-kit` to `site/dist/`): the same
+  theme cards first, then the contract every theme keeps (color roles, moods, shared shapes,
+  effects by role, components, how to build a theme, downloads, contrast).
+- **Kit shell** (`site/shell/`, built by `site/kit-config.ts`'s `defineKit`): what every library's
+  brand kit shares (header, theme cards, color and contrast tables, copy buttons), styled only by
+  tokens and the shared mixins. In a library's kit (`packages/<id>/kit`), the shell's `@rnine/core`
+  imports become that library's own versions (its `Mark`, `Card`...).
+
+`site/themes.mjs` reads the themes (their `theme.json` `name`, `tagline` and optional `monogram`,
+and their mood colors from their tokens) and a host's own settings (mark, favicons, where the kits
+and Storybooks are hosted); the sites link to each theme at `./<package folder>/`.
 
 ## Build output
 

@@ -15,7 +15,9 @@
     "boundary": "node scripts/boundary.mjs",
     "smoke": "node scripts/smoke.mjs",
     "storybook": "yarn workspace @rnine/nineos storybook",
-    "build-storybook": "yarn workspace @rnine/nineos build-storybook && yarn workspace @rnine/ninefold build-storybook",
-    "storybook:ninefold": "yarn workspace @rnine/ninefold storybook"
+    "build-storybook": "yarn workspace @rnine/core build-storybook && yarn workspace @rnine/nineos build-storybook && yarn workspace @rnine/ninefold build-storybook",
+    "storybook:ninefold": "yarn workspace @rnine/ninefold storybook",
+    "build-kit": "yarn workspace @rnine/core build-kit && yarn workspace @rnine/ninefold build-kit",
+    "storybook:core": "yarn workspace @rnine/core storybook"
   }
 }

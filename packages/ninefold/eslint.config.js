@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'storybook-static', '.cloudflare', '**/*.timestamp-*', '!.storybook']),
+  globalIgnores(['dist', 'storybook-static', 'kit/dist', '.cloudflare', '**/*.timestamp-*', '!.storybook']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -27,7 +27,7 @@ export default defineConfig([
   },
   {
     // Library entry points, hooks, stories and tests export more than components
-    files: ['src/index.ts', 'src/motion.ts', 'src/kit.ts', 'src/hooks/**', 'src/**/*.stories.tsx', 'src/**/*.test.{ts,tsx}', 'src/test/**', '.storybook/**', 'src/provider/**', 'src/fx/**'],
+    files: ['src/index.ts', 'src/motion.ts', 'src/kit.ts', 'src/hooks/**', 'src/**/*.stories.tsx', 'src/**/*.test.{ts,tsx}', 'src/test/**', '.storybook/**', 'kit/**', 'src/example/**', 'src/provider/**', 'src/fx/**'],
     rules: { 'react-refresh/only-export-components': 'off' },
   },
 ])

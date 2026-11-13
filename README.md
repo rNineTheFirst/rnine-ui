@@ -1,6 +1,6 @@
 # Design system libraries
 
-**Docs and every component, live: [ui.rnine.dev](https://ui.rnine.dev)** (Storybook)
+**Docs and every component, live: [ui.rnine.dev](https://ui.rnine.dev)** (Storybook: the core components in Plain, and every theme one click away)
 
 Open-source design system libraries for React, MIT licensed. Each library is a complete
 component library with its own look; they all export the same components, effects and

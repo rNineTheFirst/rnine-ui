@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ThemeCards } from '../shell';
+
+<Meta title="Introduction" />
+
+# Pick a theme
+
+Every theme is a full component library on the same core: the same components, props and tokens, each in its own look. Open one to see its components, motion and brand guide.
+
+<div className="sb-unstyled" style={{ marginBlock: "24px 48px" }}>
+  <ThemeCards themes={__SITE__.themes} site="docs" otherUrl={__SITE__.brandUrl} target="_top" />
+</div>
+
+## What this Storybook shows
+
+`@rnine/core` is the shared core under every theme: the components they all have, the mood and motion engine, the SCSS API and the token build tool. Here its components are in **Plain**, core's own placeholder look (neutral grays, one blue accent), so you can see each one without a theme's styling.
+
+```sh
+npm install @rnine/core react react-dom
+```
+
+```tsx
+import '@rnine/core/fonts.css';
+import '@rnine/core/styles.css';
+import { ThemeProvider, Button } from '@rnine/core';
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <Button>Hello</Button>
+    </ThemeProvider>
+  );
+}
+```
+
+An app picks a theme by installing that library instead (`@rnine/nineos`, `@rnine/ninefold`): its imports stay the same, because every library exports core's names with the same props.
+
+## Moods
+
+Every theme has two moods, kept on `<html data-scheme="light|dark">`. Each theme names its own (Plain: Light and Dark). Switch them with the toolbar above.
+
+## Building a theme
+
+A theme is a package next to core with its own tokens, a `theme.json` and its versions of the role effects (`TextReveal`, `Backdrop`, `Mark`, `PageEffects`, `swapIn`/`swapOut`). `@rnine/core/kit` has what a library needs, and `@rnine/core/conformance` checks that it has every name core has. The brand kit covers each step.

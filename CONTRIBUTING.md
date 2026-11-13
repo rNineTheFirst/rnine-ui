@@ -26,6 +26,7 @@ yarn lint
 yarn build
 yarn test
 yarn build-storybook
+yarn build-kit     # core's brand kit (the theme picker)
 ```
 
 CI runs the same steps on every pull request, and they must pass before it's merged.

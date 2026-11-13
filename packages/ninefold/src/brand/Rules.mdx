@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Brand/Rules" />
+
+# Ninefold: the rules for building
+
+The whole brand guide (the moods and color with contrast, type, shape and paper, the seal,
+motion with live demos, voice, do and don't, a sample bookshop, the tokens and the seal to
+download) is the brand kit{__KIT_URL__ ? <>: <a href={__KIT_URL__} target="_top">open the brand kit</a></> : <>, in the package's <code>kit/</code> folder (<code>yarn workspace @rnine/ninefold dev-kit</code>)</>}.
+These are the rules to keep in mind while you build.
+
+## Color
+
+- Use the mood roles (`r9.$accent`, `--r9-surface`...), never raw colors. Both moods are complete.
+- **Ink** (the accent) is for what you do: one inked main action per view, the selected
+  stop, focus rings, the pen line under a link.
+- **Wax** (the signal) is for what's live: stock, a date that matters, the seal. Never a
+  second brand color.
+- Ninefold's own roles (`r9.$wax`, `$lining`, `$ink-wet`, `$mote`, `$leaf`, `$star`, `$light`...)
+  come through `@rnine/ninefold/scss`; a new one goes in its `@forward ... show` list.
+
+## Shape and paper
+
+- `@include r9.corner($size)`: soft corners (`sm` 6px, `md` 12px, `lg` 18px). Nothing is cut.
+- **Only cards fold** (`r9.card-corner(lg)`, or `Card` / `TiltCard`): never buttons, chips or images.
+- Hairline edges. The only shadows are under a fold and under a letter.
+- The paper is `body::before`/`::after`: don't give both `html` and `body` a background,
+  or a full-size wrapper one, or it covers the paper.
+
+## Type
+
+- Fraunces for headings, Literata for reading, Courier Prime for labels (uppercase, tracked),
+  Pinyon Script for a signature or a flourish, **never running text**.
+- Use the type roles (`@include r9.type(h2)`), not raw sizes.
+
+## Motion
+
+- The tuned values are the defaults: don't pass new ones without a reason.
+- Effects answer the person or drift slowly; content never waits on them; all of it stops
+  for reduced motion; effects never take clicks.
+- `HeroLight` needs its hero positioned but not a stacking context. `Ink` is opt-in.
+
+## Voice
+
+Warm, plain and specific. Say what the thing is ("Signed, sprayed edges, ships in January"),
+not how magical it is. Instructions stay plain.
+
+## Accessibility
+
+Every text role meets WCAG 2.2 AA on its surfaces in both moods (the tests check). Status
+is never color alone. The lantern trail is a tab list with arrow keys.

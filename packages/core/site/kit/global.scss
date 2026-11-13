@@ -1,0 +1,17 @@
+@use "@rnine/core/scss" as r9;
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(#{r9.$header-height} + env(safe-area-inset-top, 0px));
+  @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
+}
+
+// Paint the band above the sticky header on phones with a notch
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: calc(#{r9.$z-sticky} + 1);
+  background: r9.$bg;
+}

@@ -7,7 +7,7 @@
 //     "mark": "assets/mark.svg",                  Mark artwork (SVG, filled paths)  
 //     "simplifiedMark": "assets/mark-small.svg",  optional, for 24px and below
 //     "icons": "assets",                          folder with favicon.svg (and apple-touch-icon.png)
-//     "brandUrl": "https://example.com"           where the sidebar title links
+//     "brandUrl": "https://example.com"           where the brand kits are hosted: the sidebar title links to NineOS's at nineos/
 //   }
 //
 // Without one, Storybook shows the placeholder mark and favicon (static/).
@@ -43,7 +43,7 @@ function load(): Identity {
     mark: config.mark ? { full: read(config.mark)!, simplified: read(config.simplifiedMark) } : undefined,
     icons,
     appleTouchIcon: existsSync(join(icons, 'apple-touch-icon.png')),
-    brandUrl: config.brandUrl,
+    brandUrl: config.brandUrl ? new URL('nineos/', config.brandUrl.replace(/\/?$/, '/')).href : undefined,
   };
 }
 

@@ -65,12 +65,14 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs && vite build && tsc -p tsconfig.build.json && node scripts/build.mjs --bundle",
-    "dev": "storybook dev -p 6007 --no-open",
-    "storybook": "storybook dev -p 6007",
+    "build-kit": "tsc -p kit/tsconfig.json && vite build -c kit/vite.config.ts",
     "build-storybook": "storybook build -o storybook-static --quiet",
+    "dev": "storybook dev -p 6007 --no-open",
+    "dev-kit": "vite -c kit/vite.config.ts",
+    "storybook": "storybook dev -p 6007",
     "lint": "eslint .",
     "test": "vitest run && node --test \"test/**/*.test.mjs\"",
-    "clean": "rimraf dist storybook-static node_modules"
+    "clean": "rimraf dist storybook-static kit/dist node_modules"
   },
   "peerDependencies": {
     "react": "^19.0.0",

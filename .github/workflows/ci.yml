@@ -49,5 +49,8 @@ jobs:
       - name: Installs and builds from the packed tarballs
         run: yarn smoke
 
-      - name: Storybook builds
+      - name: Storybooks build
         run: yarn build-storybook
+
+      - name: Brand kit builds
+        run: yarn build-kit

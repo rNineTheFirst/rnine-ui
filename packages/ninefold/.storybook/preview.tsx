@@ -4,7 +4,7 @@ import { MarkProvider } from '@rnine/core';
 import { ThemeConfigProvider } from '@rnine/core/kit';
 import { NINEFOLD_THEME } from '../src/provider/ThemeProvider';
 import { PageEffects } from '../src/motion/PageEffects';
-import { BOOK_MARK } from './book';
+import { BOOK_MARK } from '../src/example/book';
 // What styles.css bundles, from source where it can be (so edits reload)
 import '../fonts.css';
 import '../dist/tokens.css';
@@ -37,7 +37,7 @@ const preview: Preview = {
     backgrounds: { disable: true },
     a11y: { test: 'error' },
     options: {
-      storySort: { order: ['Introduction', 'Brand', ['Principles', 'Color', 'Type', 'Shape and paper', 'Motion'], 'Example', 'Components', 'Motion'] },
+      storySort: { order: ['Introduction', 'Brand', 'Example', 'Components', 'Motion'] },
     },
   },
 };

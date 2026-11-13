@@ -1,0 +1,200 @@
+@use "@rnine/core/scss" as r9;
+
+.app {
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+.skip {
+  position: absolute;
+  left: r9.$space-4;
+  top: -100px;
+  z-index: r9.$z-modal;
+  padding: r9.$space-3 r9.$space-4;
+  background: r9.$accent;
+  color: r9.$on-accent;
+  @include r9.type(label);
+
+  &:focus { top: calc(env(safe-area-inset-top, 0px) + #{r9.$space-3}); }
+}
+
+.hero {
+  padding-block: r9.$space-12 r9.$space-16;
+  border-bottom: r9.$border-hair solid r9.$line;
+  @include r9.up(md) { padding-block: r9.$space-16 r9.$space-20; }
+}
+
+.heroTitle { @include r9.type(display); margin: 0; text-wrap: balance; }
+
+.lede {
+  @include r9.type(body-lg);
+  color: r9.$fg-muted;
+  max-width: r9.$container-text;
+  margin: 0;
+}
+
+.h3 { @include r9.type(h4); margin: 0; }
+.muted { color: r9.$fg-muted; margin: 0; }
+
+.grid2, .grid3 {
+  display: grid;
+  gap: r9.$space-6;
+  grid-template-columns: 1fr;
+  > * { min-width: 0; }
+}
+
+.grid2 { @include r9.up(md) { grid-template-columns: repeat(2, 1fr); } }
+.grid3 {
+  @include r9.up(md) { grid-template-columns: repeat(2, 1fr); }
+  @include r9.up(lg) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.code {
+  margin: 0;
+  padding: r9.$space-5;
+  background: r9.$surface;
+  @include r9.hairline;
+  overflow-x: auto;
+  @include r9.type(code);
+}
+
+// Shared shapes, as Plain draws them
+.mixin {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+
+  code { @include r9.type(code); color: r9.$accent-text; }
+}
+
+%demo {
+  position: relative;
+  height: 96px;
+  background: r9.$surface;
+  margin-bottom: r9.$space-2;
+}
+
+.corner { @extend %demo; @include r9.corner(lg); }
+.cardCorner { @extend %demo; @include r9.card-corner; }
+.ornament {
+  @extend %demo;
+  display: grid;
+  place-items: center;
+  &::before { @include r9.ornament(10px); }
+}
+.cornerOrnament {
+  @extend %demo;
+  @include r9.corner(lg, tr);
+  &::after { @include r9.corner-ornament; }
+}
+.cardOrnament {
+  @extend %demo;
+  @include r9.card-corner;
+  &::after { @include r9.card-ornament; }
+}
+.texture { @extend %demo; @include r9.texture(field); }
+
+// Effects stage
+.stage {
+  position: relative;
+  min-height: 260px;
+  background: r9.$surface;
+  @include r9.hairline;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.stageContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: r9.$space-4;
+  padding: r9.$space-8;
+}
+
+.stageTitle { @include r9.type(h3); margin: 0; }
+
+.tableWrap { overflow-x: auto; max-width: 100%; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  @include r9.type(body-sm);
+
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    padding: r9.$space-3 r9.$space-4 r9.$space-3 0;
+    border-bottom: r9.$border-hair solid r9.$line;
+  }
+
+  thead th { @include r9.type(label); color: r9.$fg-muted; }
+  tbody th { font-weight: inherit; white-space: nowrap; }
+}
+
+.hidden { @include r9.visually-hidden; }
+
+.catalog {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: r9.$space-3 r9.$space-6;
+
+  li { padding-block: r9.$space-2; border-bottom: r9.$border-hair solid r9.$line; }
+  a { color: r9.$fg; text-decoration-color: r9.$accent; text-underline-offset: 3px; }
+  a:hover { color: r9.$accent-text; }
+}
+
+.steps {
+  margin: 0;
+  padding-left: r9.$space-6;
+  display: grid;
+  gap: r9.$space-4;
+  max-width: r9.$container-text;
+
+  li::marker { color: r9.$accent-text; @include r9.type(label); }
+  code { @include r9.type(code); }
+}
+
+.download {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+  padding: r9.$space-5;
+  background: r9.$surface;
+  @include r9.hairline;
+  @include r9.card-corner(md);
+  color: r9.$fg;
+  text-decoration: none;
+
+  b { color: r9.$accent-text; }
+  &:hover { @include r9.hairline(r9.$accent); }
+  &:focus-visible { @include r9.focus-ring; }
+}
+
+.footer {
+  padding-block: r9.$space-10 r9.$space-16;
+}
+
+.footInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: r9.$space-4 r9.$space-8;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+
+  a { color: r9.$accent-text; }
+}
+
+.footBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-3;
+  color: r9.$fg;
+}

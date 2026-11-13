@@ -1,5 +1,6 @@
 {
   "name": "NineOS",
+  "tagline": "A command line with GUI panels: cut corners, one magenta accent, decoding titles and a reactive dot field.",
   "moods": {
     "light": { "id": "clear", "label": "Clear", "description": "The light mood: white, ink, magenta." },
     "dark": { "id": "cipher", "label": "Cipher", "description": "The dark mood: near-black, neon magenta, scanlines." }

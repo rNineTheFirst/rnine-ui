@@ -34,6 +34,8 @@ its own pieces:
 yarn workspace @rnine/ninefold storybook          # Storybook on http://localhost:6007 (Ninefold and core stories)
 yarn workspace @rnine/ninefold test               # component and conformance tests
 yarn workspace @rnine/ninefold build-storybook    # static Storybook in storybook-static/
+yarn workspace @rnine/ninefold dev-kit            # the brand kit on http://localhost:5177 (kit/)
+yarn workspace @rnine/ninefold build-kit          # the brand kit in kit/dist/
 ```
 
 ## Use it in an app
