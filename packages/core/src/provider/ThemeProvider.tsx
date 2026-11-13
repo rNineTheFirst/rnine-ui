@@ -5,6 +5,7 @@ import { applyMotion } from '../hooks/motionSetting';
 import { PageEffects } from '../motion/PageEffects';
 import { TextReveal, type TextRevealProps } from '../motion/TextReveal';
 import { MarkProvider, type MarkArtwork } from './mark';
+import type { CardLift } from '../hooks/cardLift';
 
 /** The effects core components draw with: each library brings its own. */
 export type ThemeSlots = {
@@ -21,6 +22,8 @@ export type ThemeConfig = {
   moods: MoodNames;
   auto: AutoRule;
   slots: ThemeSlots;
+  /** Cards lift their cut corner toward the pointer (TiltCard, useCardLift). Default: off. */
+  lift?: CardLift;
 };
 
 /** Plain, core's own look: the placeholder every library starts from. Matches theme.json (a test checks). */

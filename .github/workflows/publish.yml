@@ -1,6 +1,6 @@
 # Publishes the libraries to npm when main has a version that isn't there yet
 # (scripts/publish.mjs): build, test and the install smoke test first, then
-# core, then nineos, each tagged with a GitHub Release. Run it by hand to tag
+# core, then the libraries (nineos, ninefold), each tagged with a GitHub Release. Run it by hand to tag
 # anything on npm that isn't tagged yet.
 #
 # npm Trusted Publishing: no npm token is stored anywhere. Each package on

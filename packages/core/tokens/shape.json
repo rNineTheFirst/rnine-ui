@@ -17,7 +17,7 @@
   },
   "shape": {
     "$type": "number",
-    "$description": "How corner() draws a corner: the cut (a 45° chamfer) and the rounding, each a multiple of the corner size.",
+    "$description": "How corner() draws a corner: the cut (a 45° chamfer) and the rounding, each a multiple of the corner size. Cards cut by card-cut instead.",
     "cut": {
       "$value": 0,
       "$description": "Plain: no cut corners"
@@ -25,6 +25,10 @@
     "round": {
       "$value": 0.6,
       "$description": "Plain: corners round to 0.6x their size"
+    },
+    "card-cut": {
+      "$value": 0,
+      "$description": "Cards only (card-corner): the top-right cut, a multiple of the card's corner size. Plain: none"
     }
   },
   "radius": {

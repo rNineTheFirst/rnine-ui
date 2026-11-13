@@ -17,7 +17,8 @@ What's in it:
   `<html data-scheme="light|dark">`, saved in the browser and optionally shared across
   subdomains, with a first-paint boot script.
 - **The SCSS API**: tokens as variables, `type()`, `up()`/`down()`, `corner()`,
-  `ornament()`, `corner-ornament()`, `texture()`, `hairline()`, `glass()`, `focus-ring()`,
+  `card-corner()`, `ornament()`, `corner-ornament()`, `card-ornament()`, `texture()` (dots,
+  grid, scanlines, paper fibers and grain), `hairline()`, `glass()`, `focus-ring()`,
   `keyframes()`, ...
 - **The token build tool** (`@rnine/core/build-tokens`) and **conformance checks**
   (`@rnine/core/conformance`) for building a library of your own.
@@ -81,6 +82,7 @@ import { Backdrop, Magnet, TextReveal } from '@rnine/core/motion';
 | `@rnine/core/styles.css` | Plain's tokens, base styles and every component's styles (one file) |
 | `@rnine/core/scss` | The SCSS API, with Plain's tokens |
 | `@rnine/core/tokens` | Plain's tokens as data |
+| `@rnine/core/pages` | Static pages in Plain's look, for where React doesn't run (Workers, Node): `statusPage`, `emailLayout`, `emailTheme`, `markIcon`, `moodBootScript`, `themeColorMeta`, `pageFonts`; `createPages` for a library |
 | `@rnine/core/kit` | For building a library: `ThemeRoot`, `ThemeConfigProvider`, `MarkArt`, `cx`, ... |
 | `@rnine/core/build-tokens` | The token build tool (Node) |
 | `@rnine/core/conformance` | Contract and contrast checks for a library's tests (Node) |
@@ -98,7 +100,13 @@ effects, and any components of its own. See [`@rnine/nineos`](../nineos) for a c
 - `src/index.ts`: `export * from '@rnine/core'`, then its own `ThemeProvider`
   (`<ThemeRoot config={...} />` from `@rnine/core/kit`), `Mark`, `moodBootScript`, and
   its additions. `src/motion.ts` likewise over `@rnine/core/motion`.
-- Tests: `contractProblems`, `contrastChecks` and `missingExports` from
+- `src/pages.ts`: `export * from '@rnine/core/pages'`, then its own
+  `createPages({ tokens, css: tokensCss + PAGE_CSS, reveal })` (tokens and `css` from its
+  own `/tokens` export; `reveal`: optional inline JS for the title effect). The fonts its
+  static pages serve go in `theme.json` `fonts` (`id`, `family`, `weight`, `src`: a woff2
+  package path).
+- Tests: `contractProblems`, `contrastChecks` and `missingExports` (for `.`, `/motion` and
+  `/pages`) from
   `@rnine/core/conformance`.
 
 ## Add a component to core

@@ -1,0 +1,44 @@
+// Ninefold's own mixins. Output nothing until included.
+@use "../dist/variables" as t;
+
+// A hand-drawn pen stroke with an ink drop at its end, used as a mask
+$_pen: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6.5C20 3.6 38 8 57 5.2S88 3.8 98 4.6' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Ccircle cx='98.4' cy='4.6' r='1.5'/%3E%3C/svg%3E");
+
+/// The pen underline: on hover, keyboard focus or aria-current, a pen stroke
+/// draws itself under the element, left to right, and ends in an ink drop.
+/// Uses the element's ::after (and makes it position: relative).
+@mixin pen-underline($color: t.$accent, $speed: 500ms) {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -3%;
+    bottom: -0.34em;
+    width: 106%;
+    height: 0.62em;
+    background: $color;
+    -webkit-mask-image: $_pen;
+    mask-image: $_pen;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path $speed t.$easing-in-out;
+    pointer-events: none;
+  }
+
+  &:hover::after,
+  &:focus-visible::after,
+  &[aria-current]:not([aria-current="false"])::after { clip-path: inset(0 -2% 0 0); }
+}
+
+/// A drop of sealing wax: Ninefold's ornament where it should look like wax
+/// rather than ink (lantern stops, the selected tab's mark).
+@mixin wax-drop($size: 10px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, t.$wax-light 0 18%, t.$wax 48%, t.$wax-dark 100%);
+}

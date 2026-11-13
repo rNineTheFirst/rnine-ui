@@ -1,0 +1,94 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.mark {
+  position: relative;
+  display: inline-block;
+  flex: none;
+
+  svg { display: block; overflow: visible; }
+}
+
+.back,
+.flies,
+.seal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// The sprig behind the seal
+.back path { fill: r9.$leaf; }
+
+.back .stem {
+  fill: none;
+  stroke: r9.$leaf;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.branch {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+}
+
+// The seal: wax, the pressed ring, the mark embossed, a foil glint
+.seal {
+  display: block;
+  transform-origin: 50% 50%;
+
+  > svg { width: 100%; height: 100%; }
+}
+
+.waxLight { stop-color: r9.$wax-light; }
+.wax { stop-color: r9.$wax; }
+.waxDark { stop-color: r9.$wax-dark; }
+
+.press { fill: r9.$wax-dark; opacity: 0.28; }
+
+.ring {
+  fill: none;
+  stroke: r9.$wax-dark;
+  stroke-width: 1.4;
+  opacity: 0.7;
+}
+
+.highlight,
+.art {
+  position: absolute;
+  left: 30%;
+  top: 30%;
+  width: 39%;
+  height: 39%;
+
+  svg { width: 100%; height: 100%; }
+}
+
+// The mark pressed into the wax: a dark impression with a lit edge
+.highlight { translate: 0.6% 0.6%; color: r9.$wax-light; opacity: 0.55; }
+.art { color: r9.$wax-dark; }
+
+.glint {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+}
+
+.foil { opacity: 0; }
+
+// Two fireflies circle the seal at night
+.flies circle {
+  fill: r9.$mote;
+  filter: drop-shadow(0 0 3px #{r9.$mote});
+}
+
+.orbit,
+.orbitBack {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  @include r9.motion-safe { animation: r9.keyframes(orbit) 7s linear infinite; }
+}
+
+.orbitBack { animation-duration: 11s; animation-direction: reverse; }

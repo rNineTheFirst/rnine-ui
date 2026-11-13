@@ -8,9 +8,10 @@
   },
   "shape": {
     "$type": "number",
-    "$description": "How corner() draws a corner: the cut (a 45° chamfer) and the rounding, each a multiple of the corner size.",
+    "$description": "How corner() draws a corner: the cut (a 45° chamfer) and the rounding, each a multiple of the corner size. Cards cut by card-cut instead.",
     "cut": { "$value": 1, "$description": "NineOS: corners are cut" },
-    "round": { "$value": 0, "$description": "NineOS: no rounding" }
+    "round": { "$value": 0, "$description": "NineOS: no rounding" },
+    "card-cut": { "$value": 1, "$description": "NineOS: cards cut like everything else" }
   },
   "radius": {
     "$type": "dimension",

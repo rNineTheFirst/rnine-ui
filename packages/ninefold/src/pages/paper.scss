@@ -1,0 +1,18 @@
+// Ninefold's static pages (after core's PAGE_CSS): its paper instead of the
+// dotted field, and Fraunces's soft, wonky shapes. Tokens only, no colors.
+@use "../../scss/index" as r9;
+
+:root { font-variation-settings: "SOFT" 100, "WONK" 1; }
+
+body { background-image: none; }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  @include r9.texture(fibers);
+}
+
+body::after { @include r9.texture(grain, $color: color-mix(in srgb, #{r9.$fg} 7%, transparent)); }

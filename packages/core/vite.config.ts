@@ -31,7 +31,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: { index: 'src/index.ts', motion: 'src/motion.ts', kit: 'src/kit.ts' },
+      entry: { index: 'src/index.ts', motion: 'src/motion.ts', kit: 'src/kit.ts', pages: 'src/pages.ts' },
       formats: ['es'],
       cssFileName: 'components',
     },
@@ -39,7 +39,8 @@ export default defineConfig({
     emptyOutDir: false,
     sourcemap: true,
     rollupOptions: {
-      external: [/^react($|\/)/, /^react-dom($|\/)/, /^lucide-react($|\/)/, /^dompurify($|\/)/],
+      // @rnine/core/tokens: the pages entry's own tokens (a self-reference, resolved where it runs)
+      external: [/^react($|\/)/, /^react-dom($|\/)/, /^lucide-react($|\/)/, /^dompurify($|\/)/, /^@rnine\/core\/tokens$/],
       output: {
         preserveModules: true,
         entryFileNames: outputName,

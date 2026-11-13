@@ -1,7 +1,7 @@
 {
   "name": "rnine-ui",
   "private": true,
-  "description": "Open-source design system libraries: @rnine/core (the shared core and the Plain look) and @rnine/nineos (NineOS), each a full component library with the same exports",
+  "description": "Open-source design system libraries: @rnine/core (the shared core and the Plain look), @rnine/nineos (NineOS) and @rnine/ninefold (Ninefold), each a full component library with the same exports",
   "license": "MIT",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
@@ -9,12 +9,13 @@
   ],
   "scripts": {
     "release:version": "node scripts/version.mjs",
-    "build": "yarn workspace @rnine/core build && yarn workspace @rnine/nineos build",
-    "lint": "yarn workspace @rnine/core lint && yarn workspace @rnine/nineos lint",
-    "test": "yarn workspace @rnine/core test && yarn workspace @rnine/nineos test",
+    "build": "yarn workspace @rnine/core build && yarn workspace @rnine/nineos build && yarn workspace @rnine/ninefold build",
+    "lint": "yarn workspace @rnine/core lint && yarn workspace @rnine/nineos lint && yarn workspace @rnine/ninefold lint",
+    "test": "yarn workspace @rnine/core test && yarn workspace @rnine/nineos test && yarn workspace @rnine/ninefold test",
     "boundary": "node scripts/boundary.mjs",
     "smoke": "node scripts/smoke.mjs",
     "storybook": "yarn workspace @rnine/nineos storybook",
-    "build-storybook": "yarn workspace @rnine/nineos build-storybook"
+    "build-storybook": "yarn workspace @rnine/nineos build-storybook && yarn workspace @rnine/ninefold build-storybook",
+    "storybook:ninefold": "yarn workspace @rnine/ninefold storybook"
   }
 }

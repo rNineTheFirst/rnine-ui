@@ -1,0 +1,181 @@
+{
+  "$description": "Ninefold primitive colors: honey paper, iron-gall ink and claret wax by day (Golden hour); walnut, rose and candle amber by night (Inkwell candlelight). Components use the mood roles in themes/*.json, never these.",
+  "color": {
+    "$type": "color",
+    "paper": {
+      "50": {
+        "$value": "#F6EBD3"
+      },
+      "100": {
+        "$value": "#EEDFC0"
+      },
+      "200": {
+        "$value": "#E6D3AE"
+      },
+      "300": {
+        "$value": "#D8C39C"
+      },
+      "500": {
+        "$value": "#8A7354"
+      },
+      "600": {
+        "$value": "#7E6B58"
+      },
+      "700": {
+        "$value": "#59483A"
+      },
+      "900": {
+        "$value": "#2B2018"
+      }
+    },
+    "ink": {
+      "500": {
+        "$value": "#22408E",
+        "$description": "Iron-gall ink"
+      },
+      "600": {
+        "$value": "#213E8A"
+      },
+      "700": {
+        "$value": "#1A3274"
+      },
+      "dry": {
+        "$value": "#5B4126",
+        "$description": "Ink once it has dried"
+      }
+    },
+    "claret": {
+      "300": {
+        "$value": "#C25674"
+      },
+      "400": {
+        "$value": "#B44A66"
+      },
+      "500": {
+        "$value": "#8A2140",
+        "$description": "Claret wax"
+      },
+      "600": {
+        "$value": "#7E1D3A"
+      },
+      "800": {
+        "$value": "#5E1229"
+      }
+    },
+    "walnut": {
+      "50": {
+        "$value": "#F1E6D4"
+      },
+      "300": {
+        "$value": "#BCAA94"
+      },
+      "500": {
+        "$value": "#8C7C6B"
+      },
+      "600": {
+        "$value": "#776555"
+      },
+      "800": {
+        "$value": "#3A2E26"
+      },
+      "850": {
+        "$value": "#2D241E"
+      },
+      "900": {
+        "$value": "#241C17"
+      },
+      "950": {
+        "$value": "#1B1511"
+      }
+    },
+    "rose": {
+      "200": {
+        "$value": "#F5A6B5"
+      },
+      "300": {
+        "$value": "#F3A3B3"
+      },
+      "400": {
+        "$value": "#EF8DA0"
+      },
+      "500": {
+        "$value": "#D45C78"
+      },
+      "600": {
+        "$value": "#A8344F"
+      },
+      "800": {
+        "$value": "#6E1B30"
+      }
+    },
+    "candle": {
+      "50": {
+        "$value": "#F7E3B5"
+      },
+      "100": {
+        "$value": "#FFDDA0"
+      },
+      "300": {
+        "$value": "#F2B65A",
+        "$description": "Candle amber"
+      },
+      "400": {
+        "$value": "#FFB05A"
+      },
+      "parchment": {
+        "$value": "#D9C3A0"
+      }
+    },
+    "gold": {
+      "300": {
+        "$value": "#FFDE96",
+        "$description": "Window light"
+      },
+      "500": {
+        "$value": "#B9862A"
+      },
+      "600": {
+        "$value": "#A07A2A"
+      },
+      "700": {
+        "$value": "#9A6A14"
+      }
+    },
+    "olive": {
+      "300": {
+        "$value": "#A9B27A",
+        "$description": "Sage, by night"
+      },
+      "600": {
+        "$value": "#5E6B2C",
+        "$description": "Olive, by day"
+      }
+    },
+    "moss": {
+      "300": {
+        "$value": "#A9C98A"
+      },
+      "700": {
+        "$value": "#3E5A1E"
+      }
+    },
+    "amber": {
+      "700": {
+        "$value": "#7A4A00"
+      }
+    },
+    "brick": {
+      "300": {
+        "$value": "#F59A8A"
+      },
+      "700": {
+        "$value": "#9B2A1C"
+      }
+    },
+    "cream": {
+      "0": {
+        "$value": "#FFF6E8"
+      }
+    }
+  }
+}

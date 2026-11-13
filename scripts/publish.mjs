@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Publishes the libraries whose version on main isn't on npm yet, core first,
-// and tags each version that's on npm (core@0.2.0, nineos@0.2.0) with a GitHub
+// and tags each version that's on npm (core@0.2.0, nineos@0.2.0, ninefold@0.2.0) with a GitHub
 // Release. Run by .github/workflows/publish.yml after build, test and smoke.
 //
 //   node scripts/publish.mjs              publish + tag (CI: npm Trusted Publishing)
@@ -12,8 +12,8 @@
 // core first, on npmjs.com or with npm stage approve, and the next run of this
 // script tags it.
 //
-// A release is a version bump: both packages share one version (nineos pins
-// core to it exactly), changed together in one commit (yarn release:version).
+// A release is a version bump: every package shares one version (each library
+// pins core to it exactly), changed together in one commit (yarn release:version).
 // A version with a hyphen (0.3.0-beta.1) goes out under the npm tag "next".
 //
 // A package that has never been on npm is skipped: npm Trusted Publishing can
@@ -28,7 +28,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dryRun = process.argv.includes('--dry-run');
 const stageMode = process.argv.includes('--stage');
 const inCI = process.env.GITHUB_ACTIONS === 'true';
-const ORDER = ['core', 'nineos']; // dependencies first
+const ORDER = ['core', 'nineos', 'ninefold']; // dependencies first
 
 // Runs a command and returns its exit status and both output streams. On
 // Windows npm and gh need a shell (npm is npm.cmd): one quoted command line.
@@ -64,7 +64,7 @@ const packages = ORDER.map((dir) => {
   return { dir, manifest, name: manifest.name, version: manifest.version, tag: `${dir}@${manifest.version}` };
 });
 
-// One version for all, and nineos built on exactly that core
+// One version for all, and every library built on exactly that core
 const [core] = packages;
 const problems = [];
 for (const pkg of packages) {

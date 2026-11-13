@@ -1,0 +1,12 @@
+/* Ninefold fonts, self-hosted through Fontsource (all open-licensed, SIL OFL).
+   Import once in the app, before styles.css:
+     import "@rnine/ninefold/fonts.css";
+     import "@rnine/ninefold/styles.css";
+   Fraunces is the full variable font (its SOFT and WONK axes too); Ninefold
+   sets them on :root (styles.css). */
+@import "@fontsource-variable/fraunces/full.css";
+@import "@fontsource-variable/fraunces/full-italic.css";
+@import "@fontsource-variable/literata/index.css";
+@import "@fontsource-variable/literata/wght-italic.css";
+@import "@fontsource/courier-prime/latin-400.css";
+@import "@fontsource/pinyon-script/latin-400.css";

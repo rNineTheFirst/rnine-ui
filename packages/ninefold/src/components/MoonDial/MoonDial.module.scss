@@ -1,0 +1,53 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.dial {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: r9.$space-2;
+}
+
+.art {
+  width: 100%;
+  max-width: 230px;
+  height: auto;
+  overflow: visible;
+}
+
+.arc { fill: none; stroke: r9.$line-strong; stroke-width: 1.2; stroke-dasharray: 2 5; }
+.tick { stroke: r9.$line-strong; stroke-width: 1.2; }
+.ground { fill: none; stroke: r9.$line-strong; stroke-width: 1.2; }
+.dark { fill: color-mix(in srgb, #{r9.$fg} 12%, transparent); }
+.lit { fill: r9.$signal; }
+.night .lit { fill: r9.$star; }
+.sun { fill: r9.$signal; }
+.ray { stroke: r9.$signal; stroke-width: 1.6; stroke-linecap: round; }
+.star { fill: r9.$star; }
+
+.label {
+  fill: r9.$fg-muted;
+  font-family: r9.$font-mono;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: r9.$space-1;
+  text-align: center;
+}
+
+.words {
+  font-family: r9.$font-script;
+  font-size: 1.875rem;
+  line-height: 1.1;
+  color: r9.$fg;
+}
+
+.sub {
+  @include r9.type(label);
+  color: r9.$fg-muted;
+}

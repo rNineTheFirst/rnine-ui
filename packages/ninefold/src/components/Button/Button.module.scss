@@ -1,0 +1,33 @@
+@use "@rnine/ninefold/scss" as r9;
+
+// Ninefold's variants over core's Button (this stylesheet comes after core's)
+
+// A quiet outlined button instead of the terminal prompt
+.secondary {
+  padding-inline: r9.$space-5;
+  font-family: r9.$font-body;
+  font-weight: r9.$font-weight-medium;
+  border-radius: r9.$corner-md;
+  box-shadow: inset 0 0 0 1.5px r9.$line-strong;
+
+  &::before { content: none; }
+  &:hover { box-shadow: inset 0 0 0 1.5px r9.$fg; }
+  &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px r9.$accent; }
+  &.sm { padding-inline: r9.$space-3; border-radius: r9.$corner-sm; }
+  &.lg { padding-inline: r9.$space-6; }
+}
+
+// Text that a pen underlines on hover (core's straight line is off)
+.ghost {
+  // The label is core's span ("…_label_…"); the pen draws under it
+  > span[class*="_label_"] {
+    background-image: none;
+    @include r9.pen-underline;
+  }
+
+  &:is(:hover, :focus-visible) > span[class*="_label_"]::after { clip-path: inset(0 -2% 0 0); }
+}
+
+.sm,
+.md,
+.lg { letter-spacing: 0.005em; }

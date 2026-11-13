@@ -8,6 +8,8 @@ export type { ThemeConfig, ThemeProviderProps, ThemeSlots } from './provider/The
 export { setMoodDefaults } from './hooks/mood';
 export { MarkArt } from './provider/mark';
 export { RevealOnce } from './hooks/motion';
+export { useCardLift } from './hooks/cardLift';
+export type { CardLift } from './hooks/cardLift';
 export { PanelStageContext } from './components/Panel/stageContext';
 export type { StageContextValue } from './components/Panel/stageContext';
 export { cx } from './utils/cx';

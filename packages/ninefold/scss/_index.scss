@@ -1,0 +1,8 @@
+// Ninefold for SCSS: the shared API (tokens, corner, ornament, texture, ...)
+// plus Ninefold's own roles and mixins (pen-underline, wax-drop). Outputs no CSS:
+//
+//   @use "@rnine/ninefold/scss" as r9;
+@forward "@rnine/core/scss";
+// Ninefold's roles beyond the shared ones (the shared ones come from core, the same custom properties)
+@forward "../dist/variables" show $font-script, $wax, $wax-dark, $wax-light, $lining, $lining-dark, $lining-light, $ink-wet, $ink-dry, $ink-glow, $mote, $mote-hot, $leaf, $bud, $star, $light;
+@forward "ninefold";

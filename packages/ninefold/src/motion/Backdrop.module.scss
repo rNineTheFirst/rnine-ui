@@ -1,0 +1,25 @@
+// The layer fills the nearest positioned parent; the canvas inside it is one
+// screen tall and sticks to the top, so a tall page costs one screen of pixels
+.layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.canvas {
+  position: sticky;
+  top: 0;
+  display: block;
+  width: 100%;
+  height: min(100%, 100vh);
+}
+
+// Page background: behind everything, never blocks scrolling
+.fixed {
+  position: fixed;
+  z-index: 0;
+  touch-action: pan-y;
+
+  .canvas { position: absolute; inset: 0; height: 100%; }
+}

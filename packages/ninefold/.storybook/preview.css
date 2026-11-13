@@ -1,0 +1,4 @@
+/* Stories sit on Ninefold's paper in both moods. Only body gets the background:
+   if html had one too, body's would paint over the paper (body::before/::after) */
+body { background: var(--r9-bg); color: var(--r9-fg); }
+.docs-story { background: var(--r9-bg) !important; }

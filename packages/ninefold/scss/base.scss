@@ -1,0 +1,45 @@
+// Ninefold's own global CSS, after core's base.css in styles.css: Fraunces's
+// soft, wonky shapes, the paper (fibers and grain behind the page) and the
+// keyframes only Ninefold uses.
+@use "index" as r9;
+
+// Fraunces, soft and a little wonky. Inherited; fonts without these axes ignore them.
+:root { font-variation-settings: "SOFT" 100, "WONK" 1; }
+
+// The paper: pressed fibers and a fine grain, fixed behind the page's content
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::before { @include r9.texture(fibers); }
+body::after { @include r9.texture(grain, $color: color-mix(in srgb, #{r9.$fg} 7%, transparent)); }
+
+// ---- Ninefold's keyframes (prefixed r9-) -------------------------------------
+
+// The candle's glow breathes; --r9-flicker (0 to 1) sets how much
+@keyframes r9-breathe {
+  0%, 100% { opacity: calc(1 - 0.44 * var(--r9-flicker, 0.5)); transform: scale(1); }
+  38% { opacity: 1; transform: scale(calc(1 + 0.08 * var(--r9-flicker, 0.5))); }
+  52% { opacity: calc(1 - 0.28 * var(--r9-flicker, 0.5)); }
+  70% { opacity: calc(1 - 0.08 * var(--r9-flicker, 0.5)); transform: scale(calc(1 + 0.04 * var(--r9-flicker, 0.5))); }
+}
+
+// Window light drifting across the morning
+@keyframes r9-window-drift {
+  from { translate: 0 0; }
+  to { translate: -4% 0; }
+}
+
+// Fireflies circling the seal at night
+@keyframes r9-orbit { to { rotate: 360deg; } }
+
+// The lantern swinging on the trail
+@keyframes r9-swing {
+  0%, 100% { rotate: -4deg; }
+  50% { rotate: 4deg; }
+}

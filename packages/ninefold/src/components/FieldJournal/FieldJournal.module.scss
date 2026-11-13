@@ -1,0 +1,53 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.journal {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.note {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 2px r9.$space-3;
+  padding: r9.$space-3 0;
+  overflow: hidden;
+  border-bottom: 1px dashed r9.$line-strong;
+
+  &:last-child { border-bottom: 0; }
+
+  svg {
+    grid-row: span 2;
+    width: 24px;
+    height: 24px;
+    margin-top: 2px;
+    color: r9.$leaf;
+  }
+}
+
+.when {
+  @include r9.type(label);
+  color: r9.$fg-muted;
+}
+
+// Written in a hand: Fraunces italic
+.text {
+  font-family: r9.$font-display;
+  font-style: italic;
+  font-size: 1.09375rem;
+  line-height: 1.45;
+  color: r9.$fg;
+}
+
+// A new note writes itself in, word by word
+@keyframes write {
+  from { opacity: 0; filter: blur(3px); }
+  to { opacity: 1; filter: none; }
+}
+
+.fresh > span {
+  @include r9.motion-safe { animation: write 500ms ease both; }
+}

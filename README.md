@@ -10,6 +10,7 @@ SCSS API with the same props, so an app switches from one to another by changing
 | --- | --- |
 | [`@rnine/core`](packages/core) | The shared core: the mood and motion engine, every component the libraries share (in Plain, a neutral placeholder look), the SCSS API (`corner`, `ornament`, `texture`, ...), the token build tool and the conformance checks. Usable on its own |
 | [`@rnine/nineos`](packages/nineos) | NineOS: two moods, Clear (light) and Cipher (dark), cut corners, magenta, and its own pieces: a command-line-plus-panels shell and the NineOS effects (decrypting text, a reactive dot field, the signal swap). Storybook included |
+| [`@rnine/ninefold`](packages/ninefold) | Ninefold: cozy fantasy. Two moods, Glint (day: honey paper, iron-gall ink, claret wax) and Gloam (night: a walnut desk by candlelight), folded card corners, a wax-seal mark, falling leaves by day and fireflies by night, and its own pieces: a lantern trail, a field journal, a moon dial, hero light and a page you can write on |
 
 They ship without a logo or favicons: an app gives `ThemeProvider` its own mark, and
 `Mark` shows a placeholder frame until it does.
@@ -38,7 +39,7 @@ of your own on core.
 
 ## What every library has
 
-- The same exports as `@rnine/core` (and `@rnine/core/motion`), with the same props. Effects
+- The same exports as `@rnine/core` (and `@rnine/core/motion` and `@rnine/core/pages`), with the same props. Effects
   are named by role (`TextReveal`, `Backdrop`, `Mark`, `PageEffects`, `swapIn`/`swapOut`)
   and each library brings its own.
 - Two moods, one per color scheme: the page carries `data-scheme="light" | "dark"`, and each
@@ -46,6 +47,8 @@ of your own on core.
 - One prefix for CSS custom properties, `--r9-*`, and the same token names, so core
   components take on any library's look.
 - `styles.css`, `fonts.css`, `scss` and `tokens` entry points.
+- Static pages from the same tokens, for where React doesn't run (`pages`): status and error
+  pages, emails, app icons and the mood boot script, in Workers and Node.
 
 ## Develop
 

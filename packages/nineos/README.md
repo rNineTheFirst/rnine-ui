@@ -56,6 +56,21 @@ import { Backdrop, TextReveal, Terminal } from '@rnine/nineos/motion';
 import { tokens } from '@rnine/nineos/tokens';   // tokens as data (docs, charts, canvas effects)
 ```
 
+Status and error pages, emails and app icons in the NineOS look, for where React doesn't
+run (a Worker, nginx, a mail server), come from `@rnine/nineos/pages`: `statusPage()` is
+one HTML document with everything inline but the fonts, which you serve from `pageFonts`
+at `fontsUrl`.
+
+```js
+import { statusPage } from '@rnine/nineos/pages';
+
+const html = statusPage({
+  title: 'Back soon', label: 'Maintenance', code: 'HTTP 503', heading: 'Back soon',
+  paragraphs: ['We’re updating the site.'], status: { command: 'status', text: 'updating' },
+  fontsUrl: '/fonts/', retry: 30,
+});
+```
+
 ```scss
 // in any SCSS module
 @use "@rnine/nineos/scss" as r9;
@@ -78,11 +93,11 @@ A mood saved by an older version (`clear`, `cipher`) is read as its scheme.
 
 | Path | What |
 |---|---|
-| `theme.json` | The name, the moods' names (Clear, Cipher) and the Auto rule (night) |
+| `theme.json` | The name, the moods' names (Clear, Cipher), the Auto rule (night), the default palette and the fonts static pages serve |
 | `tokens/*.json` | Primitives and scales (DTCG format): color, type, space, corner and shape, motion, layout |
 | `tokens/themes/{light,dark}.json` | Clear's and Cipher's mood roles (bg, fg, accent, signal, ...). Both must define the same roles |
 | `scss/` | The shared SCSS API (from core) plus `glitch-text()`; `base.scss` adds NineOS's keyframes |
-| `src/` | NineOS's components and effects; `index.ts` and `motion.ts` re-export core and replace the role exports |
+| `src/` | NineOS's components and effects; `index.ts`, `motion.ts` and `pages.ts` re-export core and replace the role exports |
 | `scripts/build.mjs` | Tokens (checked against core's), `vite build`, then `dist/styles.css` |
 | `test/contrast.test.mjs` | WCAG AA in both moods, and the contract: core's tokens and exports, the keyframes, theme.json |
 

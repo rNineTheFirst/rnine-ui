@@ -48,6 +48,24 @@ test('defines every token core components read', () => {
 test('exports every @rnine/core and @rnine/core/motion name', async () => {
   assert.deepEqual(missingExports(await import('@rnine/core'), await import('../dist/index.js')), []);
   assert.deepEqual(missingExports(await import('@rnine/core/motion'), await import('../dist/motion.js')), []);
+  assert.deepEqual(missingExports(await import('@rnine/core/pages'), await import('../dist/pages.js')), []);
+});
+
+test('static pages: NineOS’s own look, fonts that exist, the same boot script as apps', async () => {
+  const pages = await import('../dist/pages.js');
+  const { moodBootScript } = await import('../dist/index.js');
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  assert.deepEqual(pages.pageFonts.map((f) => f.id), ['chakra-petch-600', 'chakra-petch-700', 'hanken-grotesk', 'share-tech-mono']);
+  for (const f of pages.pageFonts) assert.ok(require.resolve(f.src), f.src);
+  const opts = { storageKey: 'k', motionStorageKey: 'm' };
+  assert.equal(pages.moodBootScript(opts), moodBootScript(opts));
+  const html = pages.statusPage({ title: 'T', label: 'L', heading: 'H', paragraphs: [], status: { text: 's' }, palette: 'volt', fontsUrl: '/f/' });
+  assert.match(html, /data-palette="volt"/);
+  assert.match(html, /setAttribute\('aria-label',text\)/); // the decrypt
+  assert.match(html, /<link rel="preload" href="\/f\/chakra-petch-700\.woff2"/);
+  // Its favicon plate: cut top-left and bottom-right corners, the accent of the light mood
+  assert.match(pages.markIcon({ mark: { viewBox: '0 0 1 1', paths: '' } }), /<path d="M12 0H64V52L52 64H0V12Z" fill="#D4006F"\/>/);
 });
 
 test('styles.css has every shared keyframe, and NineOS’s own', () => {
@@ -58,7 +76,8 @@ test('styles.css has every shared keyframe, and NineOS’s own', () => {
 });
 
 test('NINEOS_THEME matches theme.json', async () => {
-  const { palette, ...theme } = JSON.parse(readFileSync(new URL('../theme.json', import.meta.url), 'utf8'));
+  // fonts: checked with the static pages above
+  const { palette, fonts: _fonts, ...theme } = JSON.parse(readFileSync(new URL('../theme.json', import.meta.url), 'utf8'));
   const { NINEOS_THEME } = await import('../dist/index.js');
   const def = tokens.palettes.find((p) => p.default);
   assert.deepEqual({ id: def.id, label: def.label, description: def.description }, palette);

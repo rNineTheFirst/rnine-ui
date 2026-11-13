@@ -1,0 +1,166 @@
+{
+  "$description": "Gloam: Ninefold’s night mood (Inkwell candlelight). Walnut desk, rose ink, candle amber.",
+  "theme": {
+    "$type": "color",
+    "bg": {
+      "$value": "{color.walnut.950}",
+      "$description": "Page background (the paper)"
+    },
+    "surface": {
+      "$value": "{color.walnut.900}",
+      "$description": "Cards, panels, inputs"
+    },
+    "surface-raised": {
+      "$value": "{color.walnut.850}",
+      "$description": "Menus, popovers, toasts, letters"
+    },
+    "glass": {
+      "$value": "#1B1511D1",
+      "$description": "Translucent surface for UI floating over the backdrop, with a backdrop blur"
+    },
+    "fg": {
+      "$value": "{color.walnut.50}",
+      "$description": "Main text and icons"
+    },
+    "fg-muted": {
+      "$value": "{color.walnut.300}",
+      "$description": "Secondary text"
+    },
+    "fg-subtle": {
+      "$value": "{color.walnut.500}",
+      "$description": "Placeholders, disabled text (large text only)"
+    },
+    "line": {
+      "$value": "{color.walnut.800}",
+      "$description": "Hairline borders and dividers"
+    },
+    "line-strong": {
+      "$value": "{color.walnut.600}",
+      "$description": "Input borders, hovered hairlines, the trail"
+    },
+    "accent": {
+      "$value": "{color.rose.400}",
+      "$description": "Primary actions, selected states (the ink)"
+    },
+    "accent-hover": {
+      "$value": "{color.rose.200}",
+      "$description": "Hovered and pressed accent fills"
+    },
+    "accent-text": {
+      "$value": "{color.rose.300}",
+      "$description": "Accent text and icons on bg or surface"
+    },
+    "on-accent": {
+      "$value": "{color.walnut.950}",
+      "$description": "Text on accent fills"
+    },
+    "accent-soft": {
+      "$value": "#EF8DA026",
+      "$description": "Tinted backgrounds, focus glow"
+    },
+    "signal": {
+      "$value": "{color.candle.300}",
+      "$description": "Live states and stock (the wax). Never a second brand color"
+    },
+    "signal-text": {
+      "$value": "{color.candle.300}",
+      "$description": "Signal text on bg or surface"
+    },
+    "inverse-bg": {
+      "$value": "{color.walnut.50}",
+      "$description": "Index chips, inverted tags"
+    },
+    "inverse-fg": {
+      "$value": "{color.walnut.950}",
+      "$description": "Text on inverse-bg"
+    },
+    "success": {
+      "$value": "{color.moss.300}",
+      "$description": "Success status text and icons. Always with an icon or a word, never color alone"
+    },
+    "warning": {
+      "$value": "{color.candle.300}",
+      "$description": "Warning status text and icons. Always with an icon or a word"
+    },
+    "danger": {
+      "$value": "{color.brick.300}",
+      "$description": "Errors and destructive actions. Always with an icon or a word"
+    },
+    "dot": {
+      "$value": "#F0E2C821",
+      "$description": "Paper fibers (texture(fibers)) and the still dot field"
+    },
+    "scan": {
+      "$value": "#00000000",
+      "$description": "Scanlines: none in Ninefold"
+    },
+    "sheen": {
+      "$value": "#FFE3A10D",
+      "$description": "Light band that crosses heroes"
+    },
+    "selection": {
+      "$value": "#EF8DA04D",
+      "$description": "Text selection"
+    },
+    "wax": {
+      "$value": "{color.rose.600}",
+      "$description": "Ninefold: sealing wax (the seal, the stamp ring)"
+    },
+    "wax-dark": {
+      "$value": "{color.rose.800}",
+      "$description": "Ninefold: wax in shadow"
+    },
+    "wax-light": {
+      "$value": "{color.rose.400}",
+      "$description": "Ninefold: wax highlight"
+    },
+    "lining": {
+      "$value": "{color.rose.600}",
+      "$description": "Ninefold: the lining under a card’s folded corner"
+    },
+    "lining-dark": {
+      "$value": "{color.rose.800}",
+      "$description": "Ninefold: the fold’s crease"
+    },
+    "lining-light": {
+      "$value": "{color.rose.500}",
+      "$description": "Ninefold: the fold’s edge"
+    },
+    "ink-wet": {
+      "$value": "{color.candle.300}",
+      "$description": "Ninefold: fresh ink (writing, reveals)"
+    },
+    "ink-dry": {
+      "$value": "{color.candle.parchment}",
+      "$description": "Ninefold: ink once dry"
+    },
+    "ink-glow": {
+      "$value": "#F2B65A8C",
+      "$description": "Ninefold: the glow of wet ink by candlelight (none by day)"
+    },
+    "mote": {
+      "$value": "{color.candle.300}",
+      "$description": "Ninefold: fireflies and floating motes"
+    },
+    "mote-hot": {
+      "$value": "{color.candle.100}",
+      "$description": "Ninefold: a firefly near the pointer or flashing"
+    },
+    "leaf": {
+      "$value": "{color.olive.300}",
+      "$description": "Ninefold: leaves, sprigs, journal icons"
+    },
+    "bud": {
+      "$value": "{color.rose.400}",
+      "$description": "Ninefold: buds and the first leaf of a burst"
+    },
+    "star": {
+      "$value": "{color.candle.50}",
+      "$description": "Ninefold: stars and dew glints"
+    },
+    "light": {
+      "$value": "{color.candle.400}",
+      "$description": "Ninefold: window light by day, candle glow by night"
+    }
+  }
+}

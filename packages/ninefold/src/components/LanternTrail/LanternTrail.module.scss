@@ -1,0 +1,108 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.trail {
+  position: relative;
+  height: 128px;
+  max-width: 920px;
+
+  @include r9.down(sm) { height: 150px; }
+}
+
+.path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.base,
+.walked {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.base {
+  stroke: r9.$line-strong;
+  stroke-width: 2;
+  stroke-dasharray: 1.5 9;
+  opacity: 0.85;
+}
+
+.walked {
+  stroke: r9.$accent;
+  stroke-width: 2.4;
+}
+
+.stop {
+  position: absolute;
+  z-index: 2;
+  translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: r9.$space-1 r9.$space-2;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: r9.$fg-muted;
+  @include r9.type(label);
+
+  i {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: r9.$bg;
+    box-shadow: inset 0 0 0 2px r9.$line-strong;
+    transition: box-shadow r9.$duration-fast, background-color r9.$duration-fast;
+  }
+
+  span {
+    position: absolute;
+    top: 100%;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  &:hover,
+  &[aria-selected="true"] { color: r9.$fg; }
+  &:hover i { box-shadow: inset 0 0 0 2px r9.$accent; }
+  &[aria-selected="true"] i { background: r9.$accent; box-shadow: 0 0 0 4px r9.$accent-soft; }
+  &:focus-visible { outline: 0; }
+  &:focus-visible i { @include r9.focus-ring(3px); }
+}
+
+// Every other label sits above the path, so neighbours don't collide
+.up span {
+  top: auto;
+  bottom: 100%;
+  margin: 0 0 2px;
+}
+
+.lantern {
+  position: absolute;
+  z-index: 3;
+  width: 30px;
+  height: 40px;
+  margin: -46px 0 0 -15px;
+  pointer-events: none;
+  transform-origin: 50% 0;
+  @include r9.motion-safe { animation: r9.keyframes(swing) 3.4s ease-in-out infinite; }
+
+  svg { display: block; width: 100%; height: 100%; overflow: visible; }
+}
+
+.frame {
+  fill: none;
+  stroke: r9.$fg;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+// Lit softly by day; at night the glass glows and a halo spills around it
+.glass { fill: color-mix(in srgb, #{r9.$light} 55%, transparent); }
+.halo { fill: transparent; }
+.night .glass { fill: color-mix(in srgb, #{r9.$light} 95%, transparent); }
+.night .halo { fill: color-mix(in srgb, #{r9.$light} 22%, transparent); }

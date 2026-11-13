@@ -1,0 +1,79 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.frame {
+  min-width: 0;
+  display: flex;
+}
+
+.card {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  padding: r9.$space-8 r9.$space-6 r9.$space-5;
+  background: r9.$surface-raised;
+  @include r9.card-corner(lg);
+  @include r9.hairline;
+
+  // Content sits above the light
+  > :not(.fold, .index, .cover) { position: relative; }
+}
+
+// The folded corner: the lining shows where the paper is turned over, with
+// a soft shadow under the flap. It grows with --r9-card-lift (useCardLift).
+.fold {
+  $size: calc(#{r9.$corner-lg} * #{r9.$shape-card-cut} + var(--r9-card-lift, 0px));
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  width: $size;
+  height: $size;
+  background: linear-gradient(to bottom left, transparent 50%, r9.$lining-dark 50%, r9.$lining 70%, r9.$lining-light 100%);
+  border-bottom-left-radius: calc(#{$size} * 0.2);
+  filter: drop-shadow(calc(#{$size} * -0.07) calc(#{$size} * 0.09) calc(#{$size} * 0.09) rgb(0 0 0 / 0.3));
+  pointer-events: none;
+}
+
+// A warm light follows the pointer across interactive cards
+.lit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, #{r9.$light} 34%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity r9.$duration-slow ease;
+  pointer-events: none;
+}
+
+.lit:hover::before { opacity: 1; }
+
+.index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include r9.type(caption);
+  padding: r9.$space-1 r9.$space-3;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+  border-bottom-right-radius: r9.$corner-sm;
+}
+
+// Whole-card link: an invisible link covers the card; inner links stay clickable above it
+.cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+
+  &:focus-visible { outline: 2px solid r9.$accent; outline-offset: -2px; }
+}
+
+.linked {
+  cursor: pointer;
+
+  a:not(.cover),
+  button { position: relative; z-index: 2; }
+}

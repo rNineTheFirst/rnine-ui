@@ -1,4 +1,5 @@
 import { useRef, type PointerEvent, type ReactNode } from 'react';
+import { useCardLift } from '../hooks/cardLift';
 import { useFinePointer, useReducedMotion } from '../hooks/motion';
 import styles from './TiltCard.module.scss';
 
@@ -12,12 +13,14 @@ type Props = {
 
 /**
  * Card with a cursor spotlight and a slight 3D tilt. Its cut corner is lit
- * accent: the card's accent mark.
+ * accent: the card's accent mark. Where the library lifts cards (ThemeConfig
+ * lift), the cut corner also lifts toward the pointer (useCardLift).
  */
 export function TiltCard({ children, index, className, onEnter }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const fine = useFinePointer();
+  useCardLift(ref);
 
   const onMove = (e: PointerEvent) => {
     const el = ref.current;

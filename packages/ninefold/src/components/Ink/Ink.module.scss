@@ -1,0 +1,38 @@
+@use "@rnine/ninefold/scss" as r9;
+
+// Fills the nearest positioned parent; the canvas is one screen tall and sticks to the top
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: r9.$z-raised;
+  display: block;
+  pointer-events: none;
+}
+
+.canvas {
+  position: sticky;
+  top: 0;
+  display: block;
+  width: 100%;
+  height: min(100%, 100vh);
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  top: r9.$space-16;
+  translate: -50% -6px;
+  opacity: 0;
+  padding: r9.$space-1 r9.$space-4;
+  font-family: r9.$font-display;
+  font-style: italic;
+  font-size: r9.$font-size-base;
+  white-space: nowrap;
+  color: r9.$fg;
+  background: r9.$surface-raised;
+  border-radius: r9.$radius-full;
+  @include r9.hairline;
+  transition: opacity r9.$duration-slow ease, translate r9.$duration-slow ease;
+
+  &.on { opacity: 1; translate: -50% 0; }
+}

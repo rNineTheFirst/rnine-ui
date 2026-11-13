@@ -17,13 +17,13 @@
   background:
     radial-gradient(260px circle at var(--mx, 50%) var(--my, -40%), color-mix(in srgb, #{r9.$signal} 13%, transparent), transparent 70%),
     r9.$surface;
-  @include r9.corner(lg, tr);
+  @include r9.card-corner(lg);
   @include r9.hairline;
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform r9.$duration-slow r9.$easing-out, box-shadow r9.$duration-base;
 
   // The accent mark: the cut corner, lit
-  &::after { @include r9.corner-ornament; }
+  &::after { @include r9.card-ornament; }
 
   &[data-live] { transition: transform 90ms linear, box-shadow r9.$duration-base; }
   &:hover { @include r9.hairline(color-mix(in srgb, #{r9.$accent} 45%, #{r9.$line})); }

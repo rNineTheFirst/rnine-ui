@@ -1,0 +1,131 @@
+// The status page's styles (@rnine/core/pages statusPage), compiled once in
+// core: every value is a token's custom property, so the same CSS takes each
+// library's look from its tokens.css (inlined before it). Global CSS, not a
+// module: keyframes by their bare names (r9-pulse).
+@use "../../scss/base";
+@use "../../scss/index" as r9;
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  @include r9.texture(field, 22px);
+}
+
+// The library's scanlines (transparent where it has none)
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  @include r9.texture(lines);
+}
+
+::selection { background: r9.$accent-soft; }
+a { color: r9.$accent-text; text-underline-offset: 3px; }
+
+// Header: the site's mark and name, a live clock
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: r9.$space-4;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; color: r9.$fg; }
+.brand svg { width: 28px; height: 28px; }
+.brand span { @include r9.type(wordmark); }
+.sys {
+  display: inline-flex;
+  gap: r9.$space-2;
+  align-items: center;
+  font: 400 12px r9.$font-mono;
+  color: r9.$fg-muted;
+  font-variant-numeric: tabular-nums;
+}
+.pulse {
+  width: 6px;
+  height: 6px;
+  background: r9.$signal;
+  border-radius: calc(#{r9.$shape-round} * 100%);
+  animation: r9-pulse 2.4s ease-in-out infinite;
+}
+
+main {
+  display: grid;
+  place-items: center;
+  padding: 32px max(16px, env(safe-area-inset-right)) 48px max(16px, env(safe-area-inset-left));
+}
+
+// The panel: the library's card corner and its corner ornament
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 32px;
+  @include r9.glass;
+  @include r9.hairline;
+  @include r9.corner(lg, tr);
+}
+.panel::after { @include r9.corner-ornament(lg); }
+
+.head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  font: 400 11px r9.$font-mono;
+  letter-spacing: .06em;
+}
+.chip {
+  padding: 3px 8px;
+  background: r9.$inverse-bg;
+  color: r9.$inverse-fg;
+  text-transform: uppercase;
+  border-radius: calc(#{r9.$corner-sm} * #{r9.$shape-round});
+}
+.code { color: r9.$fg-subtle; }
+
+h1 { @include r9.type(h1); }
+p { color: r9.$fg-muted; max-width: 62ch; }
+
+// The status line: a command and its answer
+.term {
+  margin: 4px 0 0;
+  padding: 12px 14px;
+  background: r9.$surface;
+  @include r9.hairline;
+  border-radius: calc(#{r9.$corner-sm} * #{r9.$shape-round});
+  font: 400 14px/1.75 r9.$font-mono;
+  color: r9.$fg-muted;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.term b { color: r9.$accent-text; font-weight: 400; }
+.term .cmd { color: r9.$fg; }
+.term .ok { color: r9.$signal-text; display: inline-flex; gap: 8px; align-items: center; }
+.term .ok::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: r9.$signal; }
+.term .err { color: r9.$accent-text; }
+.caret {
+  display: inline-block;
+  width: .55em;
+  height: 1.1em;
+  vertical-align: -.2em;
+  background: r9.$accent;
+  animation: r9-blink 1.1s steps(1) infinite;
+}
+.note { font: 400 12px r9.$font-mono; color: r9.$fg-subtle; }
+
+@media (max-width: 480px) {
+  .panel { padding: 24px 20px; }
+  .brand span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse, .caret { animation: none; }
+}
+:root[data-motion="reduced"] .pulse,
+:root[data-motion="reduced"] .caret { animation: none; }

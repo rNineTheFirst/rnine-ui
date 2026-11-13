@@ -1,0 +1,16 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.link {
+  display: inline-block;
+  color: r9.$fg-muted;
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: color r9.$duration-fast;
+  @include r9.pen-underline;
+
+  &:hover,
+  &:focus-visible,
+  &[aria-current]:not([aria-current="false"]) { color: r9.$fg; }
+
+  &:focus-visible { outline: 2px solid r9.$accent; outline-offset: 4px; border-radius: r9.$radius-xs; }
+}

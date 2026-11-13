@@ -1,0 +1,57 @@
+{
+  "corner": {
+    "$type": "dimension",
+    "$description": "Corner sizes. Ninefold rounds every corner softly (shape.round 1) and folds only its cards’ top-right corner (shape.card-cut).",
+    "sm": {
+      "$value": "6px",
+      "$description": "Chips, small buttons, inputs"
+    },
+    "md": {
+      "$value": "12px",
+      "$description": "Buttons, panels"
+    },
+    "lg": {
+      "$value": "18px",
+      "$description": "Cards"
+    }
+  },
+  "shape": {
+    "$type": "number",
+    "$description": "How corner() draws a corner: the cut (a 45° chamfer) and the rounding, each a multiple of the corner size. Cards cut by card-cut instead.",
+    "cut": {
+      "$value": 0,
+      "$description": "Ninefold: no cut corners"
+    },
+    "round": {
+      "$value": 1,
+      "$description": "Ninefold: soft corners, rounded to their size"
+    },
+    "card-cut": {
+      "$value": 1.4445,
+      "$description": "Ninefold: a card’s folded corner, 26px at rest (it lifts toward the pointer)"
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "none": {
+      "$value": "0px"
+    },
+    "xs": {
+      "$value": "2px",
+      "$description": "Only for tiny things: checkboxes, dots"
+    },
+    "full": {
+      "$value": "999px",
+      "$description": "Status dots, wax drops and avatars"
+    }
+  },
+  "border": {
+    "$type": "dimension",
+    "hair": {
+      "$value": "1px"
+    },
+    "strong": {
+      "$value": "2px"
+    }
+  }
+}

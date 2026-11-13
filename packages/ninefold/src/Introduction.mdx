@@ -1,0 +1,62 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# @rnine/ninefold
+
+Ninefold: React components, SCSS modules and a motion layer for cozy fantasy, built on
+`@rnine/core`. Every story here is a Ninefold component, or a core component in the
+Ninefold look. Start with **Example → Bookshop** to see it all together.
+
+Use the **mood** button in the toolbar (paintbrush) to switch every story between
+**Glint** (day) and **Gloam** (night). The **Accessibility** tab checks each story against WCAG.
+
+Other libraries on the same core, with the same components and props:
+[NineOS](https://ui.rnine.dev/) (the default Storybook at ui.rnine.dev).
+
+## Add it to an app
+
+```bash
+npm install @rnine/ninefold react react-dom
+```
+
+```tsx
+// main.tsx, once
+import '@rnine/ninefold/fonts.css';
+import '@rnine/ninefold/styles.css';
+import { ThemeProvider } from '@rnine/ninefold';
+import markSvg from './mark.svg?raw';
+
+createRoot(root).render(
+  // mark: your logo, pressed into the wax seal (default: a placeholder frame)
+  <ThemeProvider mark={{ full: markSvg }}>
+    <App />
+  </ThemeProvider>,
+);
+```
+
+## Use components
+
+```tsx
+import { Button, Card, LanternTrail, MoonDial, Section } from '@rnine/ninefold';
+import { Backdrop, HeroLight, Ink, Magnet, TextReveal } from '@rnine/ninefold/motion';
+
+<Magnet>
+  <Button>Browse the shelf</Button>
+</Magnet>
+```
+
+An app can switch between libraries by changing the import: every library exports
+`@rnine/core`'s names with the same props. Ninefold adds `LanternTrail`, `FieldJournal`,
+`MoonDial`, `PenLink`, and in `/motion`, `HeroLight` and `Ink`.
+
+Custom pieces in an app use the same tokens:
+
+```scss
+@use "@rnine/ninefold/scss" as r9;
+
+.note { @include r9.type(body); @include r9.corner(md); background: r9.$surface-raised; }
+.nav a { @include r9.pen-underline; }
+```
+
+The brand guide (moods and color, type, shape and paper, motion, voice) is under **Brand**.

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Sets the one shared version on every package in packages/ and every exact
-// pin on them (nineos's @rnine/core dependency, and any other workspace that
+// pin on them (each library's @rnine/core dependency, and any other workspace that
 // depends on them), so a release is one command and one commit.
 //
 //   yarn release:version 0.2.0

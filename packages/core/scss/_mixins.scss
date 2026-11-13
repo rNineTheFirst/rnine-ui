@@ -80,6 +80,19 @@
   border-radius: calc(#{$s} * #{t.$shape-round});
 }
 
+/// A card's corner: the top-right cut sized by shape.card-cut (a multiple of
+/// $size) instead of shape.cut, so a library can fold its cards' corner while
+/// the rest of its corners stay soft. Rounding as corner(). The cut grows by
+/// --r9-card-lift (useCardLift sets it while the pointer comes near). Pair it
+/// with card-ornament on ::after.
+@mixin card-corner($size: lg) {
+  $s: corner-size($size);
+  $cut: calc(#{$s} * #{t.$shape-card-cut} + var(--r9-card-lift, 0px));
+  // The same 8 points as corner($size, tr), so a library that cuts every corner draws its cards the same
+  clip-path: polygon(0px 0, calc(100% - #{$cut}) 0, 100% #{$cut}, 100% calc(100% - 0px), calc(100% - 0px) 100%, 0px 100%, 0 calc(100% - 0px), 0 0px);
+  border-radius: calc(#{$s} * #{t.$shape-round});
+}
+
 /// Glass: a translucent surface with a backdrop blur, for UI that floats over
 /// the backdrop (panels, docks, overlays). Always pair it with a hairline.
 @mixin glass($blur: 10px) {
@@ -126,6 +139,23 @@
   clip-path: polygon(0 0, 100% 100%, calc(100% - #{$thickness}) 100%, 0 #{$thickness});
 }
 
+/// card-corner's ornament: corner-ornament at the card's cut (shape.card-cut,
+/// growing with --r9-card-lift). Shown only where the library cuts its cards.
+/// Use on ::after of a card with position: relative and card-corner($size).
+@mixin card-ornament($size: lg, $thickness: 4px) {
+  $s: calc(#{corner-size($size)} * #{t.$shape-card-cut} + var(--r9-card-lift, 0px));
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: $s;
+  height: $s;
+  background: t.$accent;
+  opacity: t.$shape-card-cut;
+  pointer-events: none;
+  clip-path: polygon(0 0, 100% 100%, calc(100% - #{$thickness}) 100%, 0 #{$thickness});
+}
+
 // ---- Focus and access ------------------------------------------------------
 
 /// The 2px accent keyboard focus ring. Use on :focus-visible; never remove focus without this.
@@ -154,10 +184,20 @@
 
 // ---- Textures --------------------------------------------------------------
 
+// Paper textures, drawn once and used as masks (an image can't follow the
+// mood, a mask's color can): fibers is 52 short strands in a 240px tile, wrapped
+// at its edges; grain is fine noise.
+$_fibers: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M103.7 107.3Q102.6 113.6 101.1 119.9M55.4 131.9Q51.3 131.1 47.9 133.6M174.2 184.7Q173.3 194 179.8 200.9M105.2 130.7Q103 127.1 100.1 124M186.7 24.3Q180.3 23.3 173.9 23.5M186.7 264.3Q180.3 263.3 173.9 263.5M79.4 47.2Q82.5 53.2 89.1 51.9M197 8.2Q202.6 12.4 209.6 11.6M197 248.2Q202.6 252.4 209.6 251.6' stroke-opacity='1' stroke-width='1'/%3E%3Cpath d='M83 106.3Q82.2 101.4 84.5 97M112.8 188.7Q116.1 195.1 112.8 201.5M122.6 203.3Q124.5 211.4 125.3 219.7M-14.7 35.3Q-18.2 27.3 -26.5 24.2M225.3 35.3Q221.8 27.3 213.5 24.2M2.9 18.2Q-1.3 20.4 -5.4 22.8M2.9 258.2Q-1.3 260.4 -5.4 262.8M242.9 18.2Q238.7 20.4 234.6 22.8M242.9 258.2Q238.7 260.4 234.6 262.8M179 147.1Q178.9 139.6 173.6 134.2M70.5 96.6Q75.6 105.9 80.4 115.3' stroke-opacity='0.7' stroke-width='0.75'/%3E%3Cpath d='M23.3 -20.1Q22.3 -11.6 27.6 -4.8M23.3 219.9Q22.3 228.4 27.6 235.2M263.3 -20.1Q262.3 -11.6 267.6 -4.8M263.3 219.9Q262.3 228.4 267.6 235.2M155.7 141.4Q159.2 146.4 160.6 152.3M160.1 187.3Q156.4 184.8 153.1 181.6' stroke-opacity='0.45' stroke-width='0.75'/%3E%3Cpath d='M102.1 93.3Q110.6 91.9 116.9 86M107.7 126.8Q108.9 134.2 103.4 139.2M105 182.8Q98.3 180.1 94.3 174.1M99.8 0.6Q102.2 3.1 104.7 5.4M99.8 240.6Q102.2 243.1 104.7 245.4' stroke-opacity='0.45' stroke-width='1'/%3E%3Cpath d='M-18.9 190.8Q-21.7 187.7 -24.1 184.3M221.1 190.8Q218.3 187.7 215.9 184.3M-7 51.4Q1.1 42.6 12.1 37.8M233 51.4Q241.1 42.6 252.1 37.8M20.7 182.1Q24.1 173.1 29 165M260.7 182.1Q264.1 173.1 269 165M97.8 55Q101.6 47.2 104.1 38.9M21.4 208.5Q14 205.3 12.3 197.5M261.4 208.5Q254 205.3 252.3 197.5M134 122.8Q136.1 118.7 135.1 114.2M61.8 145Q56.2 137.4 50 130.2M148.6 54.8Q150.3 49.6 154.2 45.6' stroke-opacity='0.45' stroke-width='0.5'/%3E%3Cpath d='M173.8 94.1Q172.2 88.1 176.2 83.3M-21.5 4Q-19.6 -2.9 -22.5 -9.3M-21.5 244Q-19.6 237.1 -22.5 230.7M218.5 4Q220.4 -2.9 217.5 -9.3M218.5 244Q220.4 237.1 217.5 230.7M47.3 58.1Q47.1 53.8 43.2 52.1M102.7 16.2Q102.6 28.1 111.3 36.1M102.7 256.2Q102.6 268.1 111.3 276.1M115.2 146.3Q124.7 150.9 135.3 151.7M144.3 185.1Q144.7 179.5 147.9 174.9M19.1 27.2Q14.8 31.3 20 34.3M19.1 267.2Q14.8 271.3 20 274.3M259.1 27.2Q254.8 31.3 260 34.3M259.1 267.2Q254.8 271.3 260 274.3M207.8 41.9Q204.5 37.2 209.4 34.3' stroke-opacity='0.7' stroke-width='1'/%3E%3Cpath d='M8.4 5.9Q11.3 10 15.5 12.7M8.4 245.9Q11.3 250 15.5 252.7M248.4 5.9Q251.3 10 255.5 12.7M248.4 245.9Q251.3 250 255.5 252.7M-28.3 51.7Q-35.8 45.6 -44.9 42.2M211.7 51.7Q204.2 45.6 195.1 42.2M120.1 -11.6Q117.5 -15.6 112.7 -15M120.1 228.4Q117.5 224.4 112.7 225M82.5 8.7Q88.2 13.1 94.5 16.6M82.5 248.7Q88.2 253.1 94.5 256.6' stroke-opacity='1' stroke-width='0.5'/%3E%3Cpath d='M12.7 133.7Q17.5 129.6 23.2 127M252.7 133.7Q257.5 129.6 263.2 127M29.5 201.3Q22 205.6 21.3 214.2M269.5 201.3Q262 205.6 261.3 214.2M131.1 62.2Q132.9 58.3 132.8 54' stroke-opacity='1' stroke-width='0.75'/%3E%3Cpath d='M47.3 167.3Q55.2 162.5 55.6 153.2M164 0.8Q164.5 -3.1 161.2 -5.1M164 240.8Q164.5 236.9 161.2 234.9M139.7 157.4Q146.3 152.9 146.9 144.8M71.1 146.4Q68.3 149.6 64 149.9M-22.4 148.6Q-32 143.5 -41.4 138M217.6 148.6Q208 143.5 198.6 138M197.7 -2.3Q200.3 -12 209.8 -15.6M197.7 237.7Q200.3 228 209.8 224.4M123.8 39.6Q132.3 39.2 140.8 38.9M117.4 129.6Q119.5 135.5 125.6 133.8' stroke-opacity='0.7' stroke-width='0.5'/%3E%3C/svg%3E");
+$_grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.8 0 0 0 -.62'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+
 /// A background texture, in the library's colors:
-///   field  a dotted field (the still form of the backdrop), $gap 18px
-///   grid   a blueprint grid of hairlines, for diagrams and empty areas, $gap 32px
-///   lines  scanlines (where the mood has them; else transparent)
+///   field   a dotted field (the still form of the backdrop), $gap 18px
+///   grid    a blueprint grid of hairlines, for diagrams and empty areas, $gap 32px
+///   lines   scanlines (where the mood has them; else transparent)
+///   fibers  pressed paper fibers, $gap (the tile) 240px
+///   grain   fine paper grain, $gap 180px
+/// fibers and grain paint the whole element in $color (default: the dot role)
+/// through a mask: put them on an empty layer, such as a ::before with inset: 0.
 @mixin texture($kind: field, $gap: null, $color: null) {
   @if $kind == field {
     $c: t.$dot;
@@ -179,8 +219,20 @@
     $c: t.$scan;
     @if $color { $c: $color; }
     background-image: repeating-linear-gradient(0deg, $c 0 1px, transparent 1px 3px);
+  } @else if $kind == fibers or $kind == grain {
+    $c: t.$dot;
+    $g: 180px;
+    $image: $_grain;
+    @if $kind == fibers { $g: 240px; $image: $_fibers; }
+    @if $color { $c: $color; }
+    @if $gap { $g: $gap; }
+    background: $c;
+    -webkit-mask-image: $image;
+    mask-image: $image;
+    -webkit-mask-size: $g $g;
+    mask-size: $g $g;
   } @else {
-    @error "texture(): '#{$kind}' is not field, grid or lines.";
+    @error "texture(): '#{$kind}' is not field, grid, lines, fibers or grain.";
   }
 }
 

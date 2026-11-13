@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Swatches } from '../../.storybook/docs/Tokens';
+
+<Meta title="Brand/Color" />
+
+# Color
+
+Components use the mood roles below, never raw colors. Each role is a CSS custom
+property (`--r9-<role>`) and an SCSS variable (`r9.$<role>`); the mood switches them all.
+
+## Paper and text
+
+<Swatches roles={['bg', 'surface', 'surface-raised', 'fg', 'fg-muted', 'fg-subtle', 'line', 'line-strong']} />
+
+## Ink and wax
+
+The accent is ink: for what you do. The signal is wax: for what's live.
+
+<Swatches roles={['accent', 'accent-hover', 'accent-text', 'on-accent', 'accent-soft', 'signal', 'signal-text']} />
+
+## Status
+
+Always with a word or an icon.
+
+<Swatches roles={['success', 'warning', 'danger']} />
+
+## Ninefold's own
+
+The seal, the folded corner, the writing, the night's lights.
+
+<Swatches roles={['wax', 'wax-dark', 'wax-light', 'lining', 'lining-dark', 'lining-light', 'ink-wet', 'ink-dry', 'mote', 'mote-hot', 'leaf', 'bud', 'star', 'light']} />

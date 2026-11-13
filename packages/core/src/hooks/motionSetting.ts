@@ -1,12 +1,15 @@
 import { useCallback, useSyncExternalStore } from 'react';
+import { MOTION_STORAGE_KEY } from './moodBoot';
+
+export { MOTION_STORAGE_KEY };
 
 /**
  * The viewer's own motion setting ("Motion" or "Still"), for people who want
  * less movement but never set their system to reduce motion. Remembered in
  * their browser like the mood; Still puts data-motion="reduced" on <html>, which
  * stops CSS animation (base.css) and every effect that asks useReducedMotion().
+ * Its default key, MOTION_STORAGE_KEY, lives in moodBoot.ts (no React).
  */
-export const MOTION_STORAGE_KEY = 'motion';
 
 let storageKey = MOTION_STORAGE_KEY;
 const listeners = new Set<() => void>();

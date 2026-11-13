@@ -9,10 +9,10 @@
   gap: r9.$space-3;
   padding: r9.$space-10 r9.$space-5 r9.$space-5;
   background: r9.$surface;
-  @include r9.corner(lg, tr);
+  @include r9.card-corner(lg);
   @include r9.hairline;
 
-  &::after { @include r9.corner-ornament; }
+  &::after { @include r9.card-ornament; }
 }
 
 .index {

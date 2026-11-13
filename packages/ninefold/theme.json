@@ -1,0 +1,14 @@
+{
+  "name": "Ninefold",
+  "moods": {
+    "light": { "id": "glint", "label": "Glint", "description": "The day mood: honey paper, iron-gall ink, claret wax, falling leaves." },
+    "dark": { "id": "gloam", "label": "Gloam", "description": "The night mood: a walnut desk by candlelight, rose ink, fireflies." }
+  },
+  "auto": "night",
+  "fonts": [
+    { "id": "fraunces", "family": "Fraunces Variable", "weight": "100 900", "src": "@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2" },
+    { "id": "literata", "family": "Literata Variable", "weight": "200 900", "src": "@fontsource-variable/literata/files/literata-latin-wght-normal.woff2" },
+    { "id": "courier-prime", "family": "Courier Prime", "weight": "400", "src": "@fontsource/courier-prime/files/courier-prime-latin-400-normal.woff2" },
+    { "id": "pinyon-script", "family": "Pinyon Script", "weight": "400", "src": "@fontsource/pinyon-script/files/pinyon-script-latin-400-normal.woff2" }
+  ]
+}

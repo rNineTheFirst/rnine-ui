@@ -1,0 +1,23 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.text { position: relative; }
+
+.sr { @include r9.visually-hidden; }
+
+// The real text keeps its place while the letters grow over it
+.hidden { color: transparent; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.letter {
+  position: absolute;
+  display: block;
+  text-align: center;
+  white-space: pre;
+  transform-origin: 50% 100%;
+  opacity: 0;
+}

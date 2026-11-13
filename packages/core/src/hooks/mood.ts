@@ -1,29 +1,13 @@
 import { useCallback, useSyncExternalStore } from 'react';
 import { MOTION_STORAGE_KEY, configureMotion } from './motionSetting';
 
-/** The two color schemes every library has a mood for. */
-export type Scheme = 'light' | 'dark';
-/** 'auto' follows the library's Auto rule (see AutoRule). */
-export type MoodSetting = Scheme | 'auto';
-/**
- * What Auto does. system: follow the system's light/dark setting.
- * night: light by day (DAY_STARTS-NIGHT_STARTS, local time); at night, dark
- * only when the system is set to dark.
- */
-export type AutoRule = 'system' | 'night';
-/** A library's name for one of its moods (NineOS: Clear and Cipher). */
-export type MoodName = { id: string; label: string; description?: string };
-export type MoodNames = Record<Scheme, MoodName>;
+import { DAY_STARTS, MOOD_STORAGE_KEY, NIGHT_STARTS, PLAIN_NAMES, bootScript, checkKey } from './moodBoot';
+import type { AutoRule, BootScriptOptions, MoodNames, MoodSetting, Scheme } from './moodBoot';
 
-/** The default key for the chosen mood: localStorage and the cookie name (see configureMood). */
-export const MOOD_STORAGE_KEY = 'mood';
-/** The night rule: light from this hour (local time)... */
-export const DAY_STARTS = 6;
-/** ...until this hour, then dark for a dark system. */
-export const NIGHT_STARTS = 18;
+export { DAY_STARTS, MOOD_STORAGE_KEY, NIGHT_STARTS } from './moodBoot';
+export type { AutoRule, BootScriptOptions, MoodName, MoodNames, MoodSetting, Scheme } from './moodBoot';
 
 const DARK = '(prefers-color-scheme: dark)';
-const PLAIN_NAMES: MoodNames = { light: { id: 'light', label: 'Light' }, dark: { id: 'dark', label: 'Dark' } };
 
 /** Whether the viewer's system is set to dark. */
 export function systemDark(): boolean {
@@ -74,11 +58,6 @@ let cookieDomain: string | undefined;
 let storageKey = MOOD_STORAGE_KEY;
 let cookie = cookieMatcher(storageKey);
 
-function checkKey(key: string) {
-  if (!/^[\w-]+$/.test(key)) throw new Error(`Storage key "${key}": use letters, digits, - and _`);
-  return key;
-}
-
 function cookieMatcher(key: string) {
   return new RegExp(`(^|; )${checkKey(key)}=([a-z-]+)`);
 }
@@ -127,11 +106,6 @@ export function moodNames(): MoodNames {
   return names;
 }
 
-export type BootScriptOptions = Pick<MoodOptions, 'storageKey' | 'motionStorageKey' | 'auto'> & {
-  /** Mood ids an older version may have saved, read as their scheme. Default: the library's. */
-  names?: MoodNames;
-};
-
 /**
  * The script to paste into each app's index.html <head> as an inline <script>,
  * so the first paint already has the right mood (the shared cookie, else the
@@ -139,19 +113,8 @@ export type BootScriptOptions = Pick<MoodOptions, 'storageKey' | 'motionStorageK
  * same storageKey, motionStorageKey and auto as configureMood. Each library exports its own,
  * with its Auto rule as the default.
  */
-export function moodBootScript({ storageKey: key = MOOD_STORAGE_KEY, motionStorageKey: motionKey = MOTION_STORAGE_KEY, auto = libraryAuto, names: ids = names }: BootScriptOptions = {}): string {
-  checkKey(key);
-  checkKey(motionKey);
-  const legacy = [ids.light.id !== 'light' ? `m==='${ids.light.id}'?'light':` : '', ids.dark.id !== 'dark' ? `m==='${ids.dark.id}'?'dark':` : ''].join('');
-  const rule = auto === 'system' ? "d?'dark':'light'" : "h>=6&&h<18||!d?'light':'dark'";
-  return (
-    `try{var r=document.documentElement,m=(document.cookie.match(/(^|; )${key}=([a-z-]+)/)||[])[2],h=new Date().getHours(),` +
-    "d=!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);" +
-    `try{m=m||localStorage.getItem('${key}')}catch(e){}` +
-    (legacy ? `m=${legacy}m;` : '') +
-    `r.setAttribute('data-scheme',m==='light'||m==='dark'?m:(${rule}));` +
-    `if(localStorage.getItem('${motionKey}')==='reduced')r.setAttribute('data-motion','reduced')}catch(e){}`
-  );
+export function moodBootScript(options: BootScriptOptions = {}): string {
+  return bootScript({ ...options, auto: options.auto ?? libraryAuto, names: options.names ?? names });
 }
 
 const listeners = new Set<() => void>();

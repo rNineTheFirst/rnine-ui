@@ -1,0 +1,327 @@
+@use "@rnine/ninefold/scss" as r9;
+
+.shop {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  @include r9.gutter;
+
+  > section,
+  > header,
+  // Positioned (above the backdrop) but not stacking contexts, so HeroLight blends with the paper
+  > footer { position: relative; max-width: r9.$container-max; margin-inline: auto; }
+}
+
+// Header
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: r9.$space-4 r9.$space-6;
+  padding-block: r9.$space-5 r9.$space-4;
+  border-bottom: 1px solid r9.$line;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+  color: r9.$fg;
+  text-decoration: none;
+}
+
+.name {
+  font-family: r9.$font-display;
+  font-weight: r9.$font-weight-semibold;
+  font-size: r9.$font-size-xl;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-2 r9.$space-6;
+}
+
+.clock {
+  @include r9.type(label);
+  color: r9.$fg-muted;
+  font-variant-numeric: tabular-nums;
+}
+
+// Hero
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: r9.$space-8;
+  align-items: center;
+  padding-block: r9.$space-10 r9.$space-12;
+
+  @include r9.up(md) { grid-template-columns: minmax(0, 1.42fr) minmax(0, 0.58fr); }
+}
+
+.copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-4;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-3;
+  @include r9.type(label);
+  color: r9.$fg-muted;
+}
+
+.drop { @include r9.wax-drop(10px); }
+
+.headline { @include r9.type(display); margin: 0; }
+
+.lede {
+  @include r9.type(body-lg);
+  color: r9.$fg-muted;
+  max-width: 52ch;
+}
+
+.signature {
+  font-family: r9.$font-script;
+  font-size: 2.25rem;
+  line-height: 1.05;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: r9.$space-3 r9.$space-4;
+  padding-top: r9.$space-1;
+}
+
+// The letter beside the hero: lined paper, a folded corner, the seal
+.letter {
+  position: relative;
+  justify-self: start;
+  width: 100%;
+  max-width: 270px;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  padding: r9.$space-8 r9.$space-6;
+  background-color: r9.$surface-raised;
+  background-image: repeating-linear-gradient(180deg, transparent 0 33px, color-mix(in srgb, #{r9.$fg} 12%, transparent) 33px 34px);
+  background-position: 0 52px;
+  border-radius: r9.$corner-lg;
+  clip-path: polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 0 100%);
+  @include r9.hairline;
+
+  @include r9.up(md) { justify-self: center; }
+}
+
+.letterFold {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(to bottom left, transparent 50%, r9.$lining-dark 50%, r9.$lining 74%, r9.$lining-light 100%);
+  border-bottom-left-radius: 6px;
+}
+
+.to {
+  font-family: r9.$font-script;
+  font-size: 1.75rem;
+  line-height: 34px;
+}
+
+.line {
+  font-style: italic;
+  font-size: 0.90625rem;
+  line-height: 34px;
+  color: r9.$fg-muted;
+}
+
+.seal {
+  position: absolute;
+  display: block;
+  line-height: 0;
+  right: 12px;
+  bottom: 12px;
+  rotate: -9deg;
+}
+
+// The desk: the trail and its page
+.desk {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-6;
+  padding-block: r9.$space-10;
+  border-top: 1px solid r9.$line;
+}
+
+.deskTitle { @include r9.type(h2); }
+
+.deskSub {
+  margin-top: r9.$space-2;
+  color: r9.$fg-muted;
+  max-width: 60ch;
+}
+
+.panel {
+  padding: r9.$space-6;
+  background: r9.$surface;
+  border-radius: r9.$corner-md;
+  @include r9.hairline;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: r9.$space-4;
+  margin-bottom: r9.$space-5;
+}
+
+.panelTitle { @include r9.type(h3); margin: 0; }
+
+.empty {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-5;
+  color: r9.$fg-muted;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: r9.$space-5;
+
+  @include r9.up(sm) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.bookTitle { @include r9.type(h3); }
+
+.author {
+  @include r9.type(label);
+  color: r9.$fg-muted;
+}
+
+.blurb { color: r9.$fg-muted; @include r9.type(body-sm); }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-2;
+  margin-top: auto;
+  padding-top: r9.$space-2;
+}
+
+.stock { margin-left: auto; }
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: r9.$space-1 r9.$space-5;
+    align-items: baseline;
+    padding-block: r9.$space-4;
+    border-bottom: 1px solid r9.$line;
+
+    @include r9.up(sm) { grid-template-columns: 96px minmax(0, 1fr) auto; }
+  }
+
+  li:last-child { border-bottom: 0; }
+}
+
+.when,
+.meta {
+  @include r9.type(label);
+  color: r9.$fg-muted;
+}
+
+.when { grid-column: 1 / -1; @include r9.up(sm) { grid-column: auto; } }
+
+.listTitle {
+  justify-self: start;
+  font-family: r9.$font-display;
+  font-weight: r9.$font-weight-semibold;
+  font-size: 1.3125rem;
+  color: r9.$fg;
+}
+
+.contact {
+  display: grid;
+  gap: r9.$space-6;
+
+  @include r9.up(md) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  max-width: 58ch;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-4;
+}
+
+.sent {
+  min-height: 1.5em;
+  font-style: italic;
+  color: r9.$signal-text;
+}
+
+// Now: the journal and the dial
+.now {
+  display: grid;
+  gap: r9.$space-5;
+  padding-block: r9.$space-10 r9.$space-5;
+
+  @include r9.up(md) { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); }
+}
+
+.nowCard {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  padding: r9.$space-5 r9.$space-6;
+  background: r9.$surface;
+  border-radius: r9.$corner-md;
+  @include r9.hairline;
+}
+
+.nowHead {
+  display: flex;
+  justify-content: space-between;
+  gap: r9.$space-3;
+  @include r9.type(label);
+  color: r9.$fg-muted;
+}
+
+// Footer
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: r9.$space-3 r9.$space-6;
+  margin-top: r9.$space-5;
+  padding-block: r9.$space-5 r9.$space-8;
+  border-top: 1px solid r9.$line;
+  color: r9.$fg-muted;
+  @include r9.type(body-sm);
+
+  p { max-width: 70ch; }
+  b { @include r9.type(label); color: r9.$fg; margin-right: r9.$space-2; }
+  nav { display: flex; gap: r9.$space-5; }
+}
