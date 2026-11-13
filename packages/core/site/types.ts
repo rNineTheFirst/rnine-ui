@@ -17,7 +17,7 @@ export type ThemeInfo = {
   monogram: string | null;
   /** Its heavy-stroke version for small sizes, if it has one. */
   monogramSimplified: string | null;
-  /** The theme's own card picture in each mood (e.g. its monogram pressed into its seal), if it draws one. */
+  /** The card's picture of the monogram in each mood: the theme's own (e.g. pressed into its seal), else its app icon's (the monogram on its accent plate); null without a monogram. */
   emblem: Record<'light' | 'dark', string> | null;
 };
 

@@ -9,7 +9,9 @@
 //   theme.json "emblem"     optional: a module in its package (not in npm) whose
 //                           emblem({ monogram, colors }) draws the card's picture
 //                           from the monogram in a mood's colors (an SVG string),
-//                           e.g. Ninefold presses it into its wax seal
+//                           e.g. Ninefold presses it into its wax seal. Without one,
+//                           a theme with a monogram gets its app icon's picture: the
+//                           monogram on its accent plate, in its corner shape
 //   theme.json "moods"      the two mood names
 //   tokens/themes/*.json    a few colors of each mood, resolved from its own tokens
 // Each theme's Storybook and kit sit one folder down from core's, at /<package folder>/.
@@ -27,6 +29,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { markParts, plateSvg } from '../src/pages/plate.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const packagesDir = join(here, '..', '..');
@@ -43,12 +46,32 @@ function resolve(tree, value, seen = new Set()) {
   return resolve(tree, node.$value, seen);
 }
 
-/** A mood's main colors (bg, surface, fg, accent, signal, line), resolved. */
-export function moodColors(packageDir, scheme) {
+/** Every token file of a theme, as one tree. */
+function tokenTree(packageDir) {
   const tokens = join(packageDir, 'tokens');
   const tree = {};
   for (const file of readdirSync(tokens).filter((f) => f.endsWith('.json'))) Object.assign(tree, readJson(join(tokens, file)));
-  const roles = readJson(join(tokens, 'themes', `${scheme}.json`)).theme;
+  return tree;
+}
+
+/** The theme's corner rule (shape.cut and shape.round, multiples of a corner size). */
+export function shapeRule(packageDir) {
+  const tree = tokenTree(packageDir);
+  return { cut: Number(resolve(tree, tree.shape?.cut?.$value ?? 0)), round: Number(resolve(tree, tree.shape?.round?.$value ?? 0)) };
+}
+
+/**
+ * The card picture of a theme that doesn't draw its own: its monogram on its
+ * accent plate in its corner shape, as its app icon (in a mood's colors).
+ */
+export function plateEmblem({ monogram, colors, shape }) {
+  return plateSvg({ mark: markParts(monogram), accent: colors.accent, onAccent: colors['on-accent'], cut: shape.cut, round: shape.round });
+}
+
+/** A mood's main colors (bg, surface, fg, accent, signal, line), resolved. */
+export function moodColors(packageDir, scheme) {
+  const tree = tokenTree(packageDir);
+  const roles = readJson(join(packageDir, 'tokens', 'themes', `${scheme}.json`)).theme;
   const out = {};
   for (const role of ['bg', 'surface', 'fg', 'fg-muted', 'line', 'accent', 'accent-text', 'on-accent', 'signal', 'wax', 'wax-light', 'wax-dark']) {
     if (roles[role]) out[role] = String(resolve(tree, roles[role].$value)).slice(0, 7);
@@ -85,11 +108,15 @@ export function loadSite() {
       const monogram = read(hosted.monogram) ?? own(theme.monogram) ?? null;
       const monogramSimplified = (hosted.monogram ? read(hosted.simplifiedMonogram) : own(theme.simplifiedMonogram)) ?? null;
       const colors = { light: moodColors(packageDir, 'light'), dark: moodColors(packageDir, 'dark') };
-      // The theme's own card picture, drawn from its monogram (a sync require: Node loads ES modules and TypeScript)
+      // The card's picture, drawn from the monogram: the theme's own (a sync require: Node loads ES
+      // modules and TypeScript), else its app icon's
       let emblem = null;
       if (theme.emblem && monogram) {
         const draw = createRequire(import.meta.url)(join(packageDir, theme.emblem)).emblem;
         emblem = { light: draw({ monogram, colors: colors.light }), dark: draw({ monogram, colors: colors.dark }) };
+      } else if (monogram) {
+        const shape = shapeRule(packageDir);
+        emblem = { light: plateEmblem({ monogram, colors: colors.light, shape }), dark: plateEmblem({ monogram, colors: colors.dark, shape }) };
       }
       return {
         id: dir,

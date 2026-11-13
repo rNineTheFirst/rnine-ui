@@ -39,7 +39,7 @@ const ROLES = [
 
 const STEPS = [
   ['Tokens', <>Write the primitives and both moods' roles as JSON in <code>tokens/</code> (<code>themes/light.json</code>, <code>themes/dark.json</code>, with the same role names as core) and build them with <code>@rnine/core/build-tokens</code>.</>],
-  ['theme.json', <>Name the theme and its two moods, the Auto rule, the fonts, a one-line <code>tagline</code> and, once it has one, its <code>monogram</code> (an SVG with filled paths).</>],
+  ['theme.json', <>Name the theme and its two moods, the Auto rule, the fonts, a one-line <code>tagline</code> and, once it has one, its <code>monogram</code> (an SVG with filled paths): the cards show it on the accent plate in the theme's corner shape, like an app icon, unless the theme draws its own <code>emblem</code>.</>],
   ['Its look', <>Style with the shared mixins (<code>corner</code>, <code>card-corner</code>, <code>ornament</code>, <code>texture</code>...) through <code>@rnine/core/scss</code>; restyle a core component by exporting your own version with the same props.</>],
   ['The roles', <>Give a <code>ThemeConfig</code> your versions of the role effects (<code>@rnine/core/kit</code>), export your own <code>ThemeProvider</code>, and re-export everything else from core.</>],
   ['Check it', <>Run <code>@rnine/core/conformance</code>: it fails when the library is missing a name core exports, or a token core has.</>],

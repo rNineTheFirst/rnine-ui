@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react';
-import { Mark, MarkProvider } from '@rnine/core';
 import type { ThemeInfo } from '../types';
 import styles from './shell.module.scss';
 
@@ -17,17 +16,10 @@ type Props = {
 
 const LABEL = { docs: 'Storybook', kit: 'Brand kit' } as const;
 
-/** The theme's emblem (its own picture of its monogram), else its monogram, else its initial in a ring. */
+/** The theme's emblem (its picture of its monogram: its own, else its app icon's), else its initial in a ring. */
 function Monogram({ theme, size, mood }: { theme: ThemeInfo; size: number; mood: 'light' | 'dark' }) {
   if (theme.emblem) {
     return <img src={`data:image/svg+xml,${encodeURIComponent(theme.emblem[mood])}`} width={size} height={size} alt="" />;
-  }
-  if (theme.monogram) {
-    return (
-      <MarkProvider mark={{ full: theme.monogram }}>
-        <Mark size={size} animate="none" label={`${theme.name} monogram`} />
-      </MarkProvider>
-    );
   }
   return (
     <span className={styles.initial} style={{ width: size, height: size }} aria-hidden="true">

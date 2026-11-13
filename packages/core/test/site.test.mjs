@@ -2,7 +2,7 @@
 // must be found, with its mood names and readable colors for its card.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadSite } from '../site/themes.mjs';
@@ -35,6 +35,18 @@ test("each card's colors come from the theme's own tokens", () => {
 test("each card's monogram, when there is one, is an SVG with filled paths", () => {
   for (const theme of site.themes.filter((t) => t.monogram)) {
     assert.match(theme.monogram, /<svg[\s\S]*\sd="/, `${theme.id}: monogram`);
+  }
+});
+
+test('a theme with a monogram has a card picture in both moods; without its own emblem, its app icon on its accent', () => {
+  for (const theme of site.themes.filter((t) => t.monogram)) {
+    for (const mood of ['light', 'dark']) assert.match(theme.emblem?.[mood] ?? '', /^<svg[\s\S]*<\/svg>\s*$/, `${theme.id} ${mood}: emblem`);
+    const own = JSON.parse(readFileSync(join(packages, theme.id, 'theme.json'), 'utf8')).emblem;
+    if (own) continue;
+    for (const mood of ['light', 'dark']) {
+      assert.ok(theme.emblem[mood].includes(`fill="${theme.colors[mood].accent}"`), `${theme.id} ${mood}: plate in its accent`);
+      assert.ok(theme.emblem[mood].includes(`fill="${theme.colors[mood]['on-accent']}"`), `${theme.id} ${mood}: monogram in on-accent`);
+    }
   }
 });
 
