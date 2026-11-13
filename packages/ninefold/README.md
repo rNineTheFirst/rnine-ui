@@ -15,8 +15,8 @@ its own pieces:
 - **Its effects in the shared roles**: `TextReveal` grows letters up from the line by day
   and gathers fireflies into the words at night; `Backdrop` is falling leaves by day and
   fireflies by night (they circle the pointer, scatter on a quick move and flash in a ring
-  on a click or `rippleAt`); `Mark` is the app's mark pressed into a wax seal with a sprig
-  behind it (two fireflies circle it at night); `swapIn`/`swapOut` are the swarm swap
+  on a click or `rippleAt`); `Mark` is the app's mark pressed into a seal of poured wax
+  (two fireflies circle it at night; at 40 px and below, a plainer seal with the mark's simplified version); `swapIn`/`swapOut` are the swarm swap
   (fireflies or leaves carry one panel off and bring the next); `PageEffects` are click
   bursts of leaves or fireflies, and dew catching the light by day.
 - **Core pieces in its look**: `Card` and `TiltCard` (the folded corner that lifts, a warm
@@ -119,7 +119,7 @@ These defaults were tuned by eye; most can be changed by prop.
 | Pen (Ink) | 2 px (`width`), the ink stays 1 s (`stays`), touch: hold 300 ms (`hold`) |
 | Lantern trail | walking speed 1.2x (`speed`), a mote behind the lantern on 20% of frames |
 | Swarm swap | 80 fireflies or leaves, at 0.8x the base timings |
-| Wax stamp | the ring spreads to 2.4x; the seal's sprig sways 8° |
+| Wax stamp | the ring spreads to 2.4x |
 | Pen underline | 500 ms (`pen-underline($speed)`) |
 | Night sky (HeroLight) | 0.8x stars (`stars`) |
 | Click burst | 5 leaves, or 6 fireflies |

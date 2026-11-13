@@ -6,6 +6,7 @@ import {
   Eyebrow,
   FieldJournal,
   LanternTrail,
+  MarkProvider,
   MoonDial,
   PenLink,
   Section,
@@ -59,7 +60,7 @@ const TUNED = [
   ['Ink', '2 px pen, stays 1 s; touch: hold 300 ms'],
   ['Lantern', 'walks at 1.2x; a mote behind it on 20% of frames'],
   ['Swarm swap', '80 fireflies or leaves, at 0.8x the base timings'],
-  ['Wax stamp / seal', 'ring spreads to 2.4x; sprig sways 8°'],
+  ['Wax stamp', 'ring spreads to 2.4x'],
   ['Pen underline', '500 ms'],
   ['Night sky', '0.8x stars'],
   ['Click burst', '5 leaves or 6 fireflies'],
@@ -109,7 +110,7 @@ function Example({ good, title, children }: { good: boolean; title: string; chil
 export function App({ site }: Props) {
   const own = site.themes.find((t) => t.id === 'ninefold');
   // The seal carries Ninefold's own monogram once it has one; until then the sample shop's book
-  const mark = own?.monogram ? { full: own.monogram } : BOOK_MARK;
+  const mark = own?.monogram ? { full: own.monogram, simplified: own.monogramSimplified ?? undefined } : BOOK_MARK;
   const storybook = site.docsUrl ? `${site.docsUrl}ninefold/` : null;
   const story = (id: string) => (storybook ? `${storybook}?path=/story/${id}` : null);
   const [replay, setReplay] = useState(0);
@@ -180,7 +181,7 @@ export function App({ site }: Props) {
               </Card>
               <Card interactive={false}>
                 <h3 className={styles.h3}>A seal for the mark</h3>
-                <p className={styles.muted}>The shop’s own mark, pressed into wax, with a sprig tucked behind it.</p>
+                <p className={styles.muted}>The shop’s own mark, pressed into poured wax.</p>
               </Card>
               <Card interactive={false}>
                 <h3 className={styles.h3}>Things move like real things</h3>
@@ -190,14 +191,16 @@ export function App({ site }: Props) {
           </Section>
 
           <Section id="seal" number="02" eyebrow="Seal and wordmark" title="The seal carries the shop’s mark" lede={<>Ninefold has no logo of its own to put on a shop. Each shop passes its own mark (<code>ThemeProvider mark</code>, an SVG with filled paths) and every <code>Mark</code> presses it into wax. Here it’s a sample shop’s open book.</>}>
+            {/* A shop's own mark here (the sample book), whatever this kit's seal carries */}
+            <MarkProvider mark={BOOK_MARK}>
             <div className={styles.grid2}>
               {(['light', 'dark'] as const).map((mood) => (
                 <MoodScope key={mood} mood={mood} label={`${moods[mood].label} · ${mood}`}>
                   <div className={styles.sealRow}>
                     <Mark size={120} label={`The seal in ${moods[mood].label}`} />
                     <Mark size={56} />
-                    <Mark size={32} />
-                    <Mark size={24} variant="simplified" />
+                    <Mark size={40} />
+                    <Mark size={24} />
                   </div>
                   <div className={styles.lockup}>
                     <Mark size={40} />
@@ -206,12 +209,13 @@ export function App({ site }: Props) {
                 </MoodScope>
               ))}
             </div>
+            </MarkProvider>
             <ul className={styles.rules}>
-              <li><b>Sizes.</b> The full seal (wax and sprig) from 32px up; at 24px and below use <code>variant="simplified"</code>, the seal alone.</li>
+              <li><b>Sizes.</b> Above 40px the seal is poured wax with a sheen and the mark pressed in. At 40px and below it’s the small seal: no gloss, and the mark’s <code>simplified</code> version, smaller and lighter, so it stays readable.</li>
               <li><b>The mark inside.</b> One color, filled paths, a simple silhouette: it’s pressed in, so fine lines and thin strokes disappear. Give a <code>simplified</code> version with heavier strokes for small sizes.</li>
               <li><b>Color.</b> The wax follows the mood (claret by day, deeper by night). Don’t recolor it to the shop’s brand color: wax is for what’s live.</li>
               <li><b>Lockup.</b> The seal sits left of the shop’s name, set as a <code>Wordmark</code> or in Fraunces, with at least half the seal’s width between them.</li>
-              <li><b>Space.</b> Keep the sprig clear: nothing within a quarter of the seal’s width around it, and never over a busy photo.</li>
+              <li><b>Space.</b> Nothing within a quarter of the seal’s width around it, and never over a busy photo.</li>
             </ul>
           </Section>
 
@@ -413,13 +417,15 @@ export function App({ site }: Props) {
             </div>
           </section>
 
-          <Section id="downloads" number="11" eyebrow="Downloads" title="Take it to the shop" lede="The tokens, the theme file and the seal. The seal files carry a sample mark: replace the group named your-mark with the shop’s own.">
+          <Section id="downloads" number="11" eyebrow="Downloads" title="Take it to the shop" lede="The tokens, the theme file and the seal, large and small. To use a seal file for a shop, replace the group named your-mark with the shop’s own mark.">
             <div className={styles.grid3}>
               <a className={styles.download} href="./downloads/tokens.css" download><b>tokens.css</b><span className={styles.muted}>Every <code>--r9-*</code> custom property, both moods.</span></a>
               <a className={styles.download} href="./downloads/tokens.json" download><b>tokens.json</b><span className={styles.muted}>The same tokens with names, values and what each is for.</span></a>
               <a className={styles.download} href="./downloads/theme.json" download><b>theme.json</b><span className={styles.muted}>Ninefold’s name, moods, Auto rule and fonts.</span></a>
               <a className={styles.download} href="./downloads/seal-glint.svg" download><b>seal-glint.svg</b><span className={styles.muted}>The seal in {moods.light.label}’s wax, as a template.</span></a>
               <a className={styles.download} href="./downloads/seal-gloam.svg" download><b>seal-gloam.svg</b><span className={styles.muted}>The seal in {moods.dark.label}’s wax, as a template.</span></a>
+              <a className={styles.download} href="./downloads/seal-glint-small.svg" download><b>seal-glint-small.svg</b><span className={styles.muted}>The small seal (40px and below) in {moods.light.label}’s wax.</span></a>
+              <a className={styles.download} href="./downloads/seal-gloam-small.svg" download><b>seal-gloam-small.svg</b><span className={styles.muted}>The small seal in {moods.dark.label}’s wax.</span></a>
               <div className={styles.download}><b>Fonts</b><span className={styles.muted}>{FONTS.map(([name, , , href], i) => <span key={name}>{i ? ' · ' : ''}<a href={href}>{name}</a></span>)}</span></div>
             </div>
             <Stack gap={3}>

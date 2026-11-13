@@ -149,7 +149,8 @@ and in every library's Storybook in that library's look.
   tokens and the shared mixins. In a library's kit (`packages/<id>/kit`), the shell's `@rnine/core`
   imports become that library's own versions (its `Mark`, `Card`...).
 
-`site/themes.mjs` reads the themes (their `theme.json` `name`, `tagline` and optional `monogram`,
+`site/themes.mjs` reads the themes (their `theme.json` `name`, `tagline`, optional `monogram` and
+`simplifiedMonogram`, and an optional `emblem` module that draws the card's picture from the monogram,
 and their mood colors from their tokens) and a host's own settings (mark, favicons, where the kits
 and Storybooks are hosted); the sites link to each theme at `./<package folder>/`.
 

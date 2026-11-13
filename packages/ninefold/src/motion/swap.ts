@@ -1,7 +1,8 @@
 // "Swarm swap": Ninefold's panel swap (swapIn/swapOut). At night the old
 // panel dissolves into fireflies and the new one gathers out of them; by day
 // leaves blow off the old panel and drift in to the new. The panels animate
-// with the Web Animations API (nothing is left on them when it ends); the
+// with the Web Animations API (the exit holds the panel hidden until the next
+// swapIn clears it; nothing is left once the entrance ends); the
 // fireflies and leaves fly on the page's effects overlay. No-ops where
 // element.animate is missing; with reduced motion, a plain cut.
 import { spawn, leafColor, type Particle } from '../fx/overlay';
@@ -64,8 +65,14 @@ export function swapOut(el: HTMLElement): Promise<void> {
 /** Entrance: the swarm flies in and settles, then the panel clears out of it. `scanbar` is NineOS's; Ninefold ignores it. */
 export function swapIn(el: HTMLElement, scanbar?: HTMLElement | null): void {
   void scanbar;
+  // With reduced motion there's nothing to play, but an exit's hold may still be on the panel
+  if (motionOff()) el.getAnimations?.().forEach((a) => a.cancel());
   if (!canAnimate(el) || motionOff()) return;
   swarm(el, Math.round(SWARM * 0.88), false);
   const wait = 260 * PACE;
+  // The exit holds the panel hidden (fill: forwards) until the entrance starts.
+  // Clear it in the same frame (the entrance starts hidden too), or it hides the
+  // panel again once the entrance ends.
+  el.getAnimations?.().forEach((a) => a.cancel());
   el.animate([{ opacity: 0, filter: 'blur(5px)' }, { opacity: 0, filter: 'blur(5px)', offset: wait / SWAP_IN_MS }, { opacity: 1, filter: 'blur(0px)' }], { duration: SWAP_IN_MS, easing: EASE });
 }

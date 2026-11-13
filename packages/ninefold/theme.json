@@ -1,6 +1,7 @@
 {
   "name": "Ninefold",
   "tagline": "Cozy fantasy for magic and mystic shops: folded cards, wax seals, ink, falling leaves by day and fireflies by night.",
+  "emblem": "kit/emblem.mjs",
   "moods": {
     "light": { "id": "glint", "label": "Glint", "description": "The day mood: honey paper, iron-gall ink, claret wax, falling leaves." },
     "dark": { "id": "gloam", "label": "Gloam", "description": "The night mood: a walnut desk by candlelight, rose ink, fireflies." }

@@ -32,7 +32,7 @@ const MIXINS = [
 const ROLES = [
   ['TextReveal', 'How a title appears.', 'Plain shows the text as it is. NineOS decodes it from terminal symbols; Ninefold grows the letters up by day and gathers them from fireflies at night.'],
   ['Backdrop', 'The field behind a page or a hero.', 'Plain: a still dotted field. NineOS: a reactive dot field; Ninefold: falling leaves by day, fireflies by night.'],
-  ['Mark', 'The app\'s own mark, with the library\'s animation.', 'Plain: no animation. NineOS: a slice glitch; Ninefold: pressed into a wax seal with a sprig.'],
+  ['Mark', 'The app\'s own mark, with the library\'s animation.', 'Plain: no animation. NineOS: a slice glitch; Ninefold: pressed into a seal of poured wax.'],
   ['PageEffects', 'Page-wide effects that answer the person using the page.', 'Plain: none. NineOS: scanlines and click sparks; Ninefold: click bursts and dew.'],
   ['swapIn / swapOut', 'The change between two panels or pages.', 'Plain: a short fade. NineOS: a top-down reveal and an RGB-split exit; Ninefold: a swarm of leaves by day, fireflies by night.'],
 ] as const;

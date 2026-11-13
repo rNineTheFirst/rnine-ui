@@ -1,7 +1,7 @@
 // What core's sites know at build time (themes.mjs), passed in as __SITE__.
 
 /** A mood's main colors, resolved to #RRGGBB. */
-export type MoodColors = Partial<Record<'bg' | 'surface' | 'fg' | 'fg-muted' | 'line' | 'accent' | 'accent-text' | 'on-accent' | 'signal', string>>;
+export type MoodColors = Partial<Record<'bg' | 'surface' | 'fg' | 'fg-muted' | 'line' | 'accent' | 'accent-text' | 'on-accent' | 'signal' | 'wax' | 'wax-light' | 'wax-dark', string>>;
 
 /** A theme built on core: a package next to core with a theme.json. */
 export type ThemeInfo = {
@@ -15,6 +15,10 @@ export type ThemeInfo = {
   colors: Record<'light' | 'dark', MoodColors>;
   /** The theme's monogram (SVG with filled paths), or null until it has one. */
   monogram: string | null;
+  /** Its heavy-stroke version for small sizes, if it has one. */
+  monogramSimplified: string | null;
+  /** The theme's own card picture in each mood (e.g. its monogram pressed into its seal), if it draws one. */
+  emblem: Record<'light' | 'dark', string> | null;
 };
 
 export type SiteInfo = {

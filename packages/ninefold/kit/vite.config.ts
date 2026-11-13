@@ -15,12 +15,13 @@ import { BOOK_MARK } from '../src/example/book';
 const pkg = fileURLToPath(new URL('..', import.meta.url));
 const src = (file: string) => join(pkg, 'src', file);
 
-/** The seal in a mood's colors, with Ninefold's monogram (or the sample book) as the mark to replace. */
-async function seal(scheme: 'light' | 'dark') {
+/** The seal in a mood's colors, large or small, with Ninefold's monogram (the host's, else the sample book) as the mark to replace. */
+async function seal(scheme: 'light' | 'dark', small = false) {
   const { tokens } = await import(pathToFileURL(join(pkg, 'dist', 'tokens.js')).href);
   const role = (name: string) => String(tokens.schemes[scheme].find((r: { name: string }) => r.name === name).value).slice(0, 7);
-  const mark = loadSite().themes.find((t) => t.id === 'ninefold')?.monogram ?? BOOK_MARK.full;
-  return sealSvg({ wax: role('wax'), waxLight: role('wax-light'), waxDark: role('wax-dark'), leaf: role('leaf') }, mark);
+  const own = loadSite().themes.find((t) => t.id === 'ninefold');
+  const mark = small ? (own?.monogramSimplified ?? own?.monogram ?? BOOK_MARK.full) : (own?.monogram ?? BOOK_MARK.full);
+  return sealSvg({ wax: role('wax'), waxLight: role('wax-light'), waxDark: role('wax-dark') }, mark, { small });
 }
 
 export default defineConfig(
@@ -31,6 +32,8 @@ export default defineConfig(
     downloads: {
       'downloads/seal-glint.svg': () => seal('light'),
       'downloads/seal-gloam.svg': () => seal('dark'),
+      'downloads/seal-glint-small.svg': () => seal('light', true),
+      'downloads/seal-gloam-small.svg': () => seal('dark', true),
     },
   }),
 );

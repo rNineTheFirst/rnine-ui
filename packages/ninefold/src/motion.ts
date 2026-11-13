@@ -1,7 +1,7 @@
 // @rnine/ninefold/motion: the Ninefold motion layer. Every @rnine/core/motion
 // export, with Ninefold's own effects in the roles: TextReveal grows letters
 // by day and gathers fireflies into words at night, Backdrop is falling
-// leaves by day and fireflies at night, Mark is a wax seal with a sprig, the
+// leaves by day and fireflies at night, Mark is a seal of poured wax, the
 // panel swap is a swarm of fireflies or leaves, and PageEffects are click
 // bursts and dew. Every effect stops when the system asks for reduced motion
 // (or ThemeProvider reducedMotion is on).

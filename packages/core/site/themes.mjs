@@ -5,6 +5,11 @@
 //   theme.json "name"       the theme's name
 //   theme.json "tagline"    one line on what it's for
 //   theme.json "monogram"   optional: the theme's monogram (SVG, filled paths), a path in its package
+//   theme.json "simplifiedMonogram"  optional: its heavy-stroke version for small sizes
+//   theme.json "emblem"     optional: a module in its package (not in npm) whose
+//                           emblem({ monogram, colors }) draws the card's picture
+//                           from the monogram in a mood's colors (an SVG string),
+//                           e.g. Ninefold presses it into its wax seal
 //   theme.json "moods"      the two mood names
 //   tokens/themes/*.json    a few colors of each mood, resolved from its own tokens
 // Each theme's Storybook and kit sit one folder down from core's, at /<package folder>/.
@@ -16,7 +21,8 @@
 //   "brandUrl"                 where the brand kits are hosted (core's at the root, each theme's at /<id>/)
 //   "docsUrl"                  where the Storybooks are hosted (the same layout)
 //   "formerRoot"               the theme that used to be at the root: old links to it are sent on
-//   "themes": { "<id>": { "monogram": "assets/x.svg" } }   a monogram the host keeps for a theme
+//   "themes": { "<id>": { "monogram": "assets/x.svg", "simplifiedMonogram": "assets/x-small.svg" } }
+//                              a monogram the host keeps for a theme
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
@@ -44,7 +50,7 @@ export function moodColors(packageDir, scheme) {
   for (const file of readdirSync(tokens).filter((f) => f.endsWith('.json'))) Object.assign(tree, readJson(join(tokens, file)));
   const roles = readJson(join(tokens, 'themes', `${scheme}.json`)).theme;
   const out = {};
-  for (const role of ['bg', 'surface', 'fg', 'fg-muted', 'line', 'accent', 'accent-text', 'on-accent', 'signal']) {
+  for (const role of ['bg', 'surface', 'fg', 'fg-muted', 'line', 'accent', 'accent-text', 'on-accent', 'signal', 'wax', 'wax-light', 'wax-dark']) {
     if (roles[role]) out[role] = String(resolve(tree, roles[role].$value)).slice(0, 7);
   }
   return out;
@@ -74,8 +80,17 @@ export function loadSite() {
       const packageDir = join(packagesDir, dir);
       const theme = readJson(join(packageDir, 'theme.json'));
       const manifest = readJson(join(packageDir, 'package.json'));
-      const own = theme.monogram ? readFileSync(join(packageDir, theme.monogram), 'utf8') : undefined;
-      const hosted = read(config.themes?.[dir]?.monogram);
+      const own = (file) => (file ? readFileSync(join(packageDir, file), 'utf8') : undefined);
+      const hosted = config.themes?.[dir] ?? {};
+      const monogram = read(hosted.monogram) ?? own(theme.monogram) ?? null;
+      const monogramSimplified = (hosted.monogram ? read(hosted.simplifiedMonogram) : own(theme.simplifiedMonogram)) ?? null;
+      const colors = { light: moodColors(packageDir, 'light'), dark: moodColors(packageDir, 'dark') };
+      // The theme's own card picture, drawn from its monogram (a sync require: Node loads ES modules and TypeScript)
+      let emblem = null;
+      if (theme.emblem && monogram) {
+        const draw = createRequire(import.meta.url)(join(packageDir, theme.emblem)).emblem;
+        emblem = { light: draw({ monogram, colors: colors.light }), dark: draw({ monogram, colors: colors.dark }) };
+      }
       return {
         id: dir,
         name: theme.name,
@@ -86,8 +101,10 @@ export function loadSite() {
           light: { label: theme.moods.light.label, description: theme.moods.light.description ?? '' },
           dark: { label: theme.moods.dark.label, description: theme.moods.dark.description ?? '' },
         },
-        colors: { light: moodColors(packageDir, 'light'), dark: moodColors(packageDir, 'dark') },
-        monogram: hosted ?? own ?? null,
+        colors,
+        monogram,
+        monogramSimplified,
+        emblem,
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name));

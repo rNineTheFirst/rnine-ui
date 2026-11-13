@@ -195,7 +195,7 @@ export function Bookshop() {
       </section>
 
       <footer className={styles.foot}>
-        <p><b>Colophon</b> Set in Fraunces and Literata. Pressed paper, iron-gall ink, a wax seal with a sprig on every parcel. Golden hour by day, candlelight at night.</p>
+        <p><b>Colophon</b> Set in Fraunces and Literata. Pressed paper, iron-gall ink, a wax seal on every parcel. Golden hour by day, candlelight at night.</p>
         <nav aria-label="Footer"><PenLink href="#">Special editions</PenLink> <PenLink href="#">Write to us</PenLink></nav>
       </footer>
     </div>

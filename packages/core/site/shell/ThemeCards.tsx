@@ -17,8 +17,11 @@ type Props = {
 
 const LABEL = { docs: 'Storybook', kit: 'Brand kit' } as const;
 
-/** The theme's monogram, or until it has one, its initial in a ring. */
-function Monogram({ theme, size }: { theme: ThemeInfo; size: number }) {
+/** The theme's emblem (its own picture of its monogram), else its monogram, else its initial in a ring. */
+function Monogram({ theme, size, mood }: { theme: ThemeInfo; size: number; mood: 'light' | 'dark' }) {
+  if (theme.emblem) {
+    return <img src={`data:image/svg+xml,${encodeURIComponent(theme.emblem[mood])}`} width={size} height={size} alt="" />;
+  }
   if (theme.monogram) {
     return (
       <MarkProvider mark={{ full: theme.monogram }}>
@@ -54,7 +57,7 @@ export function ThemeCards({ themes, site, otherUrl, target, level = 2 }: Props)
             <a className={styles.moods} href={`./${theme.id}/`} target={target} aria-label={`${theme.name} ${LABEL[site]}`}>
               {(['light', 'dark'] as const).map((mood) => (
                 <span key={mood} className={styles.mood} data-mood={mood}>
-                  <Monogram theme={theme} size={56} />
+                  <Monogram theme={theme} size={56} mood={mood} />
                   <span className={styles.moodName}>{theme.moods[mood].label}</span>
                   <span className={styles.chips} aria-hidden="true">
                     <span style={{ background: `var(--theme-${mood}-accent)` }} />

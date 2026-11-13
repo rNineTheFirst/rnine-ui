@@ -75,8 +75,8 @@ test('styles.css has every shared keyframe, Ninefold’s own and the paper', () 
 });
 
 test('NINEFOLD_THEME matches theme.json, with the tuned card lift', async () => {
-  // tagline and monogram are for core's sites (core/site/themes.mjs), not the theme config
-  const { fonts: _fonts, tagline: _tagline, monogram: _monogram, ...theme } = JSON.parse(readFileSync(new URL('../theme.json', import.meta.url), 'utf8'));
+  // tagline, monogram(s) and emblem are for core's sites (core/site/themes.mjs), not the theme config
+  const { fonts: _fonts, tagline: _tagline, monogram: _monogram, simplifiedMonogram: _simplified, emblem: _emblem, ...theme } = JSON.parse(readFileSync(new URL('../theme.json', import.meta.url), 'utf8'));
   const { NINEFOLD_THEME } = await import('../dist/index.js');
   assert.deepEqual({ name: NINEFOLD_THEME.name, moods: NINEFOLD_THEME.moods, auto: NINEFOLD_THEME.auto }, theme);
   assert.deepEqual({ name: tokens.name, moods: tokens.moods, auto: tokens.auto }, theme);

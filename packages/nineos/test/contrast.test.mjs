@@ -77,8 +77,8 @@ test('styles.css has every shared keyframe, and NineOS’s own', () => {
 
 test('NINEOS_THEME matches theme.json', async () => {
   // fonts: checked with the static pages above
-  // tagline and monogram are for core's sites (core/site/themes.mjs), not the theme config
-  const { palette, fonts: _fonts, tagline: _tagline, monogram: _monogram, ...theme } = JSON.parse(readFileSync(new URL('../theme.json', import.meta.url), 'utf8'));
+  // tagline, monogram(s) and emblem are for core's sites (core/site/themes.mjs), not the theme config
+  const { palette, fonts: _fonts, tagline: _tagline, monogram: _monogram, simplifiedMonogram: _simplified, emblem: _emblem, ...theme } = JSON.parse(readFileSync(new URL('../theme.json', import.meta.url), 'utf8'));
   const { NINEOS_THEME } = await import('../dist/index.js');
   const def = tokens.palettes.find((p) => p.default);
   assert.deepEqual({ id: def.id, label: def.label, description: def.description }, palette);

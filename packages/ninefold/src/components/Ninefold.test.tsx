@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Panel } from '@rnine/core';
+import { MarkProvider, Panel } from '@rnine/core';
 import { ThemeProvider } from '../provider/ThemeProvider';
 import { Button } from './Button/Button';
 import { Card } from './Card/Card';
@@ -49,12 +49,25 @@ describe('Mark (the seal)', () => {
     expect(screen.queryByRole('img')).toBeNull();
   });
 
-  it('tucks a sprig behind the full seal, not the simplified one', () => {
-    const leaves = (c: HTMLElement) => c.querySelectorAll('path[d="M0 0Q6 -5 13 0Q6 5 0 0Z"]').length;
-    const { container, rerender } = render(<Mark />);
-    expect(leaves(container)).toBe(8);
-    rerender(<Mark variant="simplified" />);
-    expect(leaves(container)).toBe(0);
+  it('is poured wax when large, a plain small seal at 40px and below', () => {
+    // The sheen and the grain only on the large seal
+    const gloss = (c: HTMLElement) => c.querySelectorAll('ellipse, feTurbulence').length;
+    const { container, rerender } = render(<Mark size={64} />);
+    expect(gloss(container)).toBe(2);
+    rerender(<Mark size={40} />);
+    expect(gloss(container)).toBe(0);
+    rerender(<Mark size={64} variant="simplified" />);
+    expect(gloss(container)).toBe(0);
+  });
+
+  it('draws the simplified artwork on a small seal', () => {
+    const full = '<svg viewBox="0 0 10 10"><path d="M1 1H9V9H1Z"/><path d="M3 3H7V7H3Z"/></svg>';
+    const simplified = '<svg viewBox="0 0 10 10"><path d="M2 2H8V8H2Z"/></svg>';
+    const { container, rerender } = render(<MarkProvider mark={{ full, simplified }}><Mark size={64} /></MarkProvider>);
+    expect(container.querySelectorAll('path[d="M3 3H7V7H3Z"]').length).toBe(2); // the lit edge and the impression
+    rerender(<MarkProvider mark={{ full, simplified }}><Mark size={24} /></MarkProvider>);
+    expect(container.querySelectorAll('path[d="M2 2H8V8H2Z"]').length).toBe(1);
+    expect(container.querySelectorAll('path[d="M3 3H7V7H3Z"]').length).toBe(0);
   });
 });
 

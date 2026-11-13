@@ -54,10 +54,11 @@ export const Seal: Story = {
     <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
       <Mark size={120} animate="mount" label="The shop’s seal" />
       <Mark size={64} />
-      <Mark size={24} variant="simplified" />
+      <Mark size={40} />
+      <Mark size={24} />
     </div>
   ),
-  parameters: { docs: { description: { story: 'The app’s mark pressed into wax, a sprig behind it (two fireflies circle it at night). Hover to press it again: a squash, a foil glint, the sprig sways. `animate="mount"` drops the wax first. The simplified variant (24 px and below) is the seal alone.' } } },
+  parameters: { docs: { description: { story: 'The app’s mark pressed into poured wax (two fireflies circle it at night). Hover to press it again: a squash and a foil glint. `animate="mount"` drops the wax first. At 40 px and below it’s the small seal: no gloss, the mark’s simplified version, smaller and lighter.' } } },
 };
 
 function Swap() {

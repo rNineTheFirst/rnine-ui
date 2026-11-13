@@ -12,6 +12,24 @@ const GATHER_COUNT = 480; // fireflies, at night
 
 type Cell = { left: number; top: number; width: number; height: number };
 
+/** The element's font, as the canvas and the font loader name it. */
+const fontOf = (box: HTMLElement) => {
+  const s = getComputedStyle(box);
+  return `${s.fontStyle} ${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;
+};
+
+/**
+ * Resolves once the element's font has loaded (at most `cap` ms), so the
+ * letters are measured where they'll stay. Measured with the fallback font,
+ * the fireflies would gather where the letters were before the font swapped in.
+ */
+function fontReady(box: HTMLElement, text: string, cap = 1500): Promise<void> {
+  const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
+  if (!fonts?.load) return Promise.resolve();
+  const loaded = fonts.load(fontOf(box), text).then(() => fonts.ready).then(() => undefined, () => undefined);
+  return Promise.race([loaded, new Promise<void>((resolve) => window.setTimeout(resolve, cap))]);
+}
+
 /** Where each character of the text node sits, relative to `box`. */
 function measure(node: Text, box: HTMLElement, chars: string[]): Cell[] | null {
   const range = document.createRange();
@@ -36,13 +54,17 @@ function glyphPoints(box: HTMLElement, chars: string[], cells: Cell[]): [number,
   canvas.height = Math.ceil(r.height);
   const g = canvas.getContext('2d');
   if (!g || !canvas.width || !canvas.height) return [];
-  const s = getComputedStyle(box);
-  g.font = `${s.fontStyle} ${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;
-  g.textBaseline = 'middle';
+  g.font = fontOf(box);
+  g.textBaseline = 'alphabetic';
   g.fillStyle = '#000';
   chars.forEach((c, i) => {
     const cell = cells[i];
-    if (cell && !/\s/.test(c)) g.fillText(c, cell.left, cell.top + cell.height * 0.55);
+    if (!cell || /\s/.test(c)) return;
+    // A character's box is the font's ascent + descent, centered in the line: its baseline sits at the ascent
+    const m = g.measureText(c);
+    const ascent = m.fontBoundingBoxAscent ?? cell.height * 0.8;
+    const descent = m.fontBoundingBoxDescent ?? cell.height * 0.2;
+    g.fillText(c, cell.left, cell.top + (cell.height - (ascent + descent)) / 2 + ascent);
   });
   const data = g.getImageData(0, 0, canvas.width, canvas.height).data;
   const points: [number, number][] = [];
@@ -101,10 +123,21 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
   const [cells, setCells] = useState<Cell[] | null>(null);
   const chars = Array.from(text);
 
-  const play = useCallback(() => {
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
+
+  const play = useCallback(async () => {
+    const first = ref.current;
+    if (reduced || !first) return;
+    await fontReady(first, text);
     const box = ref.current;
     const node = baseRef.current?.firstChild;
-    if (reduced || !box || !(node instanceof Text)) return;
+    if (!alive.current || !box || !(node instanceof Text)) return;
     const measured = measure(node, box, Array.from(text));
     if (!measured) return;
     if (isNight(box) && typeof baseRef.current?.animate === 'function') {
@@ -150,7 +183,7 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
 
   useEffect(() => {
     if (trigger === 'mount') {
-      const t = window.setTimeout(play, delay);
+      const t = window.setTimeout(() => void play(), delay);
       return () => window.clearTimeout(t);
     }
     if (trigger === 'view' && ref.current) {
@@ -158,7 +191,7 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
       const io = new IntersectionObserver(
         ([e]) => {
           if (!e.isIntersecting) return;
-          t = window.setTimeout(play, delay);
+          t = window.setTimeout(() => void play(), delay);
           io.disconnect();
         },
         { threshold: 0.4 },
@@ -175,7 +208,7 @@ export function TextReveal({ text, as: Tag = 'span', className, id, trigger = 'v
   if (reduced && cells) setCells(null);
 
   return (
-    <Tag ref={ref} id={id} className={cx(styles.text, className)} onMouseEnter={trigger === 'hover' ? play : undefined}>
+    <Tag ref={ref} id={id} className={cx(styles.text, className)} onMouseEnter={trigger === 'hover' ? () => void play() : undefined}>
       {/* What assistive tech reads: always the final text (inside buttons and links too) */}
       <span className={styles.sr}>{text}</span>
       <span ref={baseRef} aria-hidden="true" className={cells ? styles.hidden : undefined}>
