@@ -13,6 +13,8 @@ export type ThemeSlots = {
   TextReveal: ComponentType<TextRevealProps>;
   /** Page-wide effects ThemeProvider mounts (effects prop). */
   PageEffects: ComponentType;
+  /** The swap's entrance on smaller things that change in place (a calendar's month). Default: Plain's fade. */
+  swapIn?: (el: HTMLElement) => void;
 };
 
 /** What a library is: its name, mood names, Auto rule and effects. */

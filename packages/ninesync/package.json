@@ -1,6 +1,6 @@
 {
   "name": "@rnine/ninesync",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "license": "MIT",
   "description": "NineSync: a calm design system library for internal tools and dashboards, in the client's own color. Two moods (Light and Dark), DM Sans, pale marks under titles and tabs, the Sync glow, and a checker that turns a brand color into accessible accent roles. Built on @rnine/core",
   "keywords": [
@@ -86,7 +86,7 @@
     }
   },
   "dependencies": {
-    "@rnine/core": "0.4.0",
+    "@rnine/core": "0.5.0",
     "@fontsource-variable/dm-sans": "^5.3.0",
     "@fontsource/dm-mono": "^5.3.0"
   },

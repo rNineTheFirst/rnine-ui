@@ -1,0 +1,85 @@
+@use "@rnine/ninefold/scss" as r9;
+
+// Ninefold's look over core's DatePicker, TimePicker and DateTimePicker
+// (this stylesheet comes after core's). Global, by the pickers' data-part
+// names, so it reaches their popovers too: round days, the picked day sealed
+// in ink (Glint) or rose (Gloam) with a ring around it, today in a dashed ring,
+// the month in the display face's italic.
+
+html {
+  [data-part="month"] {
+    font-family: r9.$font-display;
+    font-style: italic;
+  }
+
+  [data-part="day"] {
+    width: 42px;
+    height: 42px;
+    margin-inline: auto;
+    clip-path: none;
+    border-radius: r9.$radius-full;
+    font-family: r9.$font-body;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  [data-part="day"]:not([aria-disabled]):hover {
+    background: r9.$accent-soft;
+    box-shadow: none;
+  }
+
+  // Availability's dot, round
+  [data-part="day"]::after {
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    bottom: 4px;
+    border-radius: r9.$radius-full;
+  }
+
+  // Today: a dashed ring instead of the tick
+  [data-part="day"][aria-current="date"] {
+    color: r9.$signal-text;
+    outline: 1px dashed r9.$signal;
+    outline-offset: -3px;
+
+    &::before { display: none; }
+  }
+
+  // The picked day: a seal, ringed
+  [aria-selected="true"] > [data-part="day"],
+  [aria-selected="true"] > [data-part="day"]:hover {
+    color: r9.$on-accent;
+    background: r9.$accent;
+    box-shadow: 0 0 0 3px r9.$bg, 0 0 0 4px r9.$accent;
+    outline: 0;
+
+    &::after { background: r9.$on-accent; }
+  }
+
+  [data-part="day"]:focus-visible {
+    box-shadow: none;
+    outline: 2px solid r9.$accent;
+    outline-offset: 3px;
+  }
+
+  [data-part="time"] {
+    clip-path: none;
+    border-radius: r9.corner-size(md);
+  }
+
+  [data-part="time"][aria-pressed="true"],
+  [data-part="time"][aria-pressed="true"]:hover {
+    color: r9.$on-accent;
+    background: r9.$accent;
+    box-shadow: none;
+
+    > span + span { color: inherit; opacity: 0.85; }
+  }
+
+  [data-part="time"]:focus-visible {
+    box-shadow: none;
+    outline: 2px solid r9.$accent;
+    outline-offset: 2px;
+  }
+}

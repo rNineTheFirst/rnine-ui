@@ -12,6 +12,8 @@ export { Mark } from './motion/Mark';
 // Core pieces in Ninefold's look: the folded card, the wax-stamp button
 export { Card } from './components/Card/Card';
 export { Button } from './components/Button/Button';
+// The pickers' round days and sealed pick (a global stylesheet: it reaches their popovers)
+import './components/Pickers/pickers.scss';
 
 // Ninefold only
 export { PenLink } from './components/PenLink/PenLink';

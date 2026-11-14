@@ -1,0 +1,75 @@
+@use "@rnine/core/scss" as r9;
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-1;
+  min-width: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  gap: r9.$space-2;
+}
+
+.popList {
+  min-width: 11rem;
+  max-height: 18rem;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+// A time: a hairline chip; the picked one is lit (the accent element)
+.time {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: r9.$space-3;
+  min-height: 40px;
+  padding: r9.$space-2 r9.$space-3;
+  border: 0;
+  background: r9.$surface;
+  color: r9.$fg;
+  @include r9.type(code);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  @include r9.corner(sm);
+  @include r9.hairline(r9.$line-strong);
+  transition: box-shadow r9.$duration-fast, color r9.$duration-fast, background-color r9.$duration-fast;
+
+  .grid & { justify-content: center; }
+
+  @include r9.down(md) { min-height: 44px; }
+
+  &:hover { @include r9.hairline(r9.$accent); color: r9.$accent-text; }
+  &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px r9.$accent; }
+
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    color: r9.$fg-subtle;
+    background: transparent;
+    text-decoration: line-through;
+    @include r9.hairline(r9.$line);
+  }
+}
+
+.end {
+  @include r9.type(caption);
+  color: r9.$fg-subtle;
+}
+
+.picked {
+  color: r9.$accent-text;
+  background: r9.$accent-soft;
+  @include r9.hairline(r9.$accent);
+
+  .end { color: r9.$accent-text; }
+}
+
+.empty {
+  padding: r9.$space-3 0;
+  @include r9.type(body-sm);
+  color: r9.$fg-muted;
+}

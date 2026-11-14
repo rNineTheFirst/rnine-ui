@@ -1,0 +1,146 @@
+@use "@rnine/core/scss" as r9;
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: r9.$space-2;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  @include r9.type(h4);
+  color: r9.$fg;
+}
+
+.nav {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg;
+  cursor: pointer;
+  @include r9.corner(sm);
+  @include r9.hairline(r9.$line-strong);
+  transition: box-shadow r9.$duration-fast, color r9.$duration-fast;
+
+  svg { width: 18px; height: 18px; }
+
+  &:hover:not(:disabled) { @include r9.hairline(r9.$accent); color: r9.$accent-text; }
+  &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px r9.$accent; }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    @include r9.hairline(r9.$line);
+  }
+
+  @include r9.down(md) { width: 44px; height: 44px; }
+}
+
+.grid {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: r9.$space-1;
+  margin: calc(-1 * #{r9.$space-1});
+  margin-block-start: 0;
+  table-layout: fixed;
+}
+
+.weekday {
+  padding: 0 0 r9.$space-1;
+  @include r9.type(caption);
+  font-weight: r9.$font-weight-medium;
+  text-align: center;
+  color: r9.$fg-subtle;
+}
+
+.cell { padding: 0; }
+
+// A day: closed days are plain text; open ones answer the pointer
+.day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg-subtle;
+  @include r9.type(code);
+  font-variant-numeric: tabular-nums;
+  cursor: default;
+  @include r9.corner(sm);
+  transition: box-shadow r9.$duration-fast, color r9.$duration-fast, background-color r9.$duration-fast;
+
+  @include r9.down(md) { height: 44px; }
+
+  &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px r9.$accent; }
+}
+
+.open {
+  color: r9.$fg;
+  cursor: pointer;
+
+  &:hover { background: r9.$accent-soft; color: r9.$accent-text; }
+}
+
+// Availability: the open days stand out from the closed ones, by fill and a dot
+.availability .open {
+  background: r9.$surface;
+  @include r9.hairline(r9.$line-strong);
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    background: r9.$signal;
+    border-radius: r9.$radius-xs;
+  }
+
+  &:hover { @include r9.hairline(r9.$accent); background: r9.$surface; }
+  &:focus-visible { box-shadow: inset 0 0 0 2px r9.$accent; }
+}
+
+// Today: a tick above the number, in signal
+.today {
+  color: r9.$signal-text;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 36%;
+    right: 36%;
+    top: 5px;
+    height: 2px;
+    background: r9.$signal;
+  }
+}
+
+// The picked day: the accent element
+.picked,
+.availability .picked {
+  color: r9.$accent-text;
+  background: r9.$accent-soft;
+  @include r9.hairline(r9.$accent);
+
+  &::after { background: r9.$accent; }
+  &:hover { background: r9.$accent-soft; }
+}

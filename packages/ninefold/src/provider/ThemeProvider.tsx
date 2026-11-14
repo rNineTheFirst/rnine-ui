@@ -2,6 +2,7 @@ import { ThemeRoot, type ThemeConfig, type ThemeProviderProps } from '@rnine/cor
 import { moodBootScript as coreBootScript, type BootScriptOptions } from '@rnine/core';
 import { TextReveal } from '../motion/TextReveal';
 import { PageEffects } from '../motion/PageEffects';
+import { swapIn } from '../motion/swap';
 
 /** Ninefold: its moods (Glint and Gloam), Auto rule, effects and card lift. Matches theme.json (a test checks). */
 export const NINEFOLD_THEME: ThemeConfig = {
@@ -11,7 +12,7 @@ export const NINEFOLD_THEME: ThemeConfig = {
     dark: { id: 'gloam', label: 'Gloam', description: 'The night mood: a walnut desk by candlelight, rose ink, fireflies.' },
   },
   auto: 'night',
-  slots: { TextReveal, PageEffects },
+  slots: { TextReveal, PageEffects, swapIn },
   // A card's folded corner lifts from 26px to 60px as the pointer comes within 450px of it (tuned)
   lift: { by: 34, reach: 450, follow: 0.4 },
 };

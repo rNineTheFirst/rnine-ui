@@ -2,6 +2,7 @@ import { ThemeRoot, type ThemeConfig, type ThemeProviderProps } from '@rnine/cor
 import { moodBootScript as coreBootScript, type BootScriptOptions } from '@rnine/core';
 import { TextReveal } from '../motion/TextReveal';
 import { PageEffects } from '../motion/PageEffects';
+import { swapIn } from '../motion/swap';
 
 /** NineSync: its moods (Light and Dark), Auto rule and effects. Matches theme.json (a test checks). */
 export const NINESYNC_THEME: ThemeConfig = {
@@ -11,7 +12,7 @@ export const NINESYNC_THEME: ThemeConfig = {
     dark: { id: 'dark', label: 'Dark', description: "The same roles on near-black, with the client's lighter second color." },
   },
   auto: 'system',
-  slots: { TextReveal, PageEffects },
+  slots: { TextReveal, PageEffects, swapIn },
 };
 
 /**

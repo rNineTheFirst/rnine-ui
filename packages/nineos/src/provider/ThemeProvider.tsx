@@ -2,6 +2,7 @@ import { ThemeRoot, type ThemeConfig, type ThemeProviderProps } from '@rnine/cor
 import { moodBootScript as coreBootScript, type BootScriptOptions } from '@rnine/core';
 import { TextReveal } from '../motion/DecryptText';
 import { PageEffects } from '../motion/PageEffects';
+import { swapIn } from '../motion/signal';
 
 /** NineOS: its moods (Clear and Cipher), Auto rule and effects. Matches theme.json (a test checks). */
 export const NINEOS_THEME: ThemeConfig = {
@@ -11,7 +12,7 @@ export const NINEOS_THEME: ThemeConfig = {
     dark: { id: 'cipher', label: 'Cipher', description: 'The dark mood: near-black, neon magenta, scanlines.' },
   },
   auto: 'night',
-  slots: { TextReveal, PageEffects },
+  slots: { TextReveal, PageEffects, swapIn },
 };
 
 /**

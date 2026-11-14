@@ -1,0 +1,82 @@
+@use "@rnine/core/scss" as r9;
+
+// Side by side when the container has room, else the times under the calendar
+.picker {
+  container-type: inline-size;
+  min-width: 0;
+  background: r9.$bg;
+  @include r9.corner(sm);
+  @include r9.hairline(r9.$line);
+}
+
+.inPopover {
+  width: min(36rem, calc(100vw - 4 * #{r9.$space-4}));
+  background: transparent;
+  box-shadow: none;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.calendar { padding: r9.$space-4; }
+
+.times {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  min-height: 0;
+  padding: r9.$space-4;
+  border-top: r9.$border-hair solid r9.$line;
+}
+
+.timesHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: r9.$space-3;
+}
+
+.day {
+  @include r9.type(h4);
+  color: r9.$fg;
+}
+
+.count {
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+}
+
+// Stacked: the times as a grid of chips, without their ends
+.list:global([data-part="times"]) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: r9.$space-2;
+
+  :global([data-part="time"]) { justify-content: center; }
+  :global([data-part="time"]) > span + span { display: none; }
+
+  @include r9.motion-safe { animation: r9.keyframes(reveal) r9.$duration-base r9.$easing-out; }
+}
+
+@container (min-width: 34rem) {
+  .layout { grid-template-columns: minmax(0, 1fr) minmax(13rem, 16rem); }
+
+  .times {
+    border-top: 0;
+    border-left: r9.$border-hair solid r9.$line;
+  }
+
+  .list:global([data-part="times"]) {
+    display: flex;
+    flex-direction: column;
+    gap: r9.$space-1;
+    max-height: 22rem;
+    overflow-y: auto;
+    padding: 2px;
+
+    :global([data-part="time"]) { justify-content: space-between; }
+    :global([data-part="time"]) > span + span { display: inline; }
+  }
+}
