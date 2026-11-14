@@ -1,0 +1,54 @@
+{
+  "$description": "NineSync primitives: Sync UI's pure greys and its blue pair. Components use the mood roles in themes/*.json (tinted toward the client's hue), never these.",
+  "color": {
+    "$type": "color",
+    "gray": {
+      "0": {
+        "$value": "#FFFFFF"
+      },
+      "50": {
+        "$value": "#F5F5F5"
+      },
+      "100": {
+        "$value": "#E2E2E2"
+      },
+      "300": {
+        "$value": "#A9A9A9"
+      },
+      "400": {
+        "$value": "#949494"
+      },
+      "500": {
+        "$value": "#767676"
+      },
+      "600": {
+        "$value": "#666666"
+      },
+      "700": {
+        "$value": "#333333"
+      },
+      "800": {
+        "$value": "#2E2E2E"
+      },
+      "850": {
+        "$value": "#1A1A1A"
+      },
+      "900": {
+        "$value": "#111111"
+      },
+      "1000": {
+        "$value": "#000000"
+      }
+    },
+    "sync": {
+      "blue": {
+        "$value": "#2B4D82",
+        "$description": "Sync UI's blue: the default brand color"
+      },
+      "light-blue": {
+        "$value": "#A2C4F6",
+        "$description": "Sync UI's light blue: the default dark-mood second color"
+      }
+    }
+  }
+}

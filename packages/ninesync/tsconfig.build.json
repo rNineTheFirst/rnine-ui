@@ -1,0 +1,15 @@
+{
+  // Type declarations for dist/ (the JS comes from vite build)
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["vite/client"]
+  },
+  "include": ["src"],
+  "exclude": ["src/example", "src/**/*.stories.tsx", "src/**/*.test.tsx", "src/**/*.test.ts", "src/test"]
+}

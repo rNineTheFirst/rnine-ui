@@ -28,7 +28,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dryRun = process.argv.includes('--dry-run');
 const stageMode = process.argv.includes('--stage');
 const inCI = process.env.GITHUB_ACTIONS === 'true';
-const ORDER = ['core', 'nineos', 'ninefold']; // dependencies first
+const ORDER = ['core', 'nineos', 'ninefold', 'ninesync']; // dependencies first
 
 // Runs a command and returns its exit status and both output streams. On
 // Windows npm and gh need a shell (npm is npm.cmd): one quoted command line.

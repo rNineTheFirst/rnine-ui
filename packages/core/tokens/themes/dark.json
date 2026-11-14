@@ -76,6 +76,14 @@
     },
     "selection": {
       "$value": "#4D94FF4D"
+    },
+    "scrollbar-thumb": {
+      "$value": "{color.gray.600}",
+      "$description": "Scrollbar thumb"
+    },
+    "scrollbar-thumb-hover": {
+      "$value": "{color.gray.500}",
+      "$description": "Scrollbar thumb while the pointer is over the scrolling area"
     }
   }
 }

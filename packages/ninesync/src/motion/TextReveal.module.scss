@@ -1,0 +1,26 @@
+@use "@rnine/ninesync/scss" as r9;
+
+// Inline titles (in buttons, menus) need a box to rise in; headings keep theirs
+.reveal:where(span) { display: inline-block; }
+
+// The last word, with its mark (Sync UI's: thicker as the type grows, the word a little heavier)
+.mark {
+  @include r9.mark-under;
+  font-weight: 700;
+
+  :is(h1, h2, h3) & { font-weight: 800; }
+}
+
+.waiting { opacity: 0; }
+
+.playing {
+  @include r9.motion-safe {
+    animation: r9.keyframes(rise-title) var(--ns-rise, 260ms) r9.$easing-out both;
+
+    .mark { animation: r9.keyframes(mark-draw) var(--ns-draw, 420ms) r9.$easing-out calc(var(--ns-rise, 260ms) * 0.8) both; }
+  }
+}
+
+.redraw {
+  @include r9.motion-safe { animation: r9.keyframes(mark-draw) var(--ns-draw, 420ms) r9.$easing-out both; }
+}

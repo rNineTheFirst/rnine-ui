@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Brand/Rules" />
+
+# NineSync: the rules for building
+
+The whole brand guide (the moods and color with contrast, the client color builder, type,
+shape, motion with live demos, voice, do and don't, a sample screen, the tokens to download)
+is the brand kit{__KIT_URL__ ? <>: <a href={__KIT_URL__} target="_top">open the brand kit</a></> : <>, in the package's <code>kit/</code> folder (<code>yarn workspace @rnine/ninesync dev-kit</code>)</>}.
+These are the rules to keep in mind while you build.
+
+## The client's color
+
+- Every app wears its client's brand color: `ClientTheme colors={{ brand }}`, once, inside
+  `ThemeProvider`. Check the colors first (the builder in the brand kit, or `syncColors()`).
+- **Never change a client's color to make it pass.** When it fails in a mood (text under
+  4.5:1), ask the client for a second color for that mood (`light` or `dark`). The check
+  suggests one; it stands in until they give theirs.
+- The brand color is for what you do: one filled main action per view, links, focus rings.
+  The **pale tone** (`r9.$mark`) is decoration: the mark under titles and tabs, highlights,
+  the wash after a save. Never text.
+- Greys lean toward the client's hue; status colors (success, warning, danger) don't. Status
+  is never color alone: a word goes with it.
+
+## Color
+
+- Use the mood roles (`r9.$accent`, `--r9-surface`...), never raw colors. Both moods are complete.
+- NineSync's own roles (`r9.$mark`, `$mark-soft`, `$mark-line`, `$glow`, `$fg-strong`...) come
+  through `@rnine/ninesync/scss`; a new one goes in its `@forward ... show` list and in `syncMood`.
+
+## Shape
+
+- 12px corners on buttons, fields and cards (`r9.$corner-md`, `$corner-lg`), 8px on chips and
+  checkboxes (`$corner-sm`). Nothing is cut or folded. `r9.corner()` works too, but its
+  clip-path hides the glow and the focus ring: on anything that glows or takes focus, use
+  `border-radius: r9.$corner-md`.
+- Hairline edges, no drop shadows. The Sync glow (`r9.glow-hover`) is the only shadow, on hover.
+
+## Type
+
+- DM Sans for everything, DM Mono for codes (SKUs, order numbers) and figures that must line up.
+- Headlines are moderate: weight 650, −0.025em. Use the type roles (`@include r9.type(h2)`), not raw sizes.
+
+## Motion
+
+- Subtle but alive: titles draw their mark, the screen cascades in, counts count, the mark
+  glides between tabs and pages, a save washes what changed. Only `LiveDot` moves on its own.
+- The tuned values are the defaults: don't pass new ones without a reason.
+- Content never waits on an effect; everything stops for reduced motion; effects never take clicks.
+
+## Voice
+
+Plain, short and specific, like a good colleague. Say what happened and what to do next
+("Received 30 × Angle bar. 2 materials are still below their reorder point."), not how great it is.
+
+## Accessibility
+
+Every text role meets WCAG 2.2 AA on its surfaces in both moods, for the default colors (the
+tests check) and for any client colors that pass the checks. Tabs and the side nav keep core's
+keyboard support. Counts that animate read as their final number.

@@ -1,0 +1,15 @@
+@use "@rnine/ninesync/scss" as r9;
+
+// Fills the sidebar like core's SideNav does
+.nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+
+  > nav { flex: 1; min-height: 0; }
+
+  // Core's side bar gives way to the gliding mark under the name
+  :global([aria-current="page"])::before { content: none; }
+  :global([aria-current="page"]) { color: r9.$fg-strong; }
+}

@@ -1,7 +1,7 @@
 {
   "name": "rnine-ui",
   "private": true,
-  "description": "Open-source design system libraries: @rnine/core (the shared core and the Plain look), @rnine/nineos (NineOS) and @rnine/ninefold (Ninefold), each a full component library with the same exports",
+  "description": "Open-source design system libraries: @rnine/core (the shared core and the Plain look), @rnine/nineos (NineOS), @rnine/ninefold (Ninefold) and @rnine/ninesync (NineSync), each a full component library with the same exports",
   "license": "MIT",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
@@ -9,15 +9,16 @@
   ],
   "scripts": {
     "release:version": "node scripts/version.mjs",
-    "build": "yarn workspace @rnine/core build && yarn workspace @rnine/nineos build && yarn workspace @rnine/ninefold build",
-    "lint": "yarn workspace @rnine/core lint && yarn workspace @rnine/nineos lint && yarn workspace @rnine/ninefold lint",
-    "test": "yarn workspace @rnine/core test && yarn workspace @rnine/nineos test && yarn workspace @rnine/ninefold test",
+    "build": "yarn workspace @rnine/core build && yarn workspace @rnine/nineos build && yarn workspace @rnine/ninefold build && yarn workspace @rnine/ninesync build",
+    "lint": "yarn workspace @rnine/core lint && yarn workspace @rnine/nineos lint && yarn workspace @rnine/ninefold lint && yarn workspace @rnine/ninesync lint",
+    "test": "yarn workspace @rnine/core test && yarn workspace @rnine/nineos test && yarn workspace @rnine/ninefold test && yarn workspace @rnine/ninesync test",
     "boundary": "node scripts/boundary.mjs",
     "smoke": "node scripts/smoke.mjs",
     "storybook": "yarn workspace @rnine/nineos storybook",
-    "build-storybook": "yarn workspace @rnine/core build-storybook && yarn workspace @rnine/nineos build-storybook && yarn workspace @rnine/ninefold build-storybook",
+    "build-storybook": "yarn workspace @rnine/core build-storybook && yarn workspace @rnine/nineos build-storybook && yarn workspace @rnine/ninefold build-storybook && yarn workspace @rnine/ninesync build-storybook",
     "storybook:ninefold": "yarn workspace @rnine/ninefold storybook",
-    "build-kit": "yarn workspace @rnine/core build-kit && yarn workspace @rnine/ninefold build-kit",
+    "storybook:ninesync": "yarn workspace @rnine/ninesync storybook",
+    "build-kit": "yarn workspace @rnine/core build-kit && yarn workspace @rnine/ninefold build-kit && yarn workspace @rnine/ninesync build-kit",
     "storybook:core": "yarn workspace @rnine/core storybook"
   }
 }

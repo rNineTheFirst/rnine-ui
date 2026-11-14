@@ -1,0 +1,415 @@
+@use "@rnine/ninesync/scss" as r9;
+
+// NineSync rounds (it never cuts), so plain radii here: corner()'s clip-path
+// would hide the glow and the focus ring
+
+.app {
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+.skip {
+  position: absolute;
+  left: r9.$space-4;
+  top: -100px;
+  z-index: r9.$z-modal;
+  padding: r9.$space-3 r9.$space-4;
+  background: r9.$accent;
+  color: r9.$on-accent;
+  @include r9.type(label);
+  border-radius: r9.$corner-md;
+
+  &:focus { top: calc(env(safe-area-inset-top, 0px) + #{r9.$space-3}); }
+}
+
+.h3 { @include r9.type(h4); color: r9.$fg-strong; margin: 0 0 r9.$space-2; }
+.muted { color: r9.$fg-muted; margin: 0; }
+.label { @include r9.type(label); color: r9.$fg-muted; }
+.hidden { @include r9.visually-hidden; }
+
+.lede {
+  @include r9.type(body-lg);
+  color: r9.$fg-muted;
+  max-width: r9.$container-text;
+  margin: 0;
+}
+
+// ---- Opening -----------------------------------------------------------------
+
+.hero {
+  @include r9.gutter;
+  padding-block: r9.$space-16 r9.$space-20;
+  border-bottom: r9.$border-hair solid r9.$line;
+}
+
+.heroInner {
+  @include r9.container;
+  display: grid;
+  gap: r9.$space-10;
+  align-items: center;
+
+  @include r9.up(md) { grid-template-columns: 1.4fr 1fr; }
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: r9.$space-4;
+  min-width: 0;
+}
+
+.heroTitle { @include r9.type(display); color: r9.$fg-strong; margin: 0; }
+
+.moodsLine {
+  margin: 0;
+  max-width: r9.$container-text;
+  color: r9.$fg-muted;
+  @include r9.type(body-sm);
+
+  b { color: r9.$fg; }
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: r9.$space-3; padding-top: r9.$space-2; }
+
+.heroTiles { display: grid; gap: r9.$space-4; min-width: 0; }
+.heroLive { padding-inline: r9.$space-2; }
+
+// ---- Grids and lists ---------------------------------------------------------
+
+.grid2, .grid3 {
+  display: grid;
+  gap: r9.$space-6;
+  grid-template-columns: 1fr;
+  > * { min-width: 0; }
+}
+.grid2 { @include r9.up(md) { grid-template-columns: repeat(2, 1fr); } }
+.grid3 {
+  @include r9.up(md) { grid-template-columns: repeat(2, 1fr); }
+  @include r9.up(lg) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.rules {
+  margin: 0;
+  padding-left: r9.$space-5;
+  display: grid;
+  gap: r9.$space-3;
+  max-width: r9.$container-text;
+
+  li::marker { color: r9.$accent-text; }
+  code { @include r9.type(code); }
+}
+
+// ---- Type --------------------------------------------------------------------
+
+.fonts { display: grid; gap: r9.$space-6; }
+
+.font {
+  display: grid;
+  gap: r9.$space-2;
+  padding-bottom: r9.$space-6;
+  border-bottom: r9.$border-hair solid r9.$line;
+}
+
+.specimen {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: r9.$font-weight-heading;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: r9.$fg-strong;
+  overflow-wrap: anywhere;
+}
+
+.fontMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: r9.$space-2 r9.$space-4;
+
+  code { @include r9.type(code); color: r9.$fg-muted; }
+  a { @include r9.type(label); color: r9.$accent-text; }
+}
+
+.roles { display: grid; gap: r9.$space-4; }
+
+.role {
+  display: grid;
+  gap: r9.$space-1 r9.$space-4;
+  align-items: baseline;
+  min-width: 0;
+  overflow-wrap: anywhere;
+
+  @include r9.up(md) { grid-template-columns: 8rem 1fr; }
+  code { @include r9.type(code); color: r9.$fg-muted; }
+}
+
+// ---- Shape and the mark ------------------------------------------------------
+
+.shape {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+
+  code { @include r9.type(code); color: r9.$accent-text; overflow-wrap: anywhere; }
+}
+
+%demo {
+  height: 110px;
+  background: r9.$surface;
+  border: r9.$border-hair solid r9.$line;
+  margin-bottom: r9.$space-2;
+}
+
+.cornerSm { @extend %demo; border-radius: r9.$corner-sm; }
+.cornerMd { @extend %demo; border-radius: r9.$corner-md; }
+.cornerLg { @extend %demo; border-radius: r9.$corner-lg; }
+
+.marks {
+  display: grid;
+  gap: r9.$space-4;
+  padding: r9.$space-6;
+  background: r9.$surface;
+  border: r9.$border-hair solid r9.$line;
+  border-radius: r9.$corner-lg;
+  overflow-wrap: anywhere;
+}
+
+.mark { @include r9.mark-under; }
+.markDisplay { @include r9.type(display); color: r9.$fg-strong; }
+.markH2 { @include r9.type(h2); color: r9.$fg-strong; }
+.markBody { @include r9.type(body); }
+
+.glowSample {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: r9.$space-2;
+  padding: r9.$space-6;
+  border: r9.$border-hair solid r9.$line;
+  background: r9.$surface;
+  color: r9.$fg;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: r9.$corner-lg;
+  @include r9.glow-hover;
+
+  &:focus-visible { @include r9.glow; outline: none; }
+  code { @include r9.type(code); }
+}
+
+// ---- Motion ------------------------------------------------------------------
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: r9.$space-4;
+  min-height: 240px;
+  padding: r9.$space-6;
+  background: r9.$surface;
+  border: r9.$border-hair solid r9.$line;
+  border-radius: r9.$corner-lg;
+  min-width: 0;
+
+  > * { max-width: 100%; }
+}
+
+.stageLabel { @include r9.type(label); color: r9.$fg-muted; }
+.stageTitle { @include r9.type(h2); color: r9.$fg-strong; margin: 0; }
+
+.swapPanel, .savePanel {
+  width: 100%;
+  min-height: 7rem;
+  padding: r9.$space-4 r9.$space-5;
+  background: r9.$surface-raised;
+  border: r9.$border-hair solid r9.$line;
+  border-radius: r9.$corner-md;
+}
+
+.savePanel { display: grid; gap: r9.$space-1; justify-items: start; }
+.saveValue { @include r9.type(h2); font-family: r9.$font-mono; color: r9.$fg-strong; }
+
+.badge {
+  display: inline-block;
+  padding: 0 r9.$space-2;
+  border-radius: r9.$radius-full;
+  background: r9.$accent-soft;
+  color: r9.$fg;
+  @include r9.type(caption);
+}
+
+.tableWrap { overflow-x: auto; max-width: 100%; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  @include r9.type(body-sm);
+
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    padding: r9.$space-3 r9.$space-4 r9.$space-3 0;
+    border-bottom: r9.$border-hair solid r9.$line;
+  }
+
+  thead th { @include r9.type(label); color: r9.$fg-muted; }
+  tbody th { font-weight: r9.$font-weight-semibold; color: r9.$fg-strong; }
+}
+
+// ---- Components --------------------------------------------------------------
+
+.gallery {
+  display: grid;
+  gap: r9.$space-6;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+.wide { grid-column: 1 / -1; }
+
+.piece {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  min-width: 0;
+
+  figcaption {
+    color: r9.$fg-muted;
+    @include r9.type(body-sm);
+
+    b { color: r9.$fg-strong; margin-right: r9.$space-1; }
+    a { color: r9.$accent-text; white-space: nowrap; }
+    code { @include r9.type(code); }
+  }
+}
+
+.pieceStage {
+  display: grid;
+  align-content: center;
+  min-height: 9rem;
+  padding: r9.$space-5;
+  background: r9.$surface;
+  border: r9.$border-hair solid r9.$line;
+  border-radius: r9.$corner-lg;
+  min-width: 0;
+}
+
+.navSample { max-width: 16rem; }
+
+.tiles {
+  display: grid;
+  gap: r9.$space-4;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+// ---- Do and don't ------------------------------------------------------------
+
+.examples {
+  display: grid;
+  gap: r9.$space-6;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.example {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+
+  figcaption { @include r9.type(body-sm); color: r9.$fg-muted; }
+}
+
+.exampleStage {
+  display: grid;
+  place-items: center start;
+  min-height: 7.5rem;
+  padding: r9.$space-5;
+  background: r9.$surface;
+  border: r9.$border-hair solid r9.$line;
+  border-top: 3px solid r9.$danger;
+  border-radius: r9.$corner-lg;
+
+  .example[data-good] & { border-top-color: r9.$success; }
+}
+
+.verdict { color: r9.$danger; .example[data-good] & { color: r9.$success; } }
+.exampleText { @include r9.type(body-sm); }
+// Deliberately unreadable: the Don't of pale-tone text
+.paleText { color: r9.$mark; font-weight: r9.$font-weight-semibold; }
+
+// ---- The sample screen, full width in a frame --------------------------------
+
+.sample {
+  padding-block: r9.$space-16;
+  border-bottom: r9.$border-hair solid r9.$line;
+  display: grid;
+  gap: r9.$space-8;
+}
+
+.sampleTitle { @include r9.type(h1); color: r9.$fg-strong; margin: 0; }
+
+// The outer frame doesn't scroll and holds the app's fixed pieces (its
+// drawer, its toasts) inside it; the inner one scrolls the app
+.frame {
+  --kit-frame-h: min(760px, 85dvh);
+  @include r9.container(min(1440px, calc(100% - 2 * #{r9.$container-gutter})));
+  height: var(--kit-frame-h);
+  transform: translateZ(0);
+  overflow: hidden;
+  border: r9.$border-hair solid r9.$line;
+  border-radius: r9.$corner-lg;
+}
+
+.frameScroll {
+  height: 100%;
+  overflow: auto;
+  background: r9.$bg;
+  color: r9.$fg;
+}
+
+// ---- Downloads ---------------------------------------------------------------
+
+.download {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+  padding: r9.$space-5;
+  background: r9.$surface;
+  border: r9.$border-hair solid r9.$line;
+  border-radius: r9.$corner-md;
+  color: r9.$fg;
+  text-decoration: none;
+
+  b { color: r9.$accent-text; }
+  a { color: r9.$accent-text; }
+  &:is(a) { @include r9.glow-hover; }
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.code {
+  margin: 0;
+  padding: r9.$space-5;
+  background: r9.$surface;
+  border: r9.$border-hair solid r9.$line;
+  border-radius: r9.$corner-md;
+  overflow-x: auto;
+  @include r9.type(code);
+}
+
+.footer { padding-block: r9.$space-10 r9.$space-16; }
+
+.footInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: r9.$space-4 r9.$space-8;
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+
+  a { color: r9.$accent-text; }
+}
+
+.footBrand { display: inline-flex; align-items: center; gap: r9.$space-3; color: r9.$fg; }
+.footLinks { display: inline-flex; gap: r9.$space-5; }

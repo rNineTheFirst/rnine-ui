@@ -161,6 +161,14 @@
     "light": {
       "$value": "{color.candle.400}",
       "$description": "Ninefold: window light by day, candle glow by night"
+    },
+    "scrollbar-thumb": {
+      "$value": "{color.walnut.600}",
+      "$description": "Scrollbar thumb"
+    },
+    "scrollbar-thumb-hover": {
+      "$value": "{color.walnut.500}",
+      "$description": "Scrollbar thumb while the pointer is over the scrolling area"
     }
   }
 }

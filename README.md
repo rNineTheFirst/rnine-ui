@@ -11,6 +11,7 @@ SCSS API with the same props, so an app switches from one to another by changing
 | [`@rnine/core`](packages/core) | The shared core: the mood and motion engine, every component the libraries share (in Plain, a neutral placeholder look), the SCSS API (`corner`, `ornament`, `texture`, ...), the token build tool and the conformance checks. Usable on its own |
 | [`@rnine/nineos`](packages/nineos) | NineOS: two moods, Clear (light) and Cipher (dark), cut corners, magenta, and its own pieces: a command-line-plus-panels shell and the NineOS effects (decrypting text, a reactive dot field, the signal swap). Storybook included |
 | [`@rnine/ninefold`](packages/ninefold) | Ninefold: cozy fantasy. Two moods, Glint (day: honey paper, iron-gall ink, claret wax) and Gloam (night: a walnut desk by candlelight), folded card corners, a wax-seal mark, falling leaves by day and fireflies by night, and its own pieces: a lantern trail, a field journal, a moon dial, hero light and a page you can write on |
+| [`@rnine/ninesync`](packages/ninesync) | NineSync: calm internal tools and dashboards in the client's own color. DM Sans, Light and Dark moods with greys tinted toward the brand hue, a pale mark under titles, tabs and the current page that glides between them, a soft glow on hover, numbers that count up, and a checker that turns a client's brand color into accessible accent roles (asking for a second color where it fails) |
 
 They ship without a logo or favicons: an app gives `ThemeProvider` its own mark, and
 `Mark` shows a placeholder frame until it does.

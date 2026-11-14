@@ -16,6 +16,10 @@
     "$type": "dimension",
     "height": { "$value": "64px" }
   },
+  "scrollbar": {
+    "$type": "dimension",
+    "size": { "$value": "10px", "$description": "Scrollbar width in Safari (::-webkit-scrollbar). Chrome, Edge and Firefox draw their thin scrollbar" }
+  },
   "z": {
     "$type": "number",
     "base": { "$value": 0 },

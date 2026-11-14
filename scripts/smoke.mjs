@@ -21,6 +21,7 @@ const manifest = (name) => JSON.parse(readFileSync(join(root, 'packages', name, 
 const core = manifest('core');
 const nineos = manifest('nineos');
 const ninefold = manifest('ninefold');
+const ninesync = manifest('ninesync');
 
 // npm on Windows is npm.cmd, which only runs through a shell: one command
 // string, each argument quoted (they're this script's own, paths included)
@@ -32,7 +33,7 @@ const tmp = mkdtempSync(join(tmpdir(), 'rnine-ui-smoke-'));
 try {
   // The same tarballs npm publish would upload
   const tarballs = {};
-  for (const name of ['core', 'nineos', 'ninefold']) {
+  for (const name of ['core', 'nineos', 'ninefold', 'ninesync']) {
     const [packed] = JSON.parse(npm(['pack', '--json', '--pack-destination', tmp], join(root, 'packages', name)));
     tarballs[packed.name] = `file:../${packed.filename}`;
     console.log(`packed ${packed.name}@${packed.version}: ${(packed.size / 1024).toFixed(0)} kB, ${packed.entryCount} files`);
@@ -96,6 +97,12 @@ import { Card as FoldCard, LanternTrail, MoonDial, NINEFOLD_THEME, type TrailSto
 import { HeroLight, Ink, swapOut as swarmOut } from '@rnine/ninefold/motion';
 import { tokens as ninefoldTokens } from '@rnine/ninefold/tokens';
 import { statusPage as ninefoldPage } from '@rnine/ninefold/pages';
+import '@rnine/ninesync/fonts.css';
+import '@rnine/ninesync/styles.css';
+import { ClientTheme, LiveDot, NINESYNC_THEME, SideNav, Tabs as SyncTabs, syncColors } from '@rnine/ninesync';
+import { CountUp, Glide, wash } from '@rnine/ninesync/motion';
+import { tokens as ninesyncTokens } from '@rnine/ninesync/tokens';
+import { statusPage as ninesyncPage } from '@rnine/ninesync/pages';
 import styles from './app.module.scss';
 
 const github: Brand | null = brandOf('github.com/someone');
@@ -116,11 +123,17 @@ function App() {
         <LanternTrail label="Sections" stops={stops} onChange={() => {}} />
         <MoonDial />
       </FoldCard>
+      <ClientTheme colors={{ brand: '#0B6E4F' }} />
+      <LiveDot>{NINESYNC_THEME.moods.dark.label}</LiveDot>
+      <Glide selector="[aria-current]">
+        <SideNav groups={[{ key: 'g', items: [{ key: 'a', label: String(ninesyncTokens.name), href: '#' }] }]} activeKey="a" />
+      </Glide>
+      <SyncTabs label="t" items={[{ id: 'a', label: 'A', content: <CountUp value={syncColors().light.checks.length} /> }]} />
     </Card>
   );
 }
 
-void [swapIn, swarmOut, ninefoldPage];
+void [swapIn, swarmOut, ninefoldPage, ninesyncPage, wash];
 const page: StatusPageOptions = { title: 't', label: 'l', heading: 'h', paragraphs: [], status: { text: 's' } };
 void [statusPage(page), emailLayout({ eyebrow: 'e', title: 't', preheader: 'p', body: '', footer: '' })];
 createRoot(document.getElementById('root')!).render(
@@ -172,7 +185,7 @@ console.log('node: build-tokens, conformance, theme.json and every pages entry l
   console.log('building...');
   npx(['vite', 'build', '--logLevel', 'warn'], app);
   execFileSync(process.execPath, ['node-check.mjs'], { cwd: app, stdio: 'inherit' });
-  console.log(`smoke: @rnine/core@${core.version}, @rnine/nineos@${nineos.version} and @rnine/ninefold@${ninefold.version} install, type-check and build`);
+  console.log(`smoke: @rnine/core@${core.version}, @rnine/nineos@${nineos.version}, @rnine/ninefold@${ninefold.version} and @rnine/ninesync@${ninesync.version} install, type-check and build`);
 } finally {
   if (keep) console.log(`kept: ${tmp}`);
   else rmSync(tmp, { recursive: true, force: true });

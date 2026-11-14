@@ -1,0 +1,236 @@
+{
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": [
+        "DM Sans Variable",
+        "DM Sans",
+        "system-ui",
+        "-apple-system",
+        "Segoe UI",
+        "Roboto",
+        "sans-serif"
+      ],
+      "$description": "Headings, wordmarks, numbers that matter"
+    },
+    "body": {
+      "$value": [
+        "DM Sans Variable",
+        "DM Sans",
+        "system-ui",
+        "-apple-system",
+        "Segoe UI",
+        "Roboto",
+        "sans-serif"
+      ],
+      "$description": "Running text and UI"
+    },
+    "mono": {
+      "$value": [
+        "DM Mono",
+        "ui-monospace",
+        "Cascadia Mono",
+        "Consolas",
+        "monospace"
+      ],
+      "$description": "Figures in tables, SKUs and codes, code"
+    }
+  },
+  "font-size": {
+    "$type": "dimension",
+    "xs": {
+      "$value": "0.75rem"
+    },
+    "sm": {
+      "$value": "0.875rem"
+    },
+    "base": {
+      "$value": "1rem"
+    },
+    "md": {
+      "$value": "1.125rem"
+    },
+    "lg": {
+      "$value": "1.25rem"
+    },
+    "xl": {
+      "$value": "1.5rem"
+    },
+    "2xl": {
+      "$value": "2rem"
+    },
+    "3xl": {
+      "$value": "2.5rem"
+    },
+    "4xl": {
+      "$value": "3.25rem"
+    },
+    "5xl": {
+      "$value": "4.5rem"
+    }
+  },
+  "font-weight": {
+    "$type": "fontWeight",
+    "regular": {
+      "$value": 400
+    },
+    "medium": {
+      "$value": 500
+    },
+    "semibold": {
+      "$value": 600
+    },
+    "bold": {
+      "$value": 700
+    },
+    "heading": {
+      "$value": 650,
+      "$description": "Headlines: moderate, not Sync UI's 900"
+    }
+  },
+  "leading": {
+    "$type": "number",
+    "tight": {
+      "$value": 1.06
+    },
+    "snug": {
+      "$value": 1.25
+    },
+    "normal": {
+      "$value": 1.6
+    }
+  },
+  "tracking": {
+    "$type": "dimension",
+    "tight": {
+      "$value": "-0.025em",
+      "$description": "Headlines"
+    },
+    "normal": {
+      "$value": "0em"
+    },
+    "wide": {
+      "$value": "0.06em"
+    },
+    "wider": {
+      "$value": "0.1em"
+    },
+    "mark": {
+      "$value": "-0.01em",
+      "$description": "Wordmarks only"
+    }
+  },
+  "type": {
+    "$type": "typography",
+    "$description": "Type roles. Use these, not raw sizes. DM Sans throughout (DM Mono for figures and codes); headlines moderate (650, -0.025em). Display sizes are fluid between 400px and 1200px wide.",
+    "display": {
+      "$value": {
+        "fontFamily": "{font.display}",
+        "fontWeight": 650,
+        "fontSize": "clamp(2.5rem, 1.5rem + 4vw, 4rem)",
+        "lineHeight": 1.05,
+        "letterSpacing": "-0.025em"
+      }
+    },
+    "h1": {
+      "$value": {
+        "fontFamily": "{font.display}",
+        "fontWeight": 650,
+        "fontSize": "clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem)",
+        "lineHeight": 1.1,
+        "letterSpacing": "-0.025em"
+      }
+    },
+    "h2": {
+      "$value": {
+        "fontFamily": "{font.display}",
+        "fontWeight": 650,
+        "fontSize": "clamp(1.375rem, 1.15rem + 0.9vw, 1.75rem)",
+        "lineHeight": 1.15,
+        "letterSpacing": "-0.02em"
+      }
+    },
+    "h3": {
+      "$value": {
+        "fontFamily": "{font.display}",
+        "fontWeight": 650,
+        "fontSize": "1.25rem",
+        "lineHeight": 1.25,
+        "letterSpacing": "-0.015em"
+      }
+    },
+    "h4": {
+      "$value": {
+        "fontFamily": "{font.display}",
+        "fontWeight": 600,
+        "fontSize": "1.0625rem",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      }
+    },
+    "body-lg": {
+      "$value": {
+        "fontFamily": "{font.body}",
+        "fontWeight": 400,
+        "fontSize": "1.125rem",
+        "lineHeight": 1.55,
+        "letterSpacing": "0em"
+      }
+    },
+    "body": {
+      "$value": {
+        "fontFamily": "{font.body}",
+        "fontWeight": 400,
+        "fontSize": "0.9375rem",
+        "lineHeight": 1.5,
+        "letterSpacing": "0em"
+      }
+    },
+    "body-sm": {
+      "$value": {
+        "fontFamily": "{font.body}",
+        "fontWeight": 400,
+        "fontSize": "0.8125rem",
+        "lineHeight": 1.45,
+        "letterSpacing": "0em"
+      }
+    },
+    "label": {
+      "$value": {
+        "fontFamily": "{font.body}",
+        "fontWeight": 600,
+        "fontSize": "0.75rem",
+        "lineHeight": 1.25,
+        "letterSpacing": "0.04em"
+      },
+      "$description": "Eyebrows, chips, table heads (DM Sans, not mono: an office tool, not a terminal)"
+    },
+    "code": {
+      "$value": {
+        "fontFamily": "{font.mono}",
+        "fontWeight": 400,
+        "fontSize": "0.875rem",
+        "lineHeight": 1.6,
+        "letterSpacing": "0em"
+      }
+    },
+    "caption": {
+      "$value": {
+        "fontFamily": "{font.body}",
+        "fontWeight": 400,
+        "fontSize": "0.75rem",
+        "lineHeight": 1.4,
+        "letterSpacing": "0.01em"
+      }
+    },
+    "wordmark": {
+      "$value": {
+        "fontFamily": "{font.display}",
+        "fontWeight": 700,
+        "fontSize": "1rem",
+        "lineHeight": 1,
+        "letterSpacing": "-0.01em"
+      }
+    }
+  }
+}

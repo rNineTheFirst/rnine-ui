@@ -49,7 +49,7 @@ out under the npm tag `next`.
 When that commit reaches `main`, the [Publish](.github/workflows/publish.yml) workflow
 builds, tests and runs `yarn smoke`, which installs the packed tarballs in a new app and
 type-checks and builds it. Then it publishes core first and the libraries after it
-(`scripts/publish.mjs`), and tags each version (`core@0.2.0`, `nineos@0.2.0`, `ninefold@0.2.0`) with a
+(`scripts/publish.mjs`), and tags each version (`core@0.2.0`, `nineos@0.2.0`, `ninefold@0.2.0`, `ninesync@0.2.0`) with a
 GitHub Release. Publishing uses npm Trusted Publishing: there's no npm token anywhere,
 and every version carries provenance (the commit and workflow that built it). If a run
 stops halfway, run Publish again (Actions → Publish → Run workflow): it skips what's on

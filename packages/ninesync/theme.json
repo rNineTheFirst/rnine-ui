@@ -1,0 +1,13 @@
+{
+  "name": "NineSync",
+  "tagline": "Calm, clear internal tools in the client's own color: pale marks, a soft glow, numbers that line up.",
+  "moods": {
+    "light": { "id": "light", "label": "Light", "description": "Greys tinted toward the client's color, white cards, the brand color for actions." },
+    "dark": { "id": "dark", "label": "Dark", "description": "The same roles on near-black, with the client's lighter second color." }
+  },
+  "auto": "system",
+  "fonts": [
+    { "id": "dm-sans", "family": "DM Sans Variable", "weight": "100 1000", "src": "@fontsource-variable/dm-sans/files/dm-sans-latin-opsz-normal.woff2" },
+    { "id": "dm-mono", "family": "DM Mono", "weight": "400", "src": "@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2" }
+  ]
+}

@@ -36,6 +36,40 @@ a { color: inherit; }
 
 :focus-visible { @include r9.focus-ring; }
 
+// Scrollbars, in each library's colors. Chrome, Edge and Firefox take
+// scrollbar-color (Chrome then ignores ::-webkit-scrollbar); Safari gets
+// ::-webkit-scrollbar. Each element sets its own color so a scroller darkens
+// only while the pointer is over it (the page's own scrollbar stays the thumb
+// color: the pointer is always over the page). Components that hide their
+// scrollbar (scrollbar-width: none) win on specificity.
+@supports (scrollbar-color: auto) {
+  * {
+    scrollbar-color: r9.$scrollbar-thumb transparent;
+    scrollbar-width: thin;
+  }
+
+  :not(:root):hover { scrollbar-color: r9.$scrollbar-thumb-hover transparent; }
+}
+
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: r9.$scrollbar-size;
+    height: r9.$scrollbar-size;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner { background: transparent; }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: r9.$scrollbar-thumb;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: r9.$radius-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover { background-color: r9.$scrollbar-thumb-hover; }
+}
+
 // ---- Shared keyframes (prefixed r9-) ---------------------------------------
 
 @keyframes r9-reveal {

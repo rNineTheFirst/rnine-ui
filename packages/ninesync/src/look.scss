@@ -1,0 +1,186 @@
+// NineSync's look on core's components, where only the look changes (no new
+// behavior): the Sync glow, the press dip, fields' settling ring, the pale
+// sheen and toast timer, the drawer's short slide. Global CSS, bundled into
+// dist/components.css after core's.
+//
+// Core's class names are stable by pattern ("r9-<Component>-module_<class>_<hash>",
+// core's vite.config.ts) and both libraries ship in lockstep. test/conformance.test.mjs
+// fails if a name used here disappears from core's components.css.
+//
+// NineSync never cuts corners (shape.cut and shape.card-cut are 0), so the
+// clip-path core's corner() draws is the plain box: dropping it lets the glow
+// and the focus ring show outside.
+@use "@rnine/ninesync/scss" as r9;
+
+$button: '[class*="r9-Button-module_button_"]';
+$field: ':is([class*="r9-Field-module_control_"], [class*="r9-Field-module_box_"])';
+$invalid: '[class*="r9-Field-module_invalid_"]';
+
+// Everything sits under html: one element more than core's own rules, so
+// these win however the CSS is ordered (the Storybook and the brand kit load
+// core's components in their own chunks, after this sheet).
+html {
+  // ---- Buttons ------------------------------------------------------------------
+
+  #{$button} {
+    clip-path: none;
+    font-weight: r9.$font-weight-medium;
+    @include r9.glow-hover((background r9.$duration-fast, color r9.$duration-fast, transform r9.$duration-instant ease));
+    @include r9.press-dip;
+
+    &:focus-visible {
+      box-shadow: none;
+      @include r9.focus-ring(2px);
+    }
+  }
+
+  // The filled main button: the client's color
+  [class*="r9-Button-module_primary_"] {
+    font-weight: r9.$font-weight-semibold;
+  }
+
+  // secondary: Sync UI's outlined button, its border in the pale tone
+  [class*="r9-Button-module_secondary_"] {
+    padding-inline: r9.$space-4;
+    font-family: r9.$font-body;
+    font-weight: r9.$font-weight-medium;
+    background: r9.$surface;
+    color: r9.$fg;
+    @include r9.hairline(r9.$mark-line);
+    border-radius: r9.corner-size(md);
+
+    &::before { content: none; }
+    &[class*="r9-Button-module_sm_"] { padding-inline: r9.$space-3; border-radius: r9.corner-size(sm); }
+  }
+
+  // outline: a grey hairline that takes the accent on hover
+  [class*="r9-Button-module_outline_"] {
+    background: r9.$surface;
+
+    &:focus-visible { @include r9.hairline(r9.$line-strong); }
+  }
+
+  // ghost: its underline is the pale mark
+  [class*="r9-Button-module_ghost_"] [class*="r9-Button-module_label_"] {
+    background-image: linear-gradient(r9.$mark, r9.$mark);
+  }
+
+  [class*="r9-Button-module_ghost_"]:hover [class*="r9-Button-module_label_"] {
+    background-size: 100% max(2px, 0.14em);
+  }
+
+  // ---- Fields ---------------------------------------------------------------------
+
+  // Grey edge (red when invalid), the glow on hover
+  #{$field} {
+    --ns-edge: #{r9.$line-strong};
+    clip-path: none;
+    background: r9.$surface;
+    box-shadow: inset 0 0 0 r9.$border-hair var(--ns-edge);
+    transition: box-shadow 300ms ease;
+
+    &:hover:not(:disabled, :has(:disabled)) {
+      box-shadow: inset 0 0 0 r9.$border-hair var(--ns-edge), 0 0 4px 1px r9.$glow, 0 0 8px 3px r9.$glow, 0 0 12px 6px r9.$glow-faint;
+      transition: box-shadow r9.$duration-fast r9.$easing-out;
+    }
+  }
+
+  #{$invalid} #{$field} { --ns-edge: #{r9.$danger}; }
+
+  // Focus: the edge takes the accent and a pale ring settles around it (160ms).
+  // (Invalid fields keep core's red focus edge.)
+  [class*="r9-Field-module_control_"]:focus-visible,
+  [class*="r9-Field-module_box_"][class]:has(:focus-visible) {
+    box-shadow: inset 0 0 0 r9.$border-hair r9.$accent-text, 0 0 0 3px r9.$mark-soft;
+    transition: box-shadow r9.$duration-fast r9.$easing-out;
+  }
+
+  // Labels: plain sentence-case text, without core's accent dot
+  [class*="r9-Field-module_label_"] {
+    @include r9.type(body-sm);
+    font-weight: r9.$font-weight-medium;
+    text-transform: none;
+    letter-spacing: 0;
+    color: r9.$fg-strong;
+
+    &::before { content: none; }
+  }
+
+  // ---- Loading: a pale sheen sweeps across (1.5s) ---------------------------------
+
+  :is([class*="r9-Skeleton-module_line_"], [class*="r9-Skeleton-module_bone_"]) {
+    background: linear-gradient(90deg, #{r9.$line} 0%, #{r9.$line} 35%, #{r9.$mark-soft} 50%, #{r9.$line} 65%, #{r9.$line} 100%);
+    background-size: 300% 100%;
+    border-radius: r9.$radius-xs;
+    @include r9.motion-safe { animation: r9-sweep 1.5s linear infinite; }
+  }
+
+  // ---- Overlays -------------------------------------------------------------------
+
+  // Toasts: the timer is a pale line
+  [class*="r9-Toast-module_timer_"] {
+    height: 3px;
+    background: r9.$mark;
+  }
+
+  [class*="r9-Toast-module_toast_"] {
+    clip-path: none;
+    border-radius: r9.corner-size(md);
+    box-shadow: inset 0 0 0 r9.$border-hair r9.$line, 0 6px 24px rgb(0 0 0 / 0.14);
+  }
+
+  // Drawers slide in 24px, fading, instead of from off the screen
+  [class*="r9-Drawer-module_end_"] [class*="r9-Drawer-module_panel_"] {
+    @include r9.motion-safe { animation: r9-drawer-in r9.$duration-base r9.$easing-out; }
+  }
+
+  // ---- Cards: calm (no tilt, no spotlight), even padding; links glow -------------------
+
+  :is([class*="r9-TiltCard-module_card_"], [class*="r9-Card-module_card_"]) {
+    background: r9.$surface;
+    padding: r9.$space-5;
+    // Room for an index chip when there is one
+    &:has(:is([class*="r9-TiltCard-module_index_"], [class*="r9-Card-module_index_"])) { padding-top: r9.$space-10; }
+  }
+
+  [class*="r9-TiltCard-module_card_"] {
+    transform: none;
+
+    &:hover { @include r9.hairline; }
+  }
+
+  [class*="r9-TiltCard-module_card_"][class*="r9-Card-module_linked_"] {
+    clip-path: none;
+    @include r9.glow-hover;
+  }
+
+
+  [class*="r9-StatTile-module_linked_"] {
+    clip-path: none;
+    @include r9.glow-hover(background r9.$duration-fast);
+
+    &:focus-visible { @include r9.focus-ring(2px); }
+  }
+
+  // ---- No accent dots ----------------------------------------------------------------
+
+  // Core places a small accent dot (ornament) where nothing else is accented.
+  // NineSync's accent element is the pale mark under titles, tabs and the
+  // current page, so the dots go.
+  [class*="r9-PageHeader-module_title_"]::after,
+  [class*="r9-Alert-module_title_"]::after,
+  [class*="r9-Drawer-module_title_"]::after,
+  [class*="r9-Modal-module_title_"]::after,
+  [class*="r9-EmptyState-module_icon_"]::after,
+  [class*="r9-Choice-module_legend_"]::before,
+  [class*="r9-Tag-module_tag_"]::before { content: none; }
+
+  :is([class*="r9-EmptyState-module_mark_"], [class*="r9-Layout-module_mark_"]) { display: none; }
+
+  // Tags are pills
+  [class*="r9-Tag-module_tag_"] {
+    clip-path: none;
+    border-radius: r9.$radius-full;
+    font-weight: r9.$font-weight-medium;
+  }
+}

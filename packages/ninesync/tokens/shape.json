@@ -1,0 +1,57 @@
+{
+  "corner": {
+    "$type": "dimension",
+    "$description": "Corner sizes. NineSync rounds every corner fully to its size and cuts none (12px for buttons, fields and cards).",
+    "sm": {
+      "$value": "8px",
+      "$description": "Chips, small buttons, checkboxes"
+    },
+    "md": {
+      "$value": "12px",
+      "$description": "Buttons, fields, menus"
+    },
+    "lg": {
+      "$value": "12px",
+      "$description": "Cards, panels, drawers"
+    }
+  },
+  "shape": {
+    "$type": "number",
+    "$description": "How corner() draws a corner: the cut (a 45° chamfer) and the rounding, each a multiple of the corner size.",
+    "cut": {
+      "$value": 0,
+      "$description": "NineSync: no cut corners"
+    },
+    "round": {
+      "$value": 1,
+      "$description": "NineSync: corners round to their full size"
+    },
+    "card-cut": {
+      "$value": 0,
+      "$description": "NineSync: cards don't cut either"
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "none": {
+      "$value": "0px"
+    },
+    "xs": {
+      "$value": "4px",
+      "$description": "Tiny things: checkboxes, dots, the mark's ends"
+    },
+    "full": {
+      "$value": "999px",
+      "$description": "Tags, status dots and avatars"
+    }
+  },
+  "border": {
+    "$type": "dimension",
+    "hair": {
+      "$value": "1px"
+    },
+    "strong": {
+      "$value": "2px"
+    }
+  }
+}

@@ -12,7 +12,8 @@ const page = (extra = {}) =>
 
 test('the page styles carry no values of their own: every color is a token', () => {
   assert.ok(PAGE_CSS.length > 1000);
-  assert.deepEqual(PAGE_CSS.match(/#[0-9a-f]{3,8}\b|rgba?\(/gi), null);
+  // transparent (minified to #0000, the scrollbar track) isn't a value of its own
+  assert.deepEqual(PAGE_CSS.match(/#(?!0000\b)[0-9a-f]{3,8}\b|rgba?\(/gi), null);
   assert.match(PAGE_CSS, /var\(--r9-shape-cut\)/);
   assert.match(PAGE_CSS, /@keyframes r9-pulse/);
 });

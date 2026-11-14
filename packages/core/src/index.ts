@@ -98,3 +98,9 @@ export { DAY_STARTS, MOOD_BOOT_SCRIPT, MOOD_STORAGE_KEY, NIGHT_STARTS, applyMood
 export { MOTION_STORAGE_KEY, applyMotion, configureMotion, setStill, useMotionSetting } from './hooks/motionSetting';
 export type { AutoRule, BootScriptOptions, MoodName, MoodNames, MoodOptions, MoodSetting, Scheme } from './hooks/mood';
 export { useReducedMotion, useFinePointer } from './hooks/motion';
+
+// Color: contrast math, and client colors (a client's brand color checked and turned into the accent roles)
+export { contrastRatio, hexToHsl, hslToHex, hueDistance, luminance, mixHex, parseHex } from './utils/color';
+export type { Hsl } from './utils/color';
+export { CLIENT_COLOR_RULES, clientAccent, paleTone, suggestColor } from './utils/clientColors';
+export type { ClientAccent, ClientAccentRoles, ClientColorCheck, ClientColors, ClientPage } from './utils/clientColors';

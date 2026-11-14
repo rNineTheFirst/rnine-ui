@@ -1,0 +1,28 @@
+@use "@rnine/ninesync/scss" as r9;
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-2;
+  @include r9.type(h4);
+  color: r9.$fg-strong;
+}
+
+.search { max-width: 22rem; width: 100%; }
+
+.page {
+  display: grid;
+  gap: r9.$space-6;
+  padding: r9.$space-6 r9.$space-4 r9.$space-10;
+  @include r9.up(md) { padding-inline: r9.$space-8; }
+}
+
+.tiles {
+  display: grid;
+  gap: r9.$space-4;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.code { font-family: r9.$font-mono; color: r9.$fg-muted; }
+.below { color: r9.$danger; font-weight: r9.$font-weight-semibold; }
+.footer { display: grid; gap: r9.$space-1; color: r9.$fg-muted; @include r9.type(caption); }

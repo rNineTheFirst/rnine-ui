@@ -1,0 +1,17 @@
+@use "@rnine/ninesync/scss" as r9;
+
+.glide {
+  position: relative;
+  min-width: 0;
+}
+
+.mark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: r9.$mark;
+  border-radius: r9.$radius-xs;
+  pointer-events: none;
+}
+
+.moving { transition: transform r9.$duration-base r9.$easing-out, width r9.$duration-base r9.$easing-out; }

@@ -1,0 +1,68 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# @rnine/ninesync
+
+NineSync: React components, SCSS modules and a motion layer for internal tools and
+dashboards (inventory, purchasing, back offices), built on `@rnine/core` and worn in the
+client's own color. Every story here is a NineSync component, or a core component in the
+NineSync look. Start with **Example → Materials** to see it all together.
+
+Use the **mood** button in the toolbar (paintbrush) to switch every story between **Light**
+and **Dark**, and **Client** to put another client's colors on every story. The
+**Accessibility** tab checks each story against WCAG.
+
+Other libraries on the same core, with the same components and props:
+[NineOS](https://ui.rnine.dev/nineos/) and [Ninefold](https://ui.rnine.dev/ninefold/).
+Every theme is listed at [ui.rnine.dev](https://ui.rnine.dev/), with the core components in Plain.
+
+## Add it to an app
+
+```bash
+npm install @rnine/ninesync react react-dom
+```
+
+```tsx
+// main.tsx, once
+import '@rnine/ninesync/fonts.css';
+import '@rnine/ninesync/styles.css';
+import { ClientTheme, ThemeProvider } from '@rnine/ninesync';
+import logoSvg from './logo.svg?raw';
+
+createRoot(root).render(
+  // mark: the client's logo (default: a placeholder frame)
+  <ThemeProvider mark={{ full: logoSvg }}>
+    {/* The client's brand color, and a second color for a mood where it fails */}
+    <ClientTheme colors={{ brand: '#0B6E4F', dark: '#5FD3A8' }} />
+    <App />
+  </ThemeProvider>,
+);
+```
+
+Check a client's colors before you ship them: **Client colors → ClientTheme** here, or the
+builder in the brand kit, lists what passes and suggests the second color to ask for.
+
+## Use components
+
+```tsx
+import { AppShell, LiveDot, PageHeader, SideNav, StatTile, Table, Tabs } from '@rnine/ninesync';
+import { Cascade, CountUp, wash } from '@rnine/ninesync/motion';
+
+<StatTile label="Stock value" value={<CountUp value={1240500} format={peso} />} />
+```
+
+An app can switch between libraries by changing the import: every library exports
+`@rnine/core`'s names with the same props. NineSync adds `ClientTheme`, `syncColors`,
+`LiveDot`, and in `/motion`, `CountUp`, `wash`, `pop`, `Glide` and `Cascade`.
+
+Custom pieces in an app use the same tokens:
+
+```scss
+@use "@rnine/ninesync/scss" as r9;
+
+.panel { border-radius: r9.$corner-md; @include r9.glow-hover; background: r9.$surface; }
+.title { @include r9.mark-under; }
+```
+
+The rules for building are under **Brand/Rules**; the whole brand guide (with live demos, the client color builder, a sample screen and downloads) is the brand kit{__KIT_URL__ ? <>: <a href={__KIT_URL__} target="_top">open it</a></> : null}.

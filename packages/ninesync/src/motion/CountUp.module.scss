@@ -1,0 +1,3 @@
+@use "@rnine/ninesync/scss" as r9;
+
+.sr { @include r9.visually-hidden; }

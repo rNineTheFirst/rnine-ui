@@ -1,0 +1,37 @@
+// NineSync's own mixins. Output nothing until included.
+@use "../dist/variables" as t;
+
+/// The Sync glow: three soft layers around the element (grey in the light
+/// mood, the pale tone in the dark one).
+@mixin glow {
+  box-shadow: 0 0 4px 1px t.$glow, 0 0 8px 3px t.$glow, 0 0 12px 6px t.$glow-faint;
+}
+
+/// The glow on hover, quick in (160ms) and slow out (300ms, Sync UI's own).
+/// Pass the element's other transitions in $also (they keep their timing).
+@mixin glow-hover($also: null) {
+  transition: box-shadow 300ms ease, $also;
+
+  &:hover:not(:disabled, [aria-disabled="true"]) {
+    @include glow;
+    transition: box-shadow t.$duration-fast t.$easing-out, $also;
+  }
+}
+
+/// Buttons dip to 97% while pressed.
+@mixin press-dip {
+  &:active:not(:disabled, [aria-disabled="true"]) { transform: scale(0.97); }
+}
+
+/// The NineSync mark: a pale bar under text that thickens with the type size
+/// (about 2px at body size, 9px at 64px). Wraps across lines. For an
+/// element's own text; on a pseudo-element, use mark-bar.
+@mixin mark-under($color: t.$mark) {
+  background-image: linear-gradient($color, $color);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% max(2px, 0.14em);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding-bottom: 0.06em;
+}

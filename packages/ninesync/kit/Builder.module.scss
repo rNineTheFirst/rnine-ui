@@ -1,0 +1,184 @@
+@use "@rnine/ninesync/scss" as r9;
+
+.builder { display: grid; gap: r9.$space-6; min-width: 0; }
+
+.label { @include r9.type(label); color: r9.$fg-muted; }
+.muted { color: r9.$fg-muted; }
+.hidden { @include r9.visually-hidden; }
+
+// ---- Inputs ----------------------------------------------------------------
+
+.inputs {
+  display: grid;
+  gap: r9.$space-4;
+  @include r9.up(md) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.color {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: r9.$space-2;
+  align-items: start;
+}
+
+// The native picker, as a swatch the height of the field, level with its box
+.picker {
+  width: 44px;
+  height: 44px;
+  margin-top: calc(1lh + #{r9.$space-2});
+  padding: 2px;
+  border: r9.$border-hair solid r9.$line-strong;
+  background: r9.$surface;
+  cursor: pointer;
+  border-radius: r9.$corner-md;
+  @include r9.glow-hover;
+
+  &::-webkit-color-swatch-wrapper { padding: 0; }
+  &::-webkit-color-swatch { border: 0; border-radius: calc(#{r9.$corner-md} - 4px); }
+  &::-moz-color-swatch { border: 0; border-radius: calc(#{r9.$corner-md} - 4px); }
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-2;
+}
+
+.preset {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+  min-height: 36px;
+  padding: r9.$space-1 r9.$space-3;
+  border: r9.$border-hair solid r9.$line;
+  background: r9.$surface;
+  color: r9.$fg;
+  font: inherit;
+  @include r9.type(body-sm);
+  cursor: pointer;
+  border-radius: r9.$corner-sm;
+  @include r9.glow-hover;
+  @include r9.press-dip;
+
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.chip {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  border-radius: r9.$radius-full;
+  box-shadow: 0 0 0 1px r9.$line-strong;
+}
+
+// ---- Both moods ------------------------------------------------------------
+
+.moods {
+  display: grid;
+  gap: r9.$space-6;
+  > * { min-width: 0; }
+  @include r9.up(lg) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.mood { display: grid; gap: r9.$space-4; align-content: start; }
+
+.preview {
+  display: grid;
+  gap: r9.$space-4;
+  background: r9.$bg;
+}
+
+.previewHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: r9.$space-3;
+}
+
+.previewTitle { @include r9.type(h3); color: r9.$fg-strong; margin: 0; }
+.previewText { margin: r9.$space-3 0 0; color: r9.$fg; }
+.previewRow { display: flex; flex-wrap: wrap; align-items: center; gap: r9.$space-3; }
+
+.checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: r9.$space-2;
+}
+
+.check {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: r9.$space-3;
+  padding: r9.$space-3;
+  border: r9.$border-hair solid r9.$line;
+  background: r9.$surface;
+  border-radius: r9.$corner-md;
+  @include r9.type(body-sm);
+}
+
+// The level in a word and a symbol, never color alone
+.level { font-weight: r9.$font-weight-semibold; white-space: nowrap; }
+.check[data-level="ok"] .level { color: r9.$success; }
+.check[data-level="warning"] .level { color: r9.$warning; }
+.check[data-level="error"] { border-color: r9.$danger; }
+.check[data-level="error"] .level { color: r9.$danger; }
+
+.try {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: r9.$accent-text;
+  font: inherit;
+  font-weight: r9.$font-weight-medium;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+  &:focus-visible { @include r9.focus-ring(2px); }
+}
+
+.tableWrap { overflow-x: auto; max-width: 100%; }
+
+.roles {
+  width: 100%;
+  border-collapse: collapse;
+  @include r9.type(body-sm);
+
+  th, td {
+    padding: r9.$space-2 r9.$space-3;
+    text-align: left;
+    border-bottom: r9.$border-hair solid r9.$line;
+  }
+  thead th { @include r9.type(label); color: r9.$fg-muted; }
+  code { @include r9.type(code); }
+}
+
+.swatchCell { display: inline-flex; align-items: center; gap: r9.$space-2; white-space: nowrap; }
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: r9.$corner-sm;
+  box-shadow: 0 0 0 1px r9.$line-strong;
+}
+
+// ---- What to take away ------------------------------------------------------
+
+.take {
+  display: grid;
+  gap: r9.$space-3;
+  padding: r9.$space-5;
+  border: r9.$border-hair solid r9.$line;
+  background: r9.$surface;
+  border-radius: r9.$corner-lg;
+}
+
+.code {
+  justify-self: start;
+  max-width: 100%;
+}

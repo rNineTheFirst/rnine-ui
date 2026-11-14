@@ -1,0 +1,10 @@
+@use "@rnine/ninesync/scss" as r9;
+
+// Core's own underline gives way to the gliding mark; tabs are DM Sans, not mono
+.tabs :global([role="tab"]) {
+  @include r9.type(body-sm);
+  font-weight: r9.$font-weight-medium;
+
+  &::after { content: none; }
+  &[aria-selected="true"] { color: r9.$fg-strong; font-weight: r9.$font-weight-semibold; }
+}

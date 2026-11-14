@@ -1,0 +1,73 @@
+// NineSync's own global CSS, after core's base.css in styles.css: DM Sans's
+// figures, strong headings, the <mark>, the settling focus ring and the
+// keyframes only NineSync uses.
+@use "index" as r9;
+
+// Figures line up in every table and tile
+body { font-variant-numeric: tabular-nums; }
+
+h1, h2, h3, h4, h5, h6 { color: r9.$fg-strong; }
+
+// Sync UI's mark: a pale bar under the word that matters, thicker as the type
+// grows, and the marked word a little heavier
+mark {
+  color: inherit;
+  background-color: transparent;
+  font-weight: 700;
+  @include r9.mark-under;
+}
+
+:is(h1, h2, h3) mark { font-weight: 800; }
+
+// Focus settles in: the ring arrives from 6px out and fades in (160ms)
+:focus-visible {
+  @include r9.motion-safe { animation: r9-settle r9.$duration-fast r9.$easing-out; }
+}
+
+// ---- NineSync's keyframes (prefixed r9-) -------------------------------------
+
+@keyframes r9-settle {
+  from { outline-offset: 6px; outline-color: transparent; }
+}
+
+// Content arriving: lifted 6px, fading in (swapIn, the screen cascade)
+@keyframes r9-rise {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+// After a save: a pale wash over what changed, fading over 1.2s
+@keyframes r9-wash {
+  from { background-color: var(--r9-mark-soft); }
+}
+
+// A badge or count that changed pops once
+@keyframes r9-pop {
+  40% { transform: scale(1.18); }
+}
+
+// The live dot's soft ring
+@keyframes r9-ring {
+  0% { transform: scale(1); opacity: 0.5; }
+  45%, 100% { transform: scale(2.8); opacity: 0; }
+}
+
+// The mark under a title draws in, left to right
+@keyframes r9-mark-draw {
+  from { background-size: 0 max(2px, 0.14em); }
+}
+
+// Loading: the pale sheen sweeping across placeholders
+@keyframes r9-sweep {
+  from { background-position: 100% 0; }
+  to { background-position: 0% 0; }
+}
+
+// A drawer slides in 24px from its edge, fading in
+@keyframes r9-drawer-in {
+  from { opacity: 0; transform: translateX(24px); }
+}
+
+// A title arriving: lifted 4px, fading in (TextReveal)
+@keyframes r9-rise-title {
+  from { opacity: 0; transform: translateY(4px); }
+}

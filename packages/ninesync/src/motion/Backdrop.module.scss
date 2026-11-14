@@ -1,0 +1,11 @@
+@use "@rnine/ninesync/scss" as r9;
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: r9.$bg;
+  pointer-events: none;
+}
+
+.fixed { position: fixed; }

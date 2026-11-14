@@ -1,0 +1,33 @@
+{
+  "breakpoint": {
+    "$type": "dimension",
+    "$description": "Mobile first: styles are for phones, these widths add layout.",
+    "sm": { "$value": "640px" },
+    "md": { "$value": "900px" },
+    "lg": { "$value": "1200px" }
+  },
+  "container": {
+    "$type": "dimension",
+    "max": { "$value": "1120px" },
+    "text": { "$value": "65ch", "$description": "Longest comfortable line of running text" },
+    "gutter": { "$value": "16px", "$description": "Minimum side padding at every width" }
+  },
+  "header": {
+    "$type": "dimension",
+    "height": { "$value": "64px" }
+  },
+  "scrollbar": {
+    "$type": "dimension",
+    "size": { "$value": "10px", "$description": "Scrollbar width in Safari (::-webkit-scrollbar). Chrome, Edge and Firefox draw their thin scrollbar" }
+  },
+  "z": {
+    "$type": "number",
+    "base": { "$value": 0 },
+    "raised": { "$value": 10 },
+    "sticky": { "$value": 30 },
+    "overlay": { "$value": 40 },
+    "modal": { "$value": 50 },
+    "toast": { "$value": 60 },
+    "fx": { "$value": 70, "$description": "Scanlines and click sparks: above everything, never interactive" }
+  }
+}

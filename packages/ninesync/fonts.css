@@ -1,0 +1,10 @@
+/* NineSync fonts, self-hosted through Fontsource (both SIL OFL).
+   Import once in the app, before styles.css:
+     import "@rnine/ninesync/fonts.css";
+     import "@rnine/ninesync/styles.css";
+   DM Sans is the variable font with its optical-size axis (headlines draw
+   tighter at large sizes on their own); DM Mono is for figures and codes. */
+@import "@fontsource-variable/dm-sans/opsz.css";
+@import "@fontsource-variable/dm-sans/opsz-italic.css";
+@import "@fontsource/dm-mono/latin-400.css";
+@import "@fontsource/dm-mono/latin-500.css";

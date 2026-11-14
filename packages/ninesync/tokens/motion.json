@@ -1,0 +1,18 @@
+{
+  "duration": {
+    "$type": "duration",
+    "$description": "Interactions answer within 'fast'; ambient loops are slow enough to ignore.",
+    "instant": { "$value": "90ms", "$description": "Press, toggle" },
+    "fast": { "$value": "160ms", "$description": "Hover color, small fades" },
+    "base": { "$value": "260ms", "$description": "Underlines, arrows, lifts" },
+    "slow": { "$value": "420ms", "$description": "Glitch, magnet release, tilt release" },
+    "slower": { "$value": "700ms", "$description": "Scroll reveals, decrypt" },
+    "ambient": { "$value": "9000ms", "$description": "Sheen, scanline drift, idle ripples" }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "out": { "$value": [0.2, 0.7, 0.2, 1], "$description": "Default. Things arrive fast and settle" },
+    "in-out": { "$value": [0.6, 0, 0.2, 1], "$description": "Things that move across the screen" },
+    "linear": { "$value": [0, 0, 1, 1], "$description": "Pointer-following (magnet, tilt) and loops" }
+  }
+}

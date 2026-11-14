@@ -1,0 +1,31 @@
+@use "@rnine/ninesync/scss" as r9;
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-2;
+  @include r9.type(body-sm);
+  color: r9.$fg-muted;
+}
+
+.dot {
+  position: relative;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: r9.$radius-full;
+  background: r9.$signal;
+
+  .idle & { background: r9.$fg-subtle; }
+
+  // The ring: soft, every 3.2s, only while live
+  .live:not(.idle) &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    opacity: 0;
+    @include r9.motion-safe { animation: r9.keyframes(ring) 3.2s ease-out infinite; }
+  }
+}

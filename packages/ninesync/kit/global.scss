@@ -1,0 +1,19 @@
+@use "@rnine/ninesync/scss" as r9;
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(#{r9.$header-height} + env(safe-area-inset-top, 0px));
+  @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
+}
+
+body { background: r9.$bg; }
+
+// The sample screen sits in a frame: core's AppShell fills the frame, not the window
+.kit-sample {
+  [class*="r9-AppShell-module_shell_"],
+  [class*="r9-AppShell-module_column_"] { min-height: 100%; }
+
+  [class*="r9-AppShell-module_sidebar_"] {
+    @include r9.up(md) { height: var(--kit-frame-h); }
+  }
+}

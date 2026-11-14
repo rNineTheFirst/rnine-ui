@@ -1,0 +1,8 @@
+// NineSync for SCSS: the shared API (tokens, corner, focus-ring, type, ...)
+// plus NineSync's own roles and mixins (glow, mark-under). Outputs no CSS:
+//
+//   @use "@rnine/ninesync/scss" as r9;
+@forward "@rnine/core/scss";
+// NineSync's roles beyond the shared ones (the shared ones come from core, the same custom properties)
+@forward "../dist/variables" show $fg-strong, $mark, $mark-strong, $mark-line, $mark-soft, $glow, $glow-faint, $font-weight-heading;
+@forward "ninesync";

@@ -32,6 +32,8 @@ export const CONTRAST_PAIRS = [
   ['accent', ['bg', 'surface'], 3],
   ['signal', ['bg', 'surface'], 3],
   ['line-strong', ['bg'], 1.5],
+  ['scrollbar-thumb', ['bg', 'surface'], 1.5],
+  ['scrollbar-thumb-hover', ['bg', 'surface'], 3],
 ];
 
 /**
