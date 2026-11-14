@@ -1,0 +1,83 @@
+@use "@rnine/core/scss" as r9;
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-inline: auto;
+  max-width: 28rem;
+}
+
+.md {
+  gap: r9.$space-3;
+  padding: r9.$space-12 r9.$space-4;
+}
+
+.sm {
+  gap: r9.$space-2;
+  padding: r9.$space-6 r9.$space-3;
+}
+
+.icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: r9.$space-2;
+  color: r9.$fg-muted;
+  background: r9.$surface;
+  @include r9.corner(md);
+  @include r9.hairline;
+
+  svg { width: 1.6rem; height: 1.6rem; }
+
+  // The accent mark, in the frame's top right
+  &::after {
+    @include r9.ornament(6px);
+    position: absolute;
+    top: r9.$space-2;
+    right: r9.$space-2;
+  }
+
+  .sm & {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: r9.$space-1;
+
+    svg { width: 1.25rem; height: 1.25rem; }
+    &::after { top: 5px; right: 5px; width: 5px; height: 5px; }
+  }
+}
+
+.mark {
+  @include r9.ornament(8px);
+  margin-bottom: r9.$space-1;
+
+  .sm & { width: 6px; height: 6px; }
+}
+
+.title {
+  margin: 0;
+  @include r9.type(h4);
+  color: r9.$fg;
+
+  .sm & { @include r9.type(body); font-weight: r9.$font-weight-semibold; }
+}
+
+.description {
+  margin: 0;
+  @include r9.type(body);
+  color: r9.$fg-muted;
+
+  .sm & { @include r9.type(body-sm); }
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: r9.$space-3;
+  margin-top: r9.$space-2;
+}

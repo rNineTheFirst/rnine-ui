@@ -1,0 +1,11 @@
+@use "@rnine/core/scss" as r9;
+
+.input { font-variant-numeric: tabular-nums; }
+
+.stepper {
+  display: inline-flex;
+  gap: r9.$space-1;
+  margin-inline-end: calc(-1 * #{r9.$space-2});
+
+  > button { margin-inline: 0; }
+}

@@ -1,0 +1,89 @@
+@use "@rnine/core/scss" as r9;
+
+.chevron {
+  transition: transform r9.$duration-fast r9.$easing-out;
+}
+
+.flipped { transform: rotate(180deg); }
+
+// Fixed and placed by script (top/left), at least as wide as the field, so no table or drawer clips it
+.popover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: r9.$z-overlay;
+  max-width: calc(100vw - 2 * #{r9.$space-4});
+  max-height: min(20rem, calc(100dvh - 2 * #{r9.$space-4}));
+  overflow-y: auto;
+  padding: r9.$space-1;
+  background: r9.$surface-raised;
+  color: r9.$fg;
+  @include r9.corner(sm);
+  @include r9.hairline(r9.$line-strong);
+
+  @include r9.motion-safe { animation: r9.keyframes(reveal) r9.$duration-fast r9.$easing-out; }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+  padding: r9.$space-2 r9.$space-3;
+  @include r9.type(body-sm);
+  cursor: pointer;
+
+  // The bar on the highlighted option: the accent element
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: r9.$space-1;
+    bottom: r9.$space-1;
+    width: 3px;
+    background: r9.$accent;
+    opacity: 0;
+  }
+
+  &[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.active {
+  background: color-mix(in srgb, #{r9.$fg} 8%, transparent);
+  &::before { opacity: 1; }
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.label { color: r9.$fg; }
+
+.description {
+  @include r9.type(caption);
+  color: r9.$fg-muted;
+}
+
+.check {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: r9.$fg;
+}
+
+.message {
+  padding: r9.$space-3;
+  @include r9.type(body-sm);
+  color: r9.$fg-muted;
+}

@@ -1,6 +1,6 @@
 {
   "name": "@rnine/core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "description": "The shared core of the @rnine design system libraries: mood and motion engine, the components every library has (in a plain placeholder look), the shared SCSS API and the token build tool",
   "keywords": [

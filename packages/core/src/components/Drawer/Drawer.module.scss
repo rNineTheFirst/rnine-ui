@@ -1,0 +1,136 @@
+@use "@rnine/core/scss" as r9;
+
+// The dialog is the full-height strip at the side; the panel inside is the visible box
+.drawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline: auto;
+  width: 100%;
+  max-width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg;
+  overflow: visible;
+
+  @include r9.up(sm) { width: min(var(--drawer-width), calc(100% - #{r9.$space-12})); }
+
+  &::backdrop {
+    background: color-mix(in srgb, #{r9.$color-gray-975} 48%, transparent);
+    backdrop-filter: blur(2px);
+  }
+}
+
+.end { inset-inline-end: 0; }
+.start { inset-inline-start: 0; }
+
+.sm { --drawer-width: 22rem; }
+.md { --drawer-width: 30rem; }
+.lg { --drawer-width: 42rem; }
+
+// Non-modal: not in the top layer, so it needs its own stacking
+.inline { z-index: r9.$z-modal; }
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: r9.$surface-raised;
+  // A real border: header and footer fill the edges (an inset hairline would sit beneath them)
+  border-inline-start: r9.$border-hair solid r9.$line-strong;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+
+  .start & {
+    border-inline-start: 0;
+    border-inline-end: r9.$border-hair solid r9.$line-strong;
+  }
+
+  @include r9.motion-safe { animation: slide-end r9.$duration-base r9.$easing-out; }
+  .start & { @include r9.motion-safe { animation-name: slide-start; } }
+}
+
+@keyframes slide-end {
+  from { transform: translateX(100%); }
+}
+
+@keyframes slide-start {
+  from { transform: translateX(-100%); }
+}
+
+// Right-to-left pages: the end is on the left
+:global([dir="rtl"]) .panel {
+  @include r9.motion-safe { animation-name: slide-start; }
+  .start & { @include r9.motion-safe { animation-name: slide-end; } }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: r9.$space-4;
+  padding: r9.$space-5 r9.$space-6;
+  border-bottom: r9.$border-hair solid r9.$line;
+}
+
+.heading {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-1;
+}
+
+.title {
+  margin: 0;
+  @include r9.type(h3);
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-3;
+
+  &::after { @include r9.ornament(6px); }
+}
+
+.description {
+  margin: 0;
+  @include r9.type(body-sm);
+  color: r9.$fg-muted;
+}
+
+.close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: -4px -8px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg-muted;
+  cursor: pointer;
+
+  svg { width: 20px; height: 20px; }
+  &:hover { color: r9.$accent-text; }
+  &:focus-visible { @include r9.focus-ring(0); }
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: r9.$space-5 r9.$space-6;
+  @include r9.type(body);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: r9.$space-4;
+  padding: r9.$space-4 r9.$space-6;
+  border-top: r9.$border-hair solid r9.$line;
+}

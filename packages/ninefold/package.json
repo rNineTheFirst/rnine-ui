@@ -1,6 +1,6 @@
 {
   "name": "@rnine/ninefold",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "description": "Ninefold: a cozy-fantasy design system library with two moods (Glint by day, Gloam by night), folded card corners, wax seals, fireflies and falling leaves, and a lantern trail. Built on @rnine/core",
   "keywords": [
@@ -85,7 +85,7 @@
     }
   },
   "dependencies": {
-    "@rnine/core": "0.2.0",
+    "@rnine/core": "0.3.0",
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/literata": "^5.3.0",
     "@fontsource/courier-prime": "^5.3.0",

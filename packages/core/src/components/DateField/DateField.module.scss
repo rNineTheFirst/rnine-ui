@@ -1,0 +1,24 @@
+@use "@rnine/core/scss" as r9;
+
+.date {
+  // The browser's calendar and icon follow the page's mood
+  color-scheme: light;
+  :global([data-scheme="dark"]) & { color-scheme: dark; }
+
+  font-variant-numeric: tabular-nums;
+  cursor: text;
+
+  // Empty dates show their parts (mm/dd/yyyy) like a placeholder
+  &:invalid:not(:focus)::-webkit-datetime-edit,
+  &[value=""]:not(:focus)::-webkit-datetime-edit { color: r9.$fg-subtle; }
+
+  &::-webkit-calendar-picker-indicator {
+    padding: r9.$space-1;
+    margin-inline-end: calc(-1 * #{r9.$space-1});
+    opacity: 0.6;
+    cursor: pointer;
+    @include r9.corner(sm);
+  }
+
+  &::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+}

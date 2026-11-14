@@ -34,7 +34,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Data table: sortable columns (`aria-sort`), row selection, clickable rows (Tab + Enter), loading and empty states; wide tables scroll inside their own box. `Pagination` pages through long lists. **Accent element:** the active sort arrow, selected rows’ edge and checkboxes, the current page.',
+          'Data table: sortable columns (`aria-sort`), row selection, clickable rows (Tab + Enter), loading and empty states; wide tables scroll inside their own box. `numeric` columns line up at the end, column `footer`s make a totals row, and `maxHeight` scrolls the rows inside the table with the header and totals stuck. `Pagination` pages through long lists. **Accent element:** the active sort arrow, selected rows’ edge and checkboxes, the current page.',
       },
     },
   },
@@ -84,4 +84,40 @@ function PaginationDemo() {
     />
   );
 }
+type Line = { id: number; part: string; description: string; qty: number; unit: string; price: number };
+const LINES: Line[] = [
+  { id: 1, part: 'PL-10-1220', description: 'MS plate 10mm, 4×8 ft', qty: 12, unit: 'pcs', price: 12450 },
+  { id: 2, part: 'AB-50-6', description: 'Angle bar 50×50×5mm, 6m', qty: 40, unit: 'pcs', price: 1180 },
+  { id: 3, part: 'HB-M12-50', description: 'Hex bolt M12×50, zinc', qty: 500, unit: 'pcs', price: 9.5 },
+  { id: 4, part: 'WR-E6013-25', description: 'Welding rod E6013 2.5mm', qty: 6, unit: 'box', price: 1650 },
+];
+const peso = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'PHP' });
+const LINE_COLUMNS: Column<Line>[] = [
+  { key: 'part', header: 'Part', sortable: true, footer: 'Total' },
+  { key: 'description', header: 'Description' },
+  { key: 'qty', header: 'Qty', numeric: true, sortable: true, render: (l) => `${l.qty.toLocaleString()} ${l.unit}` },
+  { key: 'price', header: 'Unit price', numeric: true, sortable: true, render: (l) => peso(l.price) },
+  {
+    key: 'amount',
+    header: 'Amount',
+    numeric: true,
+    sortable: true,
+    sortValue: (l) => l.qty * l.price,
+    render: (l) => peso(l.qty * l.price),
+    footer: (rows) => peso(rows.reduce((sum, l) => sum + l.qty * l.price, 0)),
+  },
+];
+
+/** `numeric` columns line up at the end (the sort arrow goes first); `footer` adds a totals row. */
+export const NumbersAndTotals: StoryObj<typeof Table<Line>> = {
+  render: () => <Table data={LINES} columns={LINE_COLUMNS} keyExtractor={(l) => l.id} caption="PO-2026-0042 lines" />,
+};
+
+const MANY_LINES: Line[] = Array.from({ length: 40 }, (_, i) => ({ ...LINES[i % LINES.length], id: i + 1, qty: (i % 7) * 5 + 1 }));
+
+/** `maxHeight`: the rows scroll inside the table; the header and the totals stay put. */
+export const ScrollingRows: StoryObj<typeof Table<Line>> = {
+  render: () => <Table data={MANY_LINES} columns={LINE_COLUMNS} keyExtractor={(l) => l.id} caption="Long order" maxHeight="22rem" compact />,
+};
+
 export const Paging: Story = { name: 'Pagination', render: () => <PaginationDemo /> };

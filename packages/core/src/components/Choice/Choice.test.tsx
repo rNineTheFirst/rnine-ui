@@ -19,6 +19,13 @@ describe('Checkbox and Switch', () => {
     expect(sw).toBeChecked();
     expect(sw).toHaveAccessibleDescription('Animations and effects');
   });
+
+  it('hides the label visually but keeps it as the name', () => {
+    render(<Checkbox label="Clerk: Materials, View" description="Always on" hideLabel />);
+    const box = screen.getByRole('checkbox', { name: 'Clerk: Materials, View' });
+    expect(box).toHaveAccessibleDescription('Always on');
+    expect(screen.getByText('Clerk: Materials, View').parentElement?.className).toMatch(/hiddenText/);
+  });
 });
 
 describe('RadioGroup', () => {

@@ -96,3 +96,86 @@
 
 .invalid .control { @include r9.hairline(r9.$danger); }
 .invalid .control:focus-visible { box-shadow: inset 0 0 0 2px r9.$danger; }
+
+// ---- A control with things inside its frame -------------------------------
+// (a currency, a unit, an icon, small buttons): the box carries the control's
+// look and focus; the input inside fills the rest and draws nothing.
+
+.box {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-2;
+  padding-block: 0;
+  cursor: text;
+
+  &:has(.inner:focus-visible) { box-shadow: inset 0 0 0 2px r9.$accent; }
+
+  &:has(.inner:disabled) {
+    cursor: not-allowed;
+    color: r9.$fg-muted;
+    background: color-mix(in srgb, #{r9.$surface} 50%, #{r9.$bg});
+  }
+}
+
+.invalid .box:has(.inner:focus-visible) { box-shadow: inset 0 0 0 2px r9.$danger; }
+
+.inner {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  align-self: stretch;
+  margin: 0;
+  padding: r9.$space-3 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  caret-color: r9.$accent;
+
+  &::placeholder { color: r9.$fg-subtle; }
+
+  // The box draws the focus
+  &:focus,
+  &:focus-visible { outline: 0; }
+
+  &:disabled { cursor: not-allowed; }
+}
+
+.affix {
+  flex: none;
+  color: r9.$fg-muted;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.affixIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: r9.$fg-muted;
+  pointer-events: none;
+
+  svg { width: 18px; height: 18px; }
+}
+
+// Small buttons inside the box (a number's − and +)
+.affixButton {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-inline: calc(-1 * #{r9.$space-2});
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg-muted;
+  cursor: pointer;
+  @include r9.corner(sm);
+
+  svg { width: 16px; height: 16px; }
+  &:hover:not(:disabled) { color: r9.$fg; background: color-mix(in srgb, #{r9.$fg} 6%, transparent); }
+  &:focus-visible { @include r9.focus-ring(0); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}

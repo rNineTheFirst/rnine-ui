@@ -40,3 +40,8 @@ if (!HTMLDialogElement.prototype.showModal) {
     this.removeAttribute('open');
   };
 }
+if (!HTMLDialogElement.prototype.show) {
+  HTMLDialogElement.prototype.show = function show(this: HTMLDialogElement) {
+    this.setAttribute('open', '');
+  };
+}

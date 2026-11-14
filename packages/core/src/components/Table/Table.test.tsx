@@ -50,9 +50,62 @@ describe('Table', () => {
     expect(onRowClick).toHaveBeenNthCalledWith(2, DATA[1], 1);
   });
 
+  it('leaves clicks and keys on links and buttons inside a row to them', async () => {
+    const onRowClick = vi.fn();
+    const onButton = vi.fn();
+    const cols: Column<Row>[] = [
+      { key: 'name', header: 'Name', render: (r) => <a href={`#/${r.name}`}>{r.name}</a> },
+      { key: 'act', header: 'Action', render: (r) => <button type="button" onClick={onButton}>Open {r.name}</button> },
+    ];
+    render(<Table data={DATA} columns={cols} keyExtractor={(r) => r.id} onRowClick={onRowClick} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open beta' }));
+    screen.getByRole('link', { name: 'alpha' }).focus();
+    await userEvent.keyboard('{Enter}');
+    expect(onButton).toHaveBeenCalledTimes(1);
+    expect(onRowClick).not.toHaveBeenCalled();
+    await userEvent.click(screen.getAllByRole('cell')[0]);
+    expect(onRowClick).toHaveBeenCalledWith(DATA[0], 0);
+  });
+
   it('shows the empty message', () => {
     render(<Table data={[]} columns={COLS} keyExtractor={(r: Row) => r.id} emptyMessage="No files." />);
     expect(screen.getByText('No files.')).toBeInTheDocument();
+  });
+
+  it('aligns numeric columns to the end', () => {
+    render(<Table data={DATA} columns={[COLS[0], { ...COLS[1], numeric: true }]} keyExtractor={(r) => r.id} />);
+    const header = screen.getByRole('columnheader', { name: 'Size' });
+    const cell = screen.getByRole('cell', { name: '20' });
+    expect(header.className).toMatch(/end/);
+    expect(header.className).toMatch(/numeric/);
+    expect(cell.className).toMatch(/end/);
+  });
+
+  it('adds a totals row from the columns’ footers, over the sorted rows', async () => {
+    const cols: Column<Row>[] = [
+      { ...COLS[0], footer: 'Total' },
+      { ...COLS[1], numeric: true, footer: (rows) => rows.reduce((n, r) => n + r.size, 0) },
+    ];
+    const { container } = render(<Table data={DATA} columns={cols} keyExtractor={(r) => r.id} selectable />);
+    const foot = container.querySelector('tfoot')!;
+    const cells = within(foot).getAllByRole('cell');
+    // The checkbox column gets an empty cell
+    expect(cells.map((c) => c.textContent)).toEqual(['', 'Total', '123']);
+  });
+
+  it('leaves the totals row out while loading or empty', () => {
+    const cols: Column<Row>[] = [{ ...COLS[0], footer: 'Total' }, COLS[1]];
+    const { container, rerender } = render(<Table data={DATA} columns={cols} keyExtractor={(r) => r.id} loading />);
+    expect(container.querySelector('tfoot')).toBeNull();
+    rerender(<Table data={[]} columns={cols} keyExtractor={(r: Row) => r.id} />);
+    expect(container.querySelector('tfoot')).toBeNull();
+  });
+
+  it('scrolls inside itself at maxHeight', () => {
+    const { container } = render(<Table data={DATA} columns={COLS} keyExtractor={(r) => r.id} maxHeight="20rem" />);
+    const wrap = container.firstElementChild as HTMLElement;
+    expect(wrap.style.maxHeight).toBe('20rem');
+    expect(wrap.className).toMatch(/scroll/);
   });
 });
 

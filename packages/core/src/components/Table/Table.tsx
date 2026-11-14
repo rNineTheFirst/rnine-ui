@@ -5,6 +5,16 @@ import styles from './Table.module.scss';
 
 type Key = string | number;
 
+const CONTROLS = 'a[href], button, input, select, textarea, label, summary, [role="button"], [role="link"], [role="checkbox"], [contenteditable="true"]';
+
+/** A click or key from a control inside the row (a link, a button): the control's, not the row's. */
+function fromControl(e: { target: EventTarget; currentTarget: EventTarget }): boolean {
+  const target = e.target as Element;
+  if (target === e.currentTarget || !(target instanceof Element)) return false;
+  const control = target.closest(CONTROLS);
+  return control !== null && (e.currentTarget as Element).contains(control);
+}
+
 export type Column<T> = {
   /** Field to show (and sort by), or any unique id when `render` is given. */
   key: string;
@@ -15,6 +25,13 @@ export type Column<T> = {
   /** Value used for sorting when it differs from item[key]. */
   sortValue?: (item: T) => string | number | Date | null | undefined;
   align?: 'start' | 'end' | 'center';
+  /** A column of numbers (quantities, prices): aligned to the end, the sort arrow before the header so the digits line up. */
+  numeric?: boolean;
+  /**
+   * The column's cell in a totals row at the bottom (shown when any column has
+   * one): "Total", or a function of the rows, e.g. (rows) => sum(rows).
+   */
+  footer?: ReactNode | ((rows: T[]) => ReactNode);
   width?: string | number;
   className?: string;
 };
@@ -39,6 +56,11 @@ export type TableProps<T> = {
   compact?: boolean;
   /** Initial sort. */
   defaultSort?: { key: string; direction: 'asc' | 'desc' };
+  /**
+   * Scrolls the rows inside the table at this height ("60dvh", 480), with the
+   * header stuck at its top and the totals row at its bottom.
+   */
+  maxHeight?: string | number;
   className?: string;
 };
 
@@ -61,7 +83,9 @@ function Checkbox({ checked, indeterminate, label, onChange }: { checked: boolea
 }
 
 /**
- * Data table with sortable columns, row selection and clickable rows.
+ * Data table with sortable columns, row selection and clickable rows; number
+ * columns, a totals row, and a header that stays put while the rows scroll
+ * (maxHeight).
  * Accent element: the active sort arrow, selected rows' edge and checkboxes.
  */
 export function Table<T extends object>({
@@ -79,6 +103,7 @@ export function Table<T extends object>({
   loading,
   compact,
   defaultSort,
+  maxHeight,
   className,
 }: TableProps<T>) {
   const [sort, setSort] = useState(defaultSort);
@@ -112,6 +137,7 @@ export function Table<T extends object>({
     setSort((s) => (s?.key !== key ? { key, direction: 'asc' } : s.direction === 'asc' ? { key, direction: 'desc' } : undefined));
 
   const onRowKey = (e: KeyboardEvent, item: T, i: number) => {
+    if (fromControl(e)) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       onRowClick?.(item, i);
@@ -119,9 +145,11 @@ export function Table<T extends object>({
   };
 
   const span = columns.length + (selectable ? 1 : 0);
+  const alignOf = (c: Column<T>) => styles[c.align ?? (c.numeric ? 'end' : 'start')];
+  const showFooter = !loading && rows.length > 0 && columns.some((c) => c.footer !== undefined);
 
   return (
-    <div className={cx(styles.wrap, className)}>
+    <div className={cx(styles.wrap, maxHeight !== undefined && styles.scroll, className)} style={maxHeight !== undefined ? { maxHeight } : undefined}>
       <table className={cx(styles.table, compact && styles.compact)} aria-busy={loading || undefined}>
         {caption && <caption className={cx(styles.caption, hideCaption && styles.hidden)}>{caption}</caption>}
         <thead>
@@ -139,7 +167,7 @@ export function Table<T extends object>({
                   key={c.key}
                   scope="col"
                   style={{ width: c.width }}
-                  className={cx(styles[c.align ?? 'start'], c.className)}
+                  className={cx(alignOf(c), c.numeric && styles.numeric, c.className)}
                   aria-sort={active ? (sort.direction === 'asc' ? 'ascending' : 'descending') : c.sortable ? 'none' : undefined}
                 >
                   {c.sortable ? (
@@ -174,7 +202,7 @@ export function Table<T extends object>({
                 <tr
                   key={key}
                   className={cx(onRowClick && styles.clickable, isSelected && styles.selected)}
-                  onClick={onRowClick ? () => onRowClick(item, i) : undefined}
+                  onClick={onRowClick ? (e) => !fromControl(e) && onRowClick(item, i) : undefined}
                   onKeyDown={onRowClick ? (e) => onRowKey(e, item, i) : undefined}
                   tabIndex={onRowClick ? 0 : undefined}
                   aria-selected={selectable ? isSelected : undefined}
@@ -185,7 +213,7 @@ export function Table<T extends object>({
                     </td>
                   )}
                   {columns.map((c) => (
-                    <td key={c.key} className={cx(styles[c.align ?? 'start'], c.className)}>
+                    <td key={c.key} className={cx(alignOf(c), c.numeric && styles.numeric, c.className)}>
                       {c.render ? c.render(item, i) : String((item as Record<string, unknown>)[c.key] ?? '')}
                     </td>
                   ))}
@@ -194,6 +222,18 @@ export function Table<T extends object>({
             })
           )}
         </tbody>
+        {showFooter && (
+          <tfoot>
+            <tr>
+              {selectable && <td className={styles.checkCell} />}
+              {columns.map((c) => (
+                <td key={c.key} className={cx(alignOf(c), c.numeric && styles.numeric, c.className)}>
+                  {typeof c.footer === 'function' ? c.footer(rows) : c.footer}
+                </td>
+              ))}
+            </tr>
+          </tfoot>
+        )}
       </table>
     </div>
   );

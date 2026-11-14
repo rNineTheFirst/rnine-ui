@@ -1,0 +1,64 @@
+@use "@rnine/core/scss" as r9;
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-3;
+  margin-bottom: r9.$space-6;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: r9.$space-4;
+}
+
+.text {
+  flex: 1 1 20rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-2;
+}
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-3;
+}
+
+.title {
+  margin: 0;
+  min-width: 0;
+  @include r9.type(h2);
+  display: inline-flex;
+  align-items: center;
+  gap: r9.$space-3;
+
+  &::after { @include r9.ornament(6px); flex: none; }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-2;
+}
+
+.description {
+  margin: 0;
+  max-width: r9.$container-text;
+  @include r9.type(body);
+  color: r9.$fg-muted;
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: r9.$space-3;
+}

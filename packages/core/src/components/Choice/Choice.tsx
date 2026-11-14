@@ -7,6 +7,11 @@ type ChoiceProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'classNa
   label: ReactNode;
   /** Extra line under the label. */
   description?: ReactNode;
+  /**
+   * Hide the label (and description) visually; screen readers still read
+   * them. For a box that stands alone, e.g. in a table cell its column names.
+   */
+  hideLabel?: boolean;
   className?: string;
   ref?: Ref<HTMLInputElement>;
 };
@@ -21,13 +26,13 @@ function useChoiceIds(description: ReactNode) {
 }
 
 /** Checkbox. Accent element: the checked box. */
-export function Checkbox({ label, description, className, ref, ...input }: ChoiceProps) {
+export function Checkbox({ label, description, hideLabel, className, ref, ...input }: ChoiceProps) {
   const ids = useChoiceIds(description);
   return (
     <label className={cx(styles.choice, className)}>
       <input {...input} ref={ref} type="checkbox" className={styles.input} aria-labelledby={ids.labelId} aria-describedby={ids.descId} />
       <span className={styles.box} aria-hidden="true"><Check strokeWidth={2.5} /></span>
-      <span className={styles.text}>
+      <span className={cx(styles.text, hideLabel && styles.hiddenText)}>
         <span id={ids.labelId} className={styles.label}>{label}</span>
         {description && <span id={ids.descId} className={styles.description}>{description}</span>}
       </span>
@@ -36,13 +41,13 @@ export function Checkbox({ label, description, className, ref, ...input }: Choic
 }
 
 /** On/off switch (a checkbox with role="switch"). Accent element: the on track. */
-export function Switch({ label, description, className, ref, ...input }: ChoiceProps) {
+export function Switch({ label, description, hideLabel, className, ref, ...input }: ChoiceProps) {
   const ids = useChoiceIds(description);
   return (
     <label className={cx(styles.choice, className)}>
       <input {...input} ref={ref} type="checkbox" role="switch" className={styles.input} aria-labelledby={ids.labelId} aria-describedby={ids.descId} />
       <span className={styles.track} aria-hidden="true" />
-      <span className={styles.text}>
+      <span className={cx(styles.text, hideLabel && styles.hiddenText)}>
         <span id={ids.labelId} className={styles.label}>{label}</span>
         {description && <span id={ids.descId} className={styles.description}>{description}</span>}
       </span>

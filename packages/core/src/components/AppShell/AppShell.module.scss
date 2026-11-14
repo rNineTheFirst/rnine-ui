@@ -1,0 +1,161 @@
+@use "@rnine/core/scss" as r9;
+
+.shell {
+  --app-nav-w: 16rem;
+  min-height: 100dvh;
+
+  @include r9.up(md) {
+    display: grid;
+    grid-template-columns: var(--app-nav-w) minmax(0, 1fr);
+  }
+}
+
+// ---- Sidebar: always shown from md, slides in below it ----------------------
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: r9.$surface;
+  // A real border: the sidebar's children fill its edges (an inset hairline would sit beneath them)
+  border-inline-end: r9.$border-hair solid r9.$line;
+
+  @include r9.up(md) {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+  }
+
+  @include r9.down(md) {
+    position: fixed;
+    inset-block: 0;
+    left: 0;
+    z-index: r9.$z-modal;
+    width: min(calc(var(--app-nav-w) + #{r9.$space-8}), calc(100% - #{r9.$space-12}));
+    padding-left: env(safe-area-inset-left, 0px);
+    transform: translateX(-100%);
+    visibility: hidden;
+
+    @include r9.motion-safe {
+      transition: transform r9.$duration-base r9.$easing-out, visibility 0s linear r9.$duration-base;
+    }
+
+    .open & {
+      transform: none;
+      visibility: visible;
+
+      @include r9.motion-safe { transition: transform r9.$duration-base r9.$easing-out, visibility 0s; }
+    }
+  }
+}
+
+.sideHead {
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+  min-height: r9.$header-height;
+  padding: r9.$space-2 r9.$space-3 r9.$space-2 r9.$space-5;
+  border-bottom: r9.$border-hair solid r9.$line;
+}
+
+.brand {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+}
+
+.sideBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: r9.$space-4 r9.$space-3;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: r9.$z-overlay;
+  background: color-mix(in srgb, #{r9.$color-gray-975} 48%, transparent);
+
+  @include r9.up(md) { display: none; }
+}
+
+// ---- Top bar and page --------------------------------------------------------
+
+.column {
+  min-width: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: r9.$z-sticky;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+  min-height: r9.$header-height;
+  padding-block: r9.$space-2;
+  @include r9.gutter;
+  background: r9.$bg;
+  border-bottom: r9.$border-hair solid r9.$line;
+}
+
+.header {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-2;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  @include r9.gutter;
+  padding-top: r9.$space-6;
+  padding-bottom: r9.$space-12;
+
+  // Focused only by the skip link or after picking a page: not a control, no ring
+  &:focus { outline: 0; }
+}
+
+// ---- Icon buttons --------------------------------------------------------------
+
+.iconButton {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: r9.$fg-muted;
+  cursor: pointer;
+
+  svg { width: 22px; height: 22px; }
+  &:hover { color: r9.$fg; }
+  &:focus-visible { @include r9.focus-ring(0); }
+}
+
+.toggle {
+  margin-left: calc(-1 * #{r9.$space-2});
+  @include r9.up(md) { display: none; }
+}
+
+.close {
+  margin-left: auto;
+  @include r9.up(md) { display: none; }
+}

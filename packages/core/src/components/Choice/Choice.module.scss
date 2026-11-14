@@ -22,6 +22,8 @@
 }
 
 .text { display: flex; flex-direction: column; gap: 2px; padding-top: 1px; }
+// Out of the flow too, so the box stands alone (no gap after it)
+.hiddenText { @include r9.visually-hidden; }
 .label { color: inherit; }
 .description { @include r9.type(caption); color: r9.$fg-muted; }
 

@@ -1,0 +1,125 @@
+@use "@rnine/core/scss" as r9;
+
+.nav {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-6;
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: r9.$space-5;
+}
+
+.heading {
+  margin: 0 0 r9.$space-2;
+  padding-inline: r9.$space-3;
+  @include r9.type(caption);
+  color: r9.$fg-subtle;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: r9.$space-3;
+  padding: r9.$space-2 r9.$space-3;
+  border: 0;
+  background: transparent;
+  color: r9.$fg-muted;
+  @include r9.type(body-sm);
+  font-weight: r9.$font-weight-medium;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  @include r9.corner(sm);
+  transition: background r9.$duration-fast, color r9.$duration-fast;
+
+  // The active bar: the nav's accent element
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: r9.$space-2;
+    bottom: r9.$space-2;
+    width: 3px;
+    background: r9.$accent;
+    transform: scaleY(0);
+    transition: transform r9.$duration-base r9.$easing-out;
+  }
+
+  &:hover {
+    background: color-mix(in srgb, #{r9.$fg} 6%, transparent);
+    color: r9.$fg;
+  }
+
+  // Inside the corner's clip, so the ring isn't cut off
+  &:focus-visible { @include r9.focus-ring(-2px); }
+
+  &[aria-current="page"] {
+    background: color-mix(in srgb, #{r9.$fg} 8%, transparent);
+    color: r9.$fg;
+    font-weight: r9.$font-weight-semibold;
+
+    &::before { transform: scaleY(1); }
+    .icon { color: r9.$fg; }
+  }
+}
+
+// Faded as a whole (icon and badge too), so it reads as off in every mood
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+
+  &:hover { background: transparent; color: r9.$fg-muted; }
+}
+
+.icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: r9.$fg-subtle;
+
+  svg { width: 100%; height: 100%; }
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge {
+  flex: none;
+  min-width: 1.5rem;
+  padding: 0 r9.$space-2;
+  @include r9.type(caption);
+  text-align: center;
+  background: color-mix(in srgb, #{r9.$fg} 10%, transparent);
+  color: r9.$fg;
+  border-radius: r9.$radius-full;
+}
+
+.sr { @include r9.visually-hidden; }
+
+.footer {
+  margin-top: auto;
+  padding-top: r9.$space-4;
+  border-top: r9.$border-hair solid r9.$line;
+}

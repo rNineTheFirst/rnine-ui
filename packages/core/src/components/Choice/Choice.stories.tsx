@@ -42,4 +42,7 @@ export const Radios: Story = {
   ),
 };
 
+/** A box that stands alone (a table cell, its column and row name it): the label is still its accessible name. */
+export const HiddenLabel: Story = { args: { hideLabel: true, label: 'Clerk: Purchase orders, Approve', defaultChecked: true } };
+
 export const Disabled: Story = { args: { disabled: true, label: 'Not available yet' } };

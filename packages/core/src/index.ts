@@ -16,6 +16,12 @@ export type { TextTone, TextVariant } from './components/Text/Text';
 
 export { Select, TextArea, TextField } from './components/Field/Field';
 export type { SelectProps, TextAreaProps, TextFieldProps } from './components/Field/Field';
+export { Combobox } from './components/Combobox/Combobox';
+export type { ComboboxOption, ComboboxProps } from './components/Combobox/Combobox';
+export { NumberField } from './components/NumberField/NumberField';
+export type { NumberFieldProps } from './components/NumberField/NumberField';
+export { DateField } from './components/DateField/DateField';
+export type { DateFieldProps } from './components/DateField/DateField';
 
 export { Checkbox, RadioGroup, Switch } from './components/Choice/Choice';
 export type { RadioOption } from './components/Choice/Choice';
@@ -34,6 +40,8 @@ export { Progress } from './components/Progress/Progress';
 
 export { Modal } from './components/Modal/Modal';
 export type { ModalProps } from './components/Modal/Modal';
+export { Drawer } from './components/Drawer/Drawer';
+export type { DrawerProps } from './components/Drawer/Drawer';
 export { ToastProvider, useToast } from './components/Toast/Toast';
 export type { ToastContextValue, ToastOptions, ToastVariant } from './components/Toast/Toast';
 export { Tooltip } from './components/Tooltip/Tooltip';
@@ -63,6 +71,20 @@ export type { Screenshot } from './components/ScreenshotCarousel/ScreenshotCarou
 export { MediaGallery } from './components/MediaGallery/MediaGallery';
 export type { MediaPiece } from './components/MediaGallery/MediaGallery';
 export { VideoPlayer } from './components/VideoPlayer/VideoPlayer';
+
+// App layout: internal tools and admin apps (sidebar navigation, page headers, dashboards, menus)
+export { AppShell } from './components/AppShell/AppShell';
+export { useAppShell } from './components/AppShell/appShellContext';
+export type { AppShellContextValue } from './components/AppShell/appShellContext';
+export { SideNav } from './components/AppShell/SideNav';
+export type { SideNavGroup, SideNavItem } from './components/AppShell/SideNav';
+export { PageHeader } from './components/PageHeader/PageHeader';
+export { StatTile } from './components/StatTile/StatTile';
+export type { StatChange } from './components/StatTile/StatTile';
+export { EmptyState } from './components/EmptyState/EmptyState';
+export { Menu } from './components/Menu/Menu';
+export type { MenuEntry, MenuGroup, MenuItem, MenuSeparator } from './components/Menu/Menu';
+export type { LinkProps, RenderLink } from './utils/link';
 
 // Layout and brand: page structure, the wordmark and the mood switch
 export { Container, Eyebrow, Section, Stack } from './components/Layout/Layout';
