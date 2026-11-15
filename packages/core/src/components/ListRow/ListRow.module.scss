@@ -31,6 +31,54 @@
 
 .noLead { grid-template-columns: minmax(0, 1fr); }
 
+// A thumb takes the last column; on phones it sits beside the index and title
+.withThumb {
+  grid-template-columns: 5rem minmax(0, 1fr) 9rem;
+
+  &.noLead { grid-template-columns: minmax(0, 1fr) 9rem; }
+
+  @include r9.down(sm) {
+    grid-template-columns: minmax(0, 1fr) 5.5rem;
+    column-gap: r9.$space-3;
+
+    &.noLead { grid-template-columns: minmax(0, 1fr) 5.5rem; }
+    > .index, > .meta, > .body { grid-column: 1; }
+    > .thumb { grid-column: 2; grid-row: 1 / span 2; }
+    &.noLead > .thumb { grid-row: 1; }
+  }
+}
+
+.thumb {
+  position: relative;
+  align-self: start;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: r9.$surface;
+  @include r9.corner(sm);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform r9.$duration-base r9.$easing-out;
+  }
+
+  // The hairline over the picture (on the frame it would be painted under it)
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    @include r9.hairline;
+    pointer-events: none;
+  }
+
+  @include r9.motion-safe {
+    :root:not([data-motion="reduced"]) .row:hover & img { transform: scale(1.04); }
+  }
+}
+
 .index {
   justify-self: start;
   @include r9.type(caption);

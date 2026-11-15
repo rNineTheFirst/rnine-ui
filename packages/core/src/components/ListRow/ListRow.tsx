@@ -33,6 +33,8 @@ type ListRowProps = {
   description?: ReactNode;
   /** Extra content under the description, e.g. tags. Keep it non-interactive. */
   children?: ReactNode;
+  /** A picture of the item at the row's end (cropped to 16:10). Decorative: the title already names it. */
+  thumb?: string;
   /** Heading element for the title. Default h3. */
   titleAs?: ElementType;
   className?: string;
@@ -40,10 +42,11 @@ type ListRowProps = {
 
 /**
  * A list row whose title is the link: there are no action buttons on the
- * right, the title (stretched over the whole row) opens the item. Accent
+ * right, the title (stretched over the whole row) opens the item. With a
+ * thumb, the picture sits at the end (beside the title on phones). Accent
  * element: the title and its arrow on hover and focus.
  */
-export function ListRow({ title, onSelect, href, index, meta, description, children, titleAs: Title = 'h3', className }: ListRowProps) {
+export function ListRow({ title, onSelect, href, index, meta, description, children, thumb, titleAs: Title = 'h3', className }: ListRowProps) {
   const label = (
     <>
       {title}
@@ -53,7 +56,7 @@ export function ListRow({ title, onSelect, href, index, meta, description, child
     </>
   );
   return (
-    <li className={cx(styles.row, !index && !meta && styles.noLead, className)}>
+    <li className={cx(styles.row, !index && !meta && styles.noLead, thumb && styles.withThumb, className)}>
       {index && <span className={styles.index}>{index}</span>}
       {!index && meta && <span className={styles.meta}>{meta}</span>}
       <div className={styles.body}>
@@ -71,6 +74,11 @@ export function ListRow({ title, onSelect, href, index, meta, description, child
         {description && <p className={styles.description}>{description}</p>}
         {children && <div className={styles.extra}>{children}</div>}
       </div>
+      {thumb && (
+        <span className={styles.thumb} aria-hidden="true">
+          <img src={thumb} alt="" loading="lazy" decoding="async" />
+        </span>
+      )}
     </li>
   );
 }

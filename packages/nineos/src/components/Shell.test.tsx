@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { StrictMode, useRef, useState } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -85,6 +85,15 @@ describe('PanelStage', () => {
     rerender(<Stage panelKey="b" />);
     rerender(<Stage panelKey="c" />);
     await waitFor(() => expect(screen.getByRole('region', { name: 'Panel c' })).toBeVisible());
+    expect(screen.getAllByRole('region')).toHaveLength(1);
+  });
+
+  // StrictMode (dev) detaches and reattaches refs on mount: that isn't the panel leaving
+  it('keeps its first panel and swaps under StrictMode (with motion)', async () => {
+    const { rerender } = render(<StrictMode><Stage panelKey="a" /></StrictMode>);
+    expect(screen.getByRole('region', { name: 'Panel a' })).toBeVisible();
+    rerender(<StrictMode><Stage panelKey="b" /></StrictMode>);
+    await waitFor(() => expect(screen.getByRole('region', { name: 'Panel b' })).toBeVisible());
     expect(screen.getAllByRole('region')).toHaveLength(1);
   });
 });

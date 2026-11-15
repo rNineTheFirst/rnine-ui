@@ -29,6 +29,22 @@ describe('ListRow', () => {
     expect(screen.getByRole('heading', { name: /harbor/ })).toBeInTheDocument();
   });
 
+  it('shows a thumb as a decorative picture, so the row is still named by its title', () => {
+    const { container } = render(
+      <RowList label="Projects">
+        <ListRow index="PRJ_01" title="harbor" thumb="harbor.webp" onSelect={() => undefined} />
+        <ListRow index="PRJ_02" title="dock" onSelect={() => undefined} />
+      </RowList>,
+    );
+    const imgs = container.querySelectorAll('img');
+    expect(imgs).toHaveLength(1);
+    expect(imgs[0]).toHaveAttribute('src', 'harbor.webp');
+    expect(imgs[0]).toHaveAttribute('alt', '');
+    expect(imgs[0]).toHaveAttribute('loading', 'lazy');
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /harbor/ })).toBeInTheDocument();
+  });
+
   it('renders a real link when given an href', () => {
     render(<ListRow meta="2026-11-07" title="The build cache went live" href="/blog/build-cache" />);
     expect(screen.getByRole('link', { name: /The build cache went live/ })).toHaveAttribute('href', '/blog/build-cache');

@@ -36,8 +36,11 @@ export function PanelStage({ panelKey, children, className }: Props) {
 
   // The current panel's wrapper; when it unmounts, keep the element to animate it out
   const setSlot = useCallback((el: HTMLDivElement | null) => {
-    if (el) slot.current = el as Slot;
-    else {
+    if (el) {
+      // The same element back (StrictMode reattaching refs in dev): nothing left
+      if (detached.current === el) detached.current = null;
+      slot.current = el as Slot;
+    } else {
       detached.current = slot.current;
       slot.current = null;
     }
@@ -65,6 +68,8 @@ export function PanelStage({ panelKey, children, className }: Props) {
       return;
     }
     if (!stage || !ghost) return;
+    // Already showing, nothing leaving (StrictMode's second run, or only `reduced` changed)
+    if (!old && next?.dataset.shown === 'true') return;
 
     const reveal = () => {
       const current = slot.current;
